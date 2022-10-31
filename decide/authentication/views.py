@@ -94,6 +94,6 @@ class SignInView(APIView):
                 'username' : request.user
             })
 
-    #def sign_out(request):
-    #   logout(request)
-    #   return redirect('signup')
+    def sign_out(request):
+       logout(request)
+       return redirect('signin')

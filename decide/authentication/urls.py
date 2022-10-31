@@ -12,5 +12,5 @@ urlpatterns = [
     path('register/', RegisterView.as_view()),
     path('signin/', SignInView.sing_in, name='signin'),
     path('hello/', SignInView.hello, name='hello'),
-    #path('signout/', SignInView.sign_out, name='signout'),
+    path('signout/', SignInView.sign_out, name='signout'),
 ]
