@@ -8,9 +8,11 @@
 {% endblock %}
 
 {% block content %}
-<h1>Sign in</h1>
+<div class="container-md">
+  <h1>Sign in</h1>
+  <br>
 
-<form action="/signin/" method="POST">
+  <form action="/signin/" method="POST">
     {% csrf_token %}
     <div class="form-group">
       <label for="exampleInputEmail1">Email address</label>
@@ -21,7 +23,14 @@
       <label for="exampleInputPassword1">Password</label>
       <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
     </div>
+    <br>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
+
+  <br>
+  <a class="btn btn-primary" href="#" role="button">Register</a>
+</div>
+
+
 
   {% endblock %}

@@ -54,6 +54,6 @@ class RegisterView(APIView):
             return Response({}, status=HTTP_400_BAD_REQUEST)
         return Response({'user_pk': user.pk, 'token': token.key}, HTTP_201_CREATED)
 
-  
-def sing_in(request):
-    return render(request, 'signin.html')
+class SignInView(APIView):
+    def sing_in(request):
+        return render(request, 'signin.html')
