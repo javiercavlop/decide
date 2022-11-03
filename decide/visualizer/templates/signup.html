@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block extrahead %}
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+{% endblock %}
+
+{% block content %} 
+
+
+
+<div class="container-md">
+	<!--Register--> 
+	{{ error }}
+<div class="container py-5">
+	<h1>Register</h1>
+	<form method="POST">
+		{% csrf_token %}
+		{{ register_form.as_p }}                    
+		<button class="btn btn-primary" type="submit">Register</button>
+	</form>
+	
+</div>
+
+</div>
+
+
+{% endblock %}

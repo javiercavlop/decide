@@ -1,3 +1,4 @@
+from authentication.form import NewUserForm
 from rest_framework.response import Response
 from rest_framework.status import (
         HTTP_201_CREATED,
@@ -7,8 +8,9 @@ from rest_framework.status import (
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate, logout
 from django.db import IntegrityError
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.core.exceptions import ObjectDoesNotExist
 
 from .serializers import UserSerializer
@@ -53,3 +55,22 @@ class RegisterView(APIView):
         except IntegrityError:
             return Response({}, status=HTTP_400_BAD_REQUEST)
         return Response({'user_pk': user.pk, 'token': token.key}, HTTP_201_CREATED)
+
+class SignUpView(APIView):
+    def register(request):
+        if request.method == "POST":
+            form = NewUserForm(request.POST)
+            if form.is_valid():
+                user = form.save()
+                login(request, user)
+                #messages.success(request, "Registration successful." )
+                return redirect("signup")
+            else:
+                form = NewUserForm()
+                return render(request, 'signup.html', {
+                        'register_form':form ,
+                        'error': 'Unsuccessful registration. Invalid information.'
+                        })
+        form = NewUserForm()
+        return render (request, "signup.html", {
+            "register_form":form})
