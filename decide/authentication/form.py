@@ -20,6 +20,7 @@ class CustomAuthenticationForm(AuthenticationForm):
     )
 	
 class NewUserForm(UserCreationForm):
+	first_name = forms.CharField(max_length=30, required=True)
 	last_name = forms.CharField(max_length=30, required=True)
 	email = forms.EmailField(required=True)
 	password1 = forms.CharField(label='Password', widget=forms.PasswordInput)

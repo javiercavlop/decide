@@ -13,7 +13,13 @@
 
 <div class="container-md">
 	<!--Register--> 
-	{{ error }}
+	{% if are_errors == True %}
+		{% for error in errors%}
+			<div class="alert alert-danger" role="alert">
+				{{error}}
+			</div>
+		{% endfor %}
+	{% endif %}
 <div class="container py-5">
 	<h1>Register</h1>
 	<form method="POST">
