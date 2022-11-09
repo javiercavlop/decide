@@ -12,21 +12,24 @@ from rest_framework.status import (
 
 from base.perms import UserIsStaff
 from .models import Census,CensusGroup
+from .serializers import CensusGroupSerializer,CensusSerializer
 
 
 class CensusCreate(generics.ListCreateAPIView):
+    serializer_class = CensusSerializer
     permission_classes = (UserIsStaff,)
+    #queryset = Census.objects.all()
 
     def create(self, request, *args, **kwargs):
         voting_id = request.data.get('voting_id')
-        voters = request.data.get('voters')
-        group = request.data.get('group')
+        voter_id = request.data.get('voter_id')
+        group_name = request.data.get('group.name')
+        group = CensusGroup.objects.get(name=group_name)
         try:
-            for voter in voters:
-                census = Census(voting_id=voting_id, voter_id=voter, group=group)
-                census.save()
+            census = Census(voting_id=voting_id, voter_id=voter_id, group=group)
+            census.save()
         except IntegrityError:
-            return Response('Error try to create census', status=ST_409)
+            return Response('Error trying to create census', status=ST_409)
         return Response('Census created', status=ST_201)
 
     def list(self, request, *args, **kwargs):
@@ -35,6 +38,7 @@ class CensusCreate(generics.ListCreateAPIView):
         return Response({'voters': voters})
 
 class CensusDetail(generics.RetrieveDestroyAPIView):
+    serializer_class = CensusSerializer
 
     def destroy(self, request, voting_id, *args, **kwargs):
         voters = request.data.get('voters')
@@ -51,6 +55,7 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
         return Response('Valid voter')
 
 class CensusGroupList(generics.ListCreateAPIView):
+    serializer_class = CensusGroupSerializer
     permission_classes = (UserIsStaff,)
 
     def create(self, request, *args, **kwargs):
@@ -61,3 +66,7 @@ class CensusGroupList(generics.ListCreateAPIView):
         except IntegrityError:
             return Response('Error try to create census', status=ST_409)
         return Response('Census created', status=ST_201)
+
+    def list(self, request, *args, **kwargs):
+        groups = CensusGroup.objects.all()
+        return Response({'groups': groups})
