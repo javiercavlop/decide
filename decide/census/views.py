@@ -11,7 +11,7 @@ from rest_framework.status import (
 )
 
 from base.perms import UserIsStaff
-from .models import Census
+from .models import Census,CensusGroup
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -20,9 +20,10 @@ class CensusCreate(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         voting_id = request.data.get('voting_id')
         voters = request.data.get('voters')
+        group = request.data.get('group')
         try:
             for voter in voters:
-                census = Census(voting_id=voting_id, voter_id=voter)
+                census = Census(voting_id=voting_id, voter_id=voter, group=group)
                 census.save()
         except IntegrityError:
             return Response('Error try to create census', status=ST_409)
@@ -32,7 +33,6 @@ class CensusCreate(generics.ListCreateAPIView):
         voting_id = request.GET.get('voting_id')
         voters = Census.objects.filter(voting_id=voting_id).values_list('voter_id', flat=True)
         return Response({'voters': voters})
-
 
 class CensusDetail(generics.RetrieveDestroyAPIView):
 
@@ -49,3 +49,15 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
         except ObjectDoesNotExist:
             return Response('Invalid voter', status=ST_401)
         return Response('Valid voter')
+
+class CensusGroupList(generics.ListCreateAPIView):
+    permission_classes = (UserIsStaff,)
+
+    def create(self, request, *args, **kwargs):
+        name = request.data.get('name')
+        try:
+            census_group = CensusGroup(name=name)
+            census_group.save()
+        except IntegrityError:
+            return Response('Error try to create census', status=ST_409)
+        return Response('Census created', status=ST_201)

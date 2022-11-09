@@ -9,7 +9,14 @@ class CensusGroup(models.Model):
     def __str__(self):
         return self.name
 
+class CensusManager(models.Manager):
+    def by_group(self,group):
+        return super(CensusManager,self).get_queryset().filter(group=group)
+
 class Census(models.Model):
+    objects = models.Manager()
+    groups = CensusManager()
+
     voting_id = models.PositiveIntegerField()
     voter_id = models.PositiveIntegerField()
     group = models.ForeignKey(CensusGroup,
