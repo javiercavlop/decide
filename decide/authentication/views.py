@@ -1,4 +1,5 @@
 from authentication.form import NewUserForm
+import re
 from rest_framework.response import Response
 from rest_framework.status import (
         HTTP_201_CREATED,
@@ -7,11 +8,16 @@ from rest_framework.status import (
 )
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import  login, logout, authenticate
 from django.db import IntegrityError
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.contrib.auth.backends import ModelBackend
+from django.db.models import Q
 
 from .serializers import UserSerializer
 
@@ -112,3 +118,40 @@ class SignUpView(APIView):
         form = NewUserForm()
         return render (request, "signup.html", {
             "register_form":form})
+
+class SignInView(APIView):
+
+    
+            
+    def sing_in(request):
+
+        if request.method == 'GET':
+            return render(request, 'signin.html', {
+                'form' : AuthenticationForm
+            })
+        else:
+            print(request.POST)
+            user = authenticate(request, username=request.POST['username'],
+                                password=request.POST['password'])
+            if user is None:
+
+                return render(request, 'signin.html', {
+                    'form' : AuthenticationForm,
+                    'error': 'Username or password is incorrect'
+                })
+            else:
+                login(request, user)
+                return redirect('hello')
+
+    
+
+
+    def hello(request):
+
+        return render(request, 'hello.html', {
+                'username' : request.user
+            })
+
+    def sign_out(request):
+       logout(request)
+       return redirect('signin')
