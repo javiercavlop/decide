@@ -1,5 +1,7 @@
 from authentication.form import NewUserForm
 import re
+
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.status import (
         HTTP_201_CREATED,
@@ -19,7 +21,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 
-from .serializers import UserSerializer
+from .serializers import UserSerializer, RegisterSerializer
 
 
 class GetUserView(APIView):
@@ -155,3 +157,18 @@ class SignInView(APIView):
     def sign_out(request):
        logout(request)
        return redirect('signin')
+
+
+# Register API
+class RegisterAPI(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response({
+        "user": UserSerializer(user, context=self.get_serializer_context()).data,
+        "token": Token.objects.create(user=user).key
+        })
+
