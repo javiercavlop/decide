@@ -7,8 +7,15 @@ from base import mods
 from base.models import Auth, Key
 
 
+QUESTION_TYPES = (
+    ('normal','Votación normal'),
+    ('borda', 'Votación con recuento borda'),
+    ('multi','Votación multirespuesta')
+)
+
 class Question(models.Model):
     desc = models.TextField()
+    questionType = models.CharField(max_length=50, choices=QUESTION_TYPES, default='normal')
 
     def __str__(self):
         return self.desc
