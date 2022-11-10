@@ -1,5 +1,4 @@
 from authentication.form import NewUserForm
-import re
 from rest_framework.response import Response
 from rest_framework.status import (
         HTTP_201_CREATED,
@@ -21,6 +20,7 @@ from django.db.models import Q
 
 from .serializers import UserSerializer
 
+from django.conf import settings
 
 class GetUserView(APIView):
     def post(self, request):
@@ -120,12 +120,11 @@ class SignUpView(APIView):
             "register_form":form})
 
 class SignInView(APIView):
-
-    
             
     def sing_in(request):
 
         if request.method == 'GET':
+            
             return render(request, 'signin.html', {
                 'form' : AuthenticationForm
             })
