@@ -1,5 +1,6 @@
 from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -12,6 +13,11 @@ from rest_framework.status import (
 
 from base.perms import UserIsStaff
 from .models import Census
+
+from django.conf import settings
+import pandas as pd
+from rest_framework.decorators import api_view
+from django.db import transaction
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -32,6 +38,35 @@ class CensusCreate(generics.ListCreateAPIView):
         voting_id = request.GET.get('voting_id')
         voters = Census.objects.filter(voting_id=voting_id).values_list('voter_id', flat=True)
         return Response({'voters': voters})
+
+
+ 
+
+
+class CensusImport(generics.ListCreateAPIView):
+    permission_classes = (UserIsStaff,)
+    
+    @transaction.atomic
+    @api_view(['GET','POST'])
+    def import_excel(request):
+        try:           
+            if request.method == 'POST':
+            
+                myfile = request.FILES['myfile'] 
+                df=pd.read_excel(myfile)
+                cont=2
+                for d in df.values:
+                    try:
+                        census = Census(voting_id=d[0], voter_id=d[1])
+                        census.save()
+                        cont+=1
+                    except IntegrityError:
+                        return Response('Error trying to import excel, in row {}. All previosu census has been dissmised'.format(cont), status=ST_409)
+                return Response('Census created', status=ST_201)
+        except:
+             return Response('Error in excel data. There are null data in rows', status=ST_409)
+        return render(request,"excel.html")
+
 
 
 class CensusDetail(generics.RetrieveDestroyAPIView):
