@@ -6,4 +6,5 @@ urlpatterns = [
     path('', views.CensusCreate.as_view(), name='census_create'),
     path('<int:voting_id>/', views.CensusDetail.as_view(), name='census_detail'),
     path('censusgroups/',views.CensusGroupList.as_view(), name='census_group_list'),
+    path('censusgroups/<str:group_name>/',views.CensusGroupDetail.as_view(), name='census_group_detail'),
 ]

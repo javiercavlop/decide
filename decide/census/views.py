@@ -9,7 +9,7 @@ from rest_framework.status import (
         HTTP_401_UNAUTHORIZED as ST_401,
         HTTP_409_CONFLICT as ST_409
 )
-
+from rest_framework.permissions import IsAuthenticated
 from base.perms import UserIsStaff
 from .models import Census,CensusGroup
 from .serializers import CensusGroupSerializer,CensusSerializer
@@ -17,17 +17,19 @@ from .serializers import CensusGroupSerializer,CensusSerializer
 
 class CensusCreate(generics.ListCreateAPIView):
     serializer_class = CensusSerializer
-    permission_classes = (UserIsStaff,)
-    #queryset = Census.objects.all()
+    permission_classes = (IsAuthenticated,)
 
     def create(self, request, *args, **kwargs):
         voting_id = request.data.get('voting_id')
-        voter_id = request.data.get('voter_id')
+        voters = request.data.get('voters')
         group_name = request.data.get('group.name')
-        group = CensusGroup.objects.get(name=group_name)
         try:
-            census = Census(voting_id=voting_id, voter_id=voter_id, group=group)
-            census.save()
+            group = CensusGroup.objects.get(name=group_name) if group_name is not None and len(group_name) > 0 else None
+            for voter in voters:
+                census = Census(voting_id=voting_id, voter_id=voter, group=group)
+                census.save()
+        except CensusGroup.DoesNotExist:
+            return Response('The input Census Group does not exist', status=ST_400)
         except IntegrityError:
             return Response('Error trying to create census', status=ST_409)
         return Response('Census created', status=ST_201)
@@ -56,7 +58,8 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
 
 class CensusGroupList(generics.ListCreateAPIView):
     serializer_class = CensusGroupSerializer
-    permission_classes = (UserIsStaff,)
+    permission_classes = (IsAuthenticated,)
+    queryset = CensusGroup.objects.all()
 
     def create(self, request, *args, **kwargs):
         name = request.data.get('name')
@@ -67,6 +70,19 @@ class CensusGroupList(generics.ListCreateAPIView):
             return Response('Error try to create census', status=ST_409)
         return Response('Census created', status=ST_201)
 
-    def list(self, request, *args, **kwargs):
-        groups = CensusGroup.objects.all()
-        return Response({'groups': groups})
+    
+class CensusGroupDetail(generics.RetrieveDestroyAPIView):
+    serializer_class = CensusGroupSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def destroy(self, request, group_name, *args, **kwargs):
+        census_group = CensusGroup.objects.filter(name=group_name)
+        census_group.delete()
+        return Response('Census Group deleted from census', status=ST_204)
+
+    def retrieve(self, request, group_name, *args, **kwargs):
+        try:
+            CensusGroup.objects.get(name=group_name)
+        except ObjectDoesNotExist:
+            return Response('Non-existent group name', status=ST_401)
+        return Response('Valid group name')
