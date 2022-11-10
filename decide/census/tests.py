@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from rest_framework.test import APIClient
 
-from .models import Census
+from .models import Census,CensusGroup
 from base import mods
 from base.tests import BaseTestCase
 
@@ -14,6 +14,8 @@ class CensusTestCase(BaseTestCase):
         super().setUp()
         self.census = Census(voting_id=1, voter_id=1)
         self.census.save()
+        self.census_group = CensusGroup(name='Test Group 1')
+        self.census_group.save()
 
     def tearDown(self):
         super().tearDown()
@@ -73,3 +75,43 @@ class CensusTestCase(BaseTestCase):
         response = self.client.delete('/census/{}/'.format(1), data, format='json')
         self.assertEqual(response.status_code, 204)
         self.assertEqual(0, Census.objects.count())
+    
+    def test_add_new_voters_with_group(self):
+        data = {'voting_id': 1,'voters':[2],'group.name':'Test Group 1'}
+        self.login()
+        response = self.client.post('/census/', data, format='json')
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(len(data.get('voters')), Census.objects.count() - 1)
+
+class CensusGroupTestCase(BaseTestCase):
+    def setUp(self):
+        super().setUp()
+        self.census_group = CensusGroup(name='Test Group 1')
+        self.census_group.save()
+
+    def tearDown(self):
+        super().tearDown()
+        self.census_group = None
+
+    def test_group_creation(self):
+        data = {'name':'Test Group 2'}
+        response = self.client.post('/census/censusgroups/',data,format='json')
+        self.assertEqual(response.status_code, 401)
+
+        self.login(user='noadmin')
+        response = self.client.post('/census/censusgroups/',data,format='json')
+        self.assertEqual(response.status_code, 403)
+
+        self.login()
+        response = self.client.post('/census/censusgroups/',data,format='json')
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(2,CensusGroup.objects.count())
+
+    def test_group_destroy(self):
+        group_name = 'Test Group 1'
+        before = CensusGroup.objects.count()
+
+        self.login()
+        response = self.client.delete('/census/censusgroups/{}/'.format(group_name),format='json')
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(before-1,CensusGroup.objects.count())
