@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block extrahead %}
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+{% endblock %}
+
+{% block content %}
+<div class="container-md">
+  <h1>{% trans "Sign In" %}</h1>
+  <br>
+
+  {{ error }}
+ 
+  <form  method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+  </form>
+
+  <br>
+  <a class="btn btn-primary" href="#" role="button">{% trans "Register" %}</a>
+</div>
+
+
+
+  {% endblock %}
