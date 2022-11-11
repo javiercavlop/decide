@@ -24,7 +24,9 @@ class CensusCreate(generics.ListCreateAPIView):
         voters = request.data.get('voters')
         group_name = request.data.get('group').get('name')
         try:
-            group = CensusGroup.objects.get(name=group_name)
+            group = None
+            if len(group_name) > 0:
+                group = CensusGroup.objects.get(name=group_name)
             for voter in voters:
                 census = Census(voting_id=voting_id, voter_id=voter, group=group)
                 census.save()
