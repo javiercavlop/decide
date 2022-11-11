@@ -22,9 +22,9 @@ class CensusCreate(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         voting_id = request.data.get('voting_id')
         voters = request.data.get('voters')
-        group_name = request.data.get('group.name')
+        group_name = request.data.get('group').get('name')
         try:
-            group = CensusGroup.objects.get(name=group_name) if group_name is not None and len(group_name) > 0 else None
+            group = CensusGroup.objects.get(name=group_name)
             for voter in voters:
                 census = Census(voting_id=voting_id, voter_id=voter, group=group)
                 census.save()
@@ -56,7 +56,7 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
             return Response('Invalid voter', status=ST_401)
         return Response('Valid voter')
 
-class CensusGroupList(generics.ListCreateAPIView):
+class CensusGroupCreate(generics.ListCreateAPIView):
     serializer_class = CensusGroupSerializer
     permission_classes = (IsAuthenticated,)
     queryset = CensusGroup.objects.all()
@@ -67,22 +67,22 @@ class CensusGroupList(generics.ListCreateAPIView):
             census_group = CensusGroup(name=name)
             census_group.save()
         except IntegrityError:
-            return Response('Error try to create census', status=ST_409)
-        return Response('Census created', status=ST_201)
-
-    
-class CensusGroupDetail(generics.RetrieveDestroyAPIView):
+            return Response('Error trying to create census', status=ST_409)
+        return Response('Census group created', status=ST_201)
+  
+class CensusGroupDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CensusGroupSerializer
     permission_classes = (IsAuthenticated,)
+    queryset = CensusGroup.objects.all()
 
-    def destroy(self, request, group_name, *args, **kwargs):
-        census_group = CensusGroup.objects.filter(name=group_name)
+    def destroy(self, request, pk, *args, **kwargs):
+        census_group = CensusGroup.objects.filter(id=pk)
         census_group.delete()
         return Response('Census Group deleted from census', status=ST_204)
 
-    def retrieve(self, request, group_name, *args, **kwargs):
+    def retrieve(self, request, pk, *args, **kwargs):
         try:
-            CensusGroup.objects.get(name=group_name)
+            CensusGroup.objects.get(id=pk)
         except ObjectDoesNotExist:
-            return Response('Non-existent group name', status=ST_401)
-        return Response('Valid group name')
+            return Response('Non-existent group', status=ST_401)
+        return Response('Valid group')
