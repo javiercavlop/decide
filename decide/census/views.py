@@ -9,7 +9,7 @@ from rest_framework.status import (
         HTTP_401_UNAUTHORIZED as ST_401,
         HTTP_409_CONFLICT as ST_409
 )
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser
 from base.perms import UserIsStaff
 from .models import Census,CensusGroup
 from .serializers import CensusGroupSerializer,CensusSerializer
@@ -17,7 +17,7 @@ from .serializers import CensusGroupSerializer,CensusSerializer
 
 class CensusCreate(generics.ListCreateAPIView):
     serializer_class = CensusSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAdminUser,)
 
     def create(self, request, *args, **kwargs):
         voting_id = request.data.get('voting_id')
@@ -58,7 +58,7 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
 
 class CensusGroupCreate(generics.ListCreateAPIView):
     serializer_class = CensusGroupSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAdminUser,)
     queryset = CensusGroup.objects.all()
 
     def create(self, request, *args, **kwargs):
@@ -72,7 +72,6 @@ class CensusGroupCreate(generics.ListCreateAPIView):
   
 class CensusGroupDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CensusGroupSerializer
-    permission_classes = (IsAuthenticated,)
     queryset = CensusGroup.objects.all()
 
     def destroy(self, request, pk, *args, **kwargs):
