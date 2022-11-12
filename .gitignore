@@ -101,3 +101,9 @@ ENV/
 .mypy_cache/
 
 .vagrant
+
+# visual studio code
+.vscode/
+
+# Census migrations
+migrations/
