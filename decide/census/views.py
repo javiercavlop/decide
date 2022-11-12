@@ -22,10 +22,12 @@ class CensusCreate(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         voting_id = request.data.get('voting_id')
         voters = request.data.get('voters')
-        group_name = request.data.get('group').get('name')
+        group_name = request.data.get('group')
+        if group_name:
+            group_name = group_name.get('name')
         try:
             group = None
-            if len(group_name) > 0:
+            if group_name and len(group_name) > 0:
                 group = CensusGroup.objects.get(name=group_name)
             for voter in voters:
                 census = Census(voting_id=voting_id, voter_id=voter, group=group)
