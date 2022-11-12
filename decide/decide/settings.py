@@ -44,6 +44,10 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_swagger',
     'gateway',
+    
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
 
 REST_FRAMEWORK = {
@@ -56,7 +60,21 @@ REST_FRAMEWORK = {
 
 AUTHENTICATION_BACKENDS = [
     'base.backends.AuthBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
 ]
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
+
+# Additional configuration settings
+SOCIALACCOUNT_QUERY_EMAIL = True
+ACCOUNT_LOGOUT_ON_GET= True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_REQUIRED = True
+
+SOCIALACCOUNT_PROVIDERS = {
+    
+}
 
 MODULES = [
     'authentication',
