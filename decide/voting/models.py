@@ -9,8 +9,7 @@ from base.models import Auth, Key
 
 QUESTION_TYPES = (
     ('normal','Votación normal'),
-    ('borda', 'Votación con recuento borda'),
-    ('multi','Votación multirespuesta')
+    ('borda', 'Votación con recuento borda')
 )
 
 class Question(models.Model):
@@ -74,7 +73,6 @@ class Voting(models.Model):
         '''
         The tally is a shuffle and then a decrypt
         '''
-
         votes = self.get_votes(token)
 
         auth = self.auths.first()
@@ -101,13 +99,16 @@ class Voting(models.Model):
 
         self.tally = response.json()
         self.save()
-
+        
         self.do_postproc()
 
     def do_postproc(self):
         tally = self.tally
         options = self.question.options.all()
 
+        
+
+        
         opts = []
         for opt in options:
             if isinstance(tally, list):
