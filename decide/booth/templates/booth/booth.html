@@ -53,6 +53,12 @@
             <div v-if="!signup">
                 <h2>[[ voting.question.desc ]]</h2>
                 
+                <div id="warning"></div>
+                {% if aux == "borda" %}
+                    <br>
+                    <p style="color: rgb(155, 85, 85);">This votation has been configured as an ordenation.</p>
+                {% endif %}
+                
                 <b-form-group v-for="opt in voting.question.options" :key="opt.number">
                         <b-form-radio v-model="selected"
                                     :id="'q' + opt.number"
@@ -67,6 +73,8 @@
                 </b-button>
             </div>
         </div>
+        <br>
+        <h5 style="padding-left: 2%;">Order: </h5>
         <div id="answers">
 
         </div>
@@ -187,6 +195,7 @@
                     this.user = null;
                     document.cookie = 'decide=;';
                     this.signup = true;
+                    window.location.reload();
                 },
                 decideEncrypt() {
                     var bigmsg = BigInt.fromJSONObject(this.selected.toString());
@@ -212,15 +221,16 @@
                             document.getElementById('__BVID__1'+option).remove();
                             
                             
-                            var h4= document.createElement('H4');
-                            h4.innerText = options.length+". " +textSelected;
+                            var h6= document.createElement('H6');
+                            h6.innerText = options.length+". " +textSelected;
+                            h6.style.paddingLeft="2%";
                             var answers = document.getElementById("answers");
-                            answers.appendChild(h4)
-
+                            answers.appendChild(h6)
                             if(options.length == voting.question.options.length){
                                 evt.preventDefault();
                                 document.getElementById("send").remove();
                                 this.selected=options.toString()
+                                console.log(this.selected)
                                 var v = this.decideEncrypt();
                                 var data = {
                                     vote: {a: v.alpha.toString(), b: v.beta.toString()},

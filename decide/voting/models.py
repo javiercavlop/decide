@@ -106,9 +106,14 @@ class Voting(models.Model):
         tally = self.tally
         options = self.question.options.all()
 
-        
+        if(self.question.questionType == "borda"):
+            tallyAux = []
+            for integer in tally:
+                integer = str(integer)
+                for i in integer:
+                    tallyAux.append(int(i))
+            tally = tallyAux
 
-        
         opts = []
         for opt in options:
             if isinstance(tally, list):
@@ -120,8 +125,12 @@ class Voting(models.Model):
                 'number': opt.number,
                 'votes': votes
             })
-
+        
         data = { 'type': 'IDENTITY', 'options': opts }
+        if(self.question.questionType == "borda"):
+            data = { 'type': 'IDENTITY', 'options': opts , "extra": tally, "questionType": "borda"}
+        else:
+            data = { 'type': 'IDENTITY', 'options': opts}
         postp = mods.post('postproc', json=data)
 
         self.postproc = postp
