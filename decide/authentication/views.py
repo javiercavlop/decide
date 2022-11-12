@@ -1,3 +1,6 @@
+from django.utils import timezone
+from rest_framework.authtoken.views import ObtainAuthToken
+
 from authentication.form import NewUserForm
 import re
 
@@ -170,5 +173,19 @@ class RegisterAPI(generics.GenericAPIView):
         return Response({
         "user": UserSerializer(user, context=self.get_serializer_context()).data,
         "token": Token.objects.create(user=user).key
+        })
+
+# Login API
+class LoginApi(ObtainAuthToken):
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'expiry': timezone.now() + timezone.timedelta(days=1),
         })
 
