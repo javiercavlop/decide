@@ -1,0 +1,8 @@
+<form action="/census/reuse" method="post">
+    {% csrf_token %}
+    <label for="voting_id">Id de la votación a copiar: </label>
+    <input id="voting_id" name="voting_id">
+    <label for="new_voting">Id de la nueva votación: </label>
+    <input id="new_voting" name="new_voting">
+    <input type="submit" value="OK">
+</form>

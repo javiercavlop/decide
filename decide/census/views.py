@@ -1,5 +1,6 @@
 from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseRedirect
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -12,7 +13,9 @@ from rest_framework.status import (
 from rest_framework.permissions import IsAuthenticated
 from base.perms import UserIsStaff
 from .models import Census,CensusGroup
+from .forms import CensusReuseForm
 from .serializers import CensusGroupSerializer,CensusSerializer
+from django.shortcuts import render
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -69,6 +72,27 @@ class CensusGroupList(generics.ListCreateAPIView):
         except IntegrityError:
             return Response('Error try to create census', status=ST_409)
         return Response('Census created', status=ST_201)
+
+def CensusReuse(request):
+    if request.method == 'POST':
+        form = CensusReuseForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            voting_id = cd['voting_id']
+            new_voting = cd['new_voting']
+            censos = Census.objects.all().values()
+            for c in censos:
+                print(c)
+                if(c['voting_id'] == voting_id):
+                    try:
+                        census = Census(voting_id=new_voting, voter_id=c['voter_id'])
+                        census.save()
+                    except IntegrityError:
+                        return Response('Error try to create census', status=ST_409)
+            return HttpResponseRedirect('/census')
+    else:
+        form = CensusReuseForm()
+    return render(request,'censusform.html',{'form':form})
 
     
 class CensusGroupDetail(generics.RetrieveDestroyAPIView):
