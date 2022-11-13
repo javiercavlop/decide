@@ -1,6 +1,5 @@
 from django.urls import include, path
 from rest_framework.authtoken.views import obtain_auth_token
-from authentication import views
 
 from .views import GetUserView, LogoutView, RegisterView, SignUpView, \
     RegisterAPI, SignInView, LoginApi
@@ -16,4 +15,5 @@ urlpatterns = [
     path('signout/', SignInView.sign_out, name='signout'),
     path('api/register/', RegisterAPI.as_view(), name='register'),
     path('api/login/', LoginApi.as_view(), name='login'),
+    path('accounts/', include('allauth.urls')),
 ]

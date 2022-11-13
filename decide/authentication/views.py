@@ -188,4 +188,3 @@ class LoginApi(ObtainAuthToken):
             'token': token.key,
             'expiry': timezone.now() + timezone.timedelta(days=1),
         })
-
