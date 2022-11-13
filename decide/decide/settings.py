@@ -61,8 +61,7 @@ REST_FRAMEWORK = {
 }
 
 AUTHENTICATION_BACKENDS = [
-    'base.backends.AuthBackend',
-    #'allauth.account.auth_backends.AuthenticationBackend',
+    'base.backends.AuthBackend'
 ]
 
 SITE_ID = 3
@@ -70,7 +69,6 @@ LOGIN_REDIRECT_URL = '/authentication/hello'
 
 # Additional configuration settings
 SOCIALACCOUNT_QUERY_EMAIL = True
-#SOCIALACCOUNT_ADAPTER = 'authentication.social_account_adapter.SocialAccountAdapter'
 ACCOUNT_LOGOUT_ON_GET= True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True

@@ -24,8 +24,8 @@
   </form>
 
   <br>
-  <a class="btn btn-primary" href="#" role="button">Register</a>
-  <a href="{% provider_login_url 'google' %}">Login with Google</a>
+  <p>Don't have an account? <a href="{% url 'signup' %}">Register now</a></p>
+  <p>You can also sign in with: <a href="{% provider_login_url 'google' %}">Google</a></p>
 </div>
 
 
