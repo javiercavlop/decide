@@ -1,8 +1,9 @@
 import random
 from django.contrib.auth.models import User
 from django.test import TestCase
+from census.forms import CensusReuseForm
 from rest_framework.test import APIClient
-
+from django.core.exceptions import ValidationError
 from .models import Census,CensusGroup
 from base import mods
 from base.tests import BaseTestCase
@@ -77,7 +78,7 @@ class CensusTestCase(BaseTestCase):
         self.assertEqual(0, Census.objects.count())
     
     def test_add_new_voters_with_group(self):
-        data = {'voting_id': 1,'voters':[2],'group.name':'Test Group 1'}
+        data = {'voting_id': 1,'voters':[2],'group':{'name':'Test Group 1'}}
         self.login()
         response = self.client.post('/census/', data, format='json')
         self.assertEqual(response.status_code, 201)
@@ -109,9 +110,32 @@ class CensusGroupTestCase(BaseTestCase):
 
     def test_group_destroy(self):
         group_name = 'Test Group 1'
+        group_id = CensusGroup.objects.get(name=group_name).pk
         before = CensusGroup.objects.count()
 
         self.login()
-        response = self.client.delete('/census/censusgroups/{}/'.format(group_name),format='json')
+        response = self.client.delete('/census/censusgroups/{}/'.format(group_id),format='json')
         self.assertEqual(response.status_code, 204)
         self.assertEqual(before-1,CensusGroup.objects.count())
+
+
+class CensusReuseTestCase(BaseTestCase):
+    def setUp(self):
+        super().setUp()
+        self.census = Census(voting_id=1, voter_id=1)
+        self.census.save()
+
+    def tearDown(self):
+        super().tearDown()
+        self.census_group = None
+
+    def test_census_reuse(self):
+        self.login()
+
+        data = {'voting_id':'x','new_voting':'y'}
+        response = self.client.post('/census/reuse',data=data)
+        self.assertEqual(response.status_code, 400)
+
+        data = {'voting_id':1,'new_voting':2}
+        response = self.client.post('/census/reuse',data=data)
+        self.assertEqual(response.status_code, 302)

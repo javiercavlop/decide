@@ -11,7 +11,7 @@ class CensusAdmin(admin.ModelAdmin):
     search_fields = ('voter_id', 'group')
 
 class CensusGroupAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name','id')
     
     search_fields = ('name',)
 
