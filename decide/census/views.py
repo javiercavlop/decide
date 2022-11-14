@@ -20,6 +20,8 @@ import pandas as pd
 from rest_framework.decorators import api_view
 from django.db import transaction
 import math
+from django.http import HttpResponse
+import csv
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -86,6 +88,23 @@ class CensusImport(generics.ListCreateAPIView):
         except:
             return Response('Error in excel data. There are null data in rows', status=ST_409)
         return render(request,"excel.html")
+
+
+    def export_excel(request):
+        try:           
+            if request.method == 'POST':
+                census=Census.objects.all()
+                response=HttpResponse()
+                response['Content-Disposition']= 'attachment; filename=census.xlsx'
+                writer=csv.writer(response)
+                writer.writerow(['voting_id','voter_id','group'])
+                census_fields=census.values_list('voting_id','voter_id','group')
+                for c in census_fields:
+                    writer.writerow(c)
+                return response
+        except:
+             return Response('Error in exporting data. There are null data in rows', status=ST_409)
+        return render(request,"export.html")
 
 
 
