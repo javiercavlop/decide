@@ -18,5 +18,17 @@
       "key":"",
       "sites": [1]
     }
+  },
+  {
+    "model": "socialaccount.socialapp", 
+    "pk": 2, 
+    "fields": {
+      "provider": "github",
+      "name": "GitHub-OAuth",
+      "client_id":"9e679d98f86cfc3f1de5",
+      "secret":"87ba4ec0041035939bf67a4a2e3813172492001f",
+      "key":"",
+      "sites": [1]
+    }
   }
 ]
