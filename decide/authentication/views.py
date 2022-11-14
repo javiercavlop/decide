@@ -68,14 +68,28 @@ class RegisterView(APIView):
         return Response({'user_pk': user.pk, 'token': token.key}, HTTP_201_CREATED)
 
 class SignUpView(APIView):
+    
+    @staticmethod
     def register(request):
+        
+        if request.user.is_authenticated:
+            return redirect('hello')
+        
         if request.method == "POST":
             form = NewUserForm(request.POST)
             if form.is_valid():
-                user = form.save()
-                login(request, user)
-                #messages.success(request, "Registration successful." )
-                return redirect("signup")
+                try:
+                    user = User.objects.get(email=request.POST['email'])
+                    if user:
+                        email_exists = "Email already exists"
+                        return render(request, 'signup.html', {
+                            'register_form': form, 
+                            'errors': [email_exists],
+                            'are_errors': True})
+                except User.DoesNotExist:
+                    user = form.save()
+                    login(request, user)
+                return redirect("hello")
             else:
 
                 errors = []
@@ -127,8 +141,11 @@ class SignUpView(APIView):
 class SignInView(APIView):
 
     
-            
+    @staticmethod     
     def sing_in(request):
+
+        if request.user.is_authenticated:
+            return redirect('hello')
 
         if request.method == 'GET':
             return render(request, 'signin.html', {
@@ -139,7 +156,7 @@ class SignInView(APIView):
             user = authenticate(request, username=request.POST['username'],
                                 password=request.POST['password'])
             if user is None:
-
+                
                 return render(request, 'signin.html', {
                     'form' : AuthenticationForm,
                     'error': 'Username or password is incorrect'
@@ -148,15 +165,13 @@ class SignInView(APIView):
                 login(request, user)
                 return redirect('hello')
 
-    
-
-
+    @staticmethod     
     def hello(request):
-
         return render(request, 'hello.html', {
                 'username' : request.user
             })
 
+    @staticmethod     
     def sign_out(request):
        logout(request)
        return redirect('signin')
@@ -188,4 +203,3 @@ class LoginApi(ObtainAuthToken):
             'token': token.key,
             'expiry': timezone.now() + timezone.timedelta(days=1),
         })
-

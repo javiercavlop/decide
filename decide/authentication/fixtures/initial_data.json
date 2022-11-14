@@ -1,0 +1,22 @@
+[
+  {
+    "model": "sites.site", 
+    "pk": 1, 
+    "fields": {
+      "domain": "127.0.0.1:8000", 
+      "name": "127.0.0.1:8000"
+    }
+  },
+  {
+    "model": "socialaccount.socialapp", 
+    "pk": 1, 
+    "fields": {
+      "provider": "google",
+      "name": "Google-OAuth",
+      "client_id":"995930996365-d2gdomursgafst0ug1ips8t22i3l3dkn.apps.googleusercontent.com",
+      "secret":"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",
+      "key":"",
+      "sites": [1]
+    }
+  }
+]
