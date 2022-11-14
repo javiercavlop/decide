@@ -64,7 +64,7 @@ AUTHENTICATION_BACKENDS = [
     'base.backends.AuthBackend'
 ]
 
-SITE_ID = 3
+SITE_ID = 1
 LOGIN_REDIRECT_URL = '/authentication/hello'
 
 # Additional configuration settings
