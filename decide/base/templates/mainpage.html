@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block extrahead %}
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.css" />
+    <link type="text/css" rel="stylesheet" href="{% static "base/style.css" %}" />
+{% endblock %}
+
+
+{% block content %}
+<div id="header" class="container text-center">
+    <h1>Bienvenido a Decide</h1>
+</div>
+
+<div id="content" class="container">
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <h2>Vota aquí</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <b-button variant="outline-primary" href="/voting">Ver votaciones</b-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 text-center">
+            <h2>Administra aquí</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <b-button variant="outline-primary" href="/admin">Administra Decide</b-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extrabody %}
+<script src="https://unpkg.com/vue@2.6/dist/vue.min.js"></script>
+<script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.min.js"></script>
+<script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+<script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue-icons.min.js"></script>
+
+<script>
+    new Vue({ el: '#content' });
+</script>
+{% endblock %}
