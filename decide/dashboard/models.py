@@ -9,3 +9,12 @@ class DashBoard(models.Model):
 
     def __str__(self):
         return '{}: {},{}'.format(self.voting, self.voter,self.option)
+
+
+class Percentages(models.Model):
+    voting = models.PositiveIntegerField()
+    percen=models.PositiveIntegerField()
+
+    def __str__(self):
+        return '{}: {},{}'.format(self.voting, self.percen)
+

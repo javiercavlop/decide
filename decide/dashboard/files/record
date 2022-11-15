@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table{
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100 %;
+}
+td, th{
+    border: 1px solid  #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+tr:nth-child(even){
+    background-color:  #dddddd;
+}
+</style>
+</head>
+<body>
+<h1>Informe detallado de las estadísticas recogidas</h1>
+<h2>Usuarios de la aplicación</h2>
+<table>
+    <tr>
+    <th>Usuario</th>
+   </tr>
+    <tr>
+    <tr>
+    <td>felix2022</td>
+    </tr>
+    <tr>
+    <td>ana2022</td>
+    </tr>
+</table>
+</body>
+</html>
+<p>Se tomaron estadísticas para el porcentaje de personas que habían votado del total del censo disponible, no sólo se cuenta con conlos datos recogidos de encuestas ya cerradas si no tambíen con aquellas que siguen abiertas.
+<p>
