@@ -63,7 +63,7 @@ REST_FRAMEWORK = {
 }
 
 AUTHENTICATION_BACKENDS = [
-    'base.backends.AuthBackend'
+    'authentication.backend.EmailAuthBackend'
 ]
 
 SITE_ID = 1
