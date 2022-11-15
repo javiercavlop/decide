@@ -107,7 +107,6 @@ class DashboardView(TemplateView):
 
 
         return context
-<<<<<<< HEAD
 class DashBoardFile(generics.ListCreateAPIView):
     @api_view(['GET'])
     def write_doc(request):
@@ -181,6 +180,4 @@ class DashBoardFile(generics.ListCreateAPIView):
                 response['Content-Disposition'] = "attachment; filename=%s" % 'record.pdf'
 
                 return response
-=======
 
->>>>>>> e5e3aefc172ba3d3e4a05a917fa330ec9ee875c2

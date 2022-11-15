@@ -7,4 +7,4 @@ urlpatterns = [
     path('download/', views.DashBoardFile.write_doc, name="download"),
 ]
 
-    
+
