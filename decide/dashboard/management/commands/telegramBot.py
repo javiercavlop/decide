@@ -4,6 +4,7 @@ import itertools
 
 from django.core.management.base import BaseCommand
 from telegramBot.echobot import main
+from dashboard.models import DashBoard
 
 
 
