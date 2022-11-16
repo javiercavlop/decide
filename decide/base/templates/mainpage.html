@@ -11,25 +11,63 @@
 
 
 {% block content %}
-<div id="header" class="container text-center">
-    <h1>Bienvenido a Decide</h1>
-</div>
+<div id="app-main">
+    <!-- Navbar -->
+    <b-navbar type="dark" variant="dark">
+        <b-navbar-brand tag="h1">Decide</b-navbar-brand>
+    </b-navbar>
 
-<div id="content" class="container">
-    <div class="row">
-        <div class="col-md-6 text-center">
-            <h2>Vota aquí</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <b-button variant="outline-primary" href="/voting">Ver votaciones</b-button>
-                </div>
+    <div id="header" class="container text-center my-4">
+        <h1>Bienvenido a Decide</h1>
+    </div>
+
+    <div id="content" class="container">
+        <div class="row">
+
+
+            <div class="col-lg-6 text-center my-3">
+                <h2>Si vienes a votar...</h2>
+                <b-card header="Busca tu votación">
+                    <b-list-group class="voting-list my-3">
+                        {% for voting in votings %}
+                            <b-list-group-item href="/voting/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
+                        {% endfor %}
+                    </b-list-group>
+                </b-card>
             </div>
-        </div>
-        <div class="col-md-6 text-center">
-            <h2>Administra aquí</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <b-button variant="outline-primary" href="/admin">Administra Decide</b-button>
+
+
+            <div class="col-lg-6 text-center my-3">
+                <h2>Si eres administrador...</h2>
+                <div class="row my-3">
+                    <div class="d-grid gap-2 col-8 mx-auto">
+                        <b-button size="lg" block variant="outline-primary" href="/admin">
+                            <div class="row">
+                                <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
+                                <div class="col-10 text-start">Administra Decide</div>
+                            </div>
+                        </b-button>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="d-grid gap-2 col-8 mx-auto">
+                        <b-button size="lg" block variant="outline-primary" href="/voting">
+                            <div class="row">
+                                <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
+                                <div class="col-10 text-start">Crea Votaciones</div>
+                            </div>
+                        </b-button>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="d-grid gap-2 col-8 mx-auto">
+                        <b-button size="lg" block variant="outline-primary" href="/census">
+                            <div class="row">
+                                <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
+                                <div class="col-10 text-start">Crea Censos</div>
+                            </div>
+                        </b-button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -44,6 +82,6 @@
 <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue-icons.min.js"></script>
 
 <script>
-    new Vue({ el: '#content' });
+    new Vue({ el: '#app-main' }); 
 </script>
 {% endblock %}
