@@ -13,9 +13,9 @@
     "fields": {
       "provider": "google",
       "name": "Google-OAuth",
-      "client_id":"995930996365-d2gdomursgafst0ug1ips8t22i3l3dkn.apps.googleusercontent.com",
-      "secret":"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",
-      "key":"",
+      "client_id": "995930996365-d2gdomursgafst0ug1ips8t22i3l3dkn.apps.googleusercontent.com",
+      "secret": "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",
+      "key" :"",
       "sites": [1]
     }
   },
@@ -25,9 +25,21 @@
     "fields": {
       "provider": "github",
       "name": "GitHub-OAuth",
-      "client_id":"9e679d98f86cfc3f1de5",
-      "secret":"87ba4ec0041035939bf67a4a2e3813172492001f",
-      "key":"",
+      "client_id": "9e679d98f86cfc3f1de5",
+      "secret": "87ba4ec0041035939bf67a4a2e3813172492001f",
+      "key": "",
+      "sites": [1]
+    }
+  },
+  {
+    "model": "socialaccount.socialapp", 
+    "pk": 3, 
+    "fields": {
+      "provider": "discord",
+      "name": "Discord-OAuth",
+      "client_id": "1041796957267570738",
+      "secret": "WScC0VSYKDwC6tXHZ-VNvP6xTExVu4IQ",
+      "key": "",
       "sites": [1]
     }
   }
