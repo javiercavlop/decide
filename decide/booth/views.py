@@ -31,5 +31,6 @@ class BoothView(TemplateView):
         aux = {}
         qtype = aux["questionType"] = str(json.loads(context["voting"])["question"]["questionType"])
         context['questionType'] = json.dumps(qtype)
-
+        if (qtype == "borda"):
+            context["auxBorda"] = True
         return context

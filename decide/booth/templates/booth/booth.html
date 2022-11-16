@@ -54,9 +54,9 @@
                 <h2>[[ voting.question.desc ]]</h2>
                 
                 <div id="warning"></div>
-                {% if aux == "borda" %}
+                {% if auxBorda%}
                     <br>
-                    <p style="color: rgb(155, 85, 85);">This votation has been configured as an ordenation.</p>
+                    <p style="color: rgb(155, 85, 85);">This votation has been configured as an ordenation, so you have to vote for each one of the options.</p>
                 {% endif %}
                 
                 <b-form-group v-for="opt in voting.question.options" :key="opt.number">
@@ -73,11 +73,14 @@
                 </b-button>
             </div>
         </div>
-        <br>
-        <h5 style="padding-left: 2%;">Order: </h5>
-        <div id="answers">
+        {% if auxBorda%}
+            <br>
+            <h5 style="padding-left: 2%;">Order: </h5>
+            <div id="answers">
 
-        </div>
+            </div>
+        {% endif %}
+        
     </div>
 {% endblock %}
 

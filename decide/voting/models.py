@@ -105,7 +105,6 @@ class Voting(models.Model):
     def do_postproc(self):
         tally = self.tally
         options = self.question.options.all()
-
         if(self.question.questionType == "borda"):
             tallyAux = []
             for integer in tally:
