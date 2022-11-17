@@ -3,5 +3,10 @@ from . import views
 
 urlpatterns = [
     path('', views.DashboardView.as_view(), name='dashboard'),
-    path('<int:voting_id>/', views.vista, name = "VotingDashboard")
-    ]
+    path('<int:voting_id>/', views.vista, name = "VotingDashboard"),
+    
+
+    path('download/', views.DashBoardFile.write_doc, name="download"),
+]
+
+

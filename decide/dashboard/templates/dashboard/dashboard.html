@@ -52,8 +52,8 @@
                     <tbody>
 
                         <tr v-for="por in porcentages">
-                            <th>[[por.votingid]]</th>
-                            <th>[[por.porc*100]]% </th>
+                            <th>[[por.voting]]</th>
+                            <th>[[por.percen*100]]% </th>
 
 
 
@@ -83,6 +83,9 @@
 
                     </tbody>
                 </table>
+                    <input type="button" value="Download" onclick="window.open('download')">
+                <br/>
+
 
 
 
