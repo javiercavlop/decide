@@ -7,7 +7,7 @@ on:
 
 jobs:
   buildTest:
-    uses: egc-decide-trebujena/decide/.github/workflows/django.yml@master
+    uses: egc-decide-trebujena/decide/.github/workflows/django.yml@feature/074
     secrets: 
       CODACY_PROJECT_TOKEN: ${{secrets.CODACY_PROJECT_TOKEN}}
      
