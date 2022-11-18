@@ -15,7 +15,8 @@
         <p>{{voting.name}}</p>
         <H1>Descripción de la votación</H1>
         <p>{{voting.desc}}</p>
-        
+        <H1>Tipo de pregunta</H1>
+        <p>{{questionType}}</p>
         <H1>Número de personas en el censo</H1>
         <p>{{people}}</p>
         <H1>Número de votos</H1>
@@ -40,7 +41,6 @@
         const ctx = document.getElementById('myChart').getContext('2d');
         const myChart = new Chart(ctx, {
             type: 'bar',
-            <!--Aquí añadir un if de django en función del tipo de votación, para que simplemente cambie los datos que se recogen a la hora de mostrarlos.-->
             data: {
             labels : [{% for item in labels %}"{{ item }}",{% endfor %}],
                 datasets: [{
