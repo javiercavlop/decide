@@ -36,3 +36,14 @@ class NewUserForm(UserCreationForm):
 		if commit:
 			user.save()
 		return user
+
+class UserEditForm(forms.ModelForm):
+	first_name = forms.CharField(max_length=30, required=True)
+	last_name = forms.CharField(max_length=30, required=True)
+	email = forms.EmailField(required=True)
+
+	class Meta:
+		model = User
+		fields = ('username', 'first_name', 'last_name', 'email')
+
+	

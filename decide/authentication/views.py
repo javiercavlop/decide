@@ -1,7 +1,7 @@
 from django.utils import timezone
 from rest_framework.authtoken.views import ObtainAuthToken
 
-from authentication.form import NewUserForm
+from authentication.form import NewUserForm, UserEditForm
 import re
 
 from rest_framework import generics
@@ -175,6 +175,70 @@ class SignInView(APIView):
     def sign_out(request):
        logout(request)
        return redirect('signin')
+
+class EditUserView(APIView):
+
+    @staticmethod
+    def edit(request):
+        
+        if request.method == "POST":
+
+            errors = []
+        
+            if request.POST['first_name'] == "":
+                no_name = "You must enter a name"
+                errors.append(no_name)
+            if request.POST['last_name'] == "":
+                no_surname = "You must enter a surname"
+                errors.append(no_surname)
+            if request.POST['email'] == "":
+                no_email = "You must enter an email"
+                errors.append(no_email)
+            if request.POST['username'] == "":
+                no_username = "You must enter a username"
+                errors.append(no_username)
+            if request.POST['first_name'][0].isupper() == False:
+                name_not_capitalized = "Name must be capitalized"
+                errors.append(name_not_capitalized)
+            if request.POST['last_name'][0].isupper() == False:
+                surname_not_capitalized = "Surname must be capitalized"
+                errors.append(surname_not_capitalized)
+
+            are_errors = False
+
+            if len(errors) > 0:
+                are_errors = True
+
+                return render(request, 'profile.html', {
+                    'register_form':form ,
+                    'errors': errors,
+                    'are_errors': are_errors
+                    })
+            
+            else:
+                user = request.user
+                user.first_name = request.POST['first_name']
+                user.last_name = request.POST['last_name']
+                user.email = request.POST['email']
+                user.username = request.POST['username']
+                user.save()
+                return redirect('hello')
+        else:
+
+            form = UserEditForm(initial={'first_name': request.user.first_name,
+                                            'last_name': request.user.last_name, 
+                                            'email': request.user.email, 
+                                            'username': request.user.username})
+            return render (request, "profile.html", {
+                "register_form":form})
+
+class DeleteUserView(APIView):
+
+    @staticmethod
+    def delete(request):
+        user = request.user
+        user.delete()
+        return redirect('signin')
 
 
 # Register API
