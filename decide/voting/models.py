@@ -105,6 +105,8 @@ class Voting(models.Model):
     def do_postproc(self):
         tally = self.tally
         options = self.question.options.all()
+
+        #Debido a que el tally viene de forma ["123",["312"]], hay que separarlos ordenados, ahora quedan todos metidos en una lista
         if(self.question.questionType == "borda"):
             tallyAux = []
             for integer in tally:
@@ -129,7 +131,7 @@ class Voting(models.Model):
         if(self.question.questionType == "borda"):
             data = { 'type': 'IDENTITY', 'options': opts , "extra": tally, "questionType": "borda"}
         else:
-            data = { 'type': 'IDENTITY', 'options': opts}
+            data = { 'type': 'IDENTITY', 'options': opts, "questionType": "normal"}
         postp = mods.post('postproc', json=data)
 
         self.postproc = postp
