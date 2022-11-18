@@ -4,12 +4,72 @@ import os
 from rest_framework import generics
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse, Http404, FileResponse
+
+
+# Create your views here.
+import datetime
+from django.http import HttpResponse, Http404
+from django.shortcuts import render, get_object_or_404
 from django.conf import settings
 from django.views.generic import TemplateView
 from dashboard.models import DashBoard, Percentages,Surveys
 from rest_framework.decorators import api_view
 import weasyprint
 from wsgiref.util import FileWrapper
+
+def vista(request,voting_id):
+    data = get_object_or_404(Voting,id=voting_id)
+
+    data = Voting.objects.filter(id=voting_id)
+    numberOfPeople = len(Census.objects.filter(voting_id = voting_id))
+    duracion = ""
+    if not data[0].start_date:
+        duracion = "Aún no ha comenzado"
+    elif not data[0].end_date:
+        duracion = "Aún no ha terminado"
+    else:
+        time = data[0].end_date-data[0].start_date
+        duracion = str(time - datetime.timedelta(microseconds=time.microseconds))
+
+    data[0].do_postproc()
+    postpro = data[0].postproc
+    numberOfVotesAux = 0
+    numberOfVotes = 0
+    options = []
+    values = []
+    questionType = data[0].question.questionType
+
+    if(questionType=='borda'):
+        for vote in postpro:
+            options.append(vote['option'])
+            values.append(vote['postproc'])
+            numberOfVotesAux=numberOfVotesAux + vote['votes']
+        numberOfVotes = numberOfVotesAux/len(options)
+
+    elif(questionType == 'normal'):
+        for vote in postpro:
+            options.append(vote['option'])
+            values.append(vote['votes'])
+            numberOfVotes = numberOfVotes+ vote['votes']
+    
+    
+    labels2 = ["Votaron","No votaron"]
+    values2 = [numberOfVotes, numberOfPeople-numberOfVotes]
+    context = {
+        "voting": data[0],
+        "people": numberOfPeople,
+        "time": duracion,
+        "numberOfVotes": int(numberOfVotes),
+        #"prueba": postpro,
+        "questionType":questionType,
+        "labels": options,
+        "values": values,
+        "labels2": labels2,
+        "values2": values2,
+    }
+
+    return render(request,"dashboard_with_pv.html",context)
+
 
 class DashboardView(TemplateView):
     template_name = 'dashboard/dashboard.html'

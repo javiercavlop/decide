@@ -1,114 +1,88 @@
+
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
-    <script src = "https://cdn.flexmonster.com/flexmonster.js"></script>
-    <script src = "https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <link rel = "stylesheet" href = "https://cdn.flexmonster.com/demo.css">
+    <style>
+        p {font-size: 18px;}
+
+    </style>
 </head>
 <body>
-    <div id = "pivot-table-container" data-url = "{% url 'pivot_data' %}"></div>
-    <div id = "pivot-chart-container"></div>
-</body>
 
-<script>
-    function processData(dataset) {
-        var result = []
-        dataset = JSON.parse(dataset);
-        dataset.forEach(item => result.push(item.fields));
-        console.log(result)
-        return result;
-    }
-    $.ajax({
-    url: $("#pivot-table-container").attr("data-url"),
-    dataType: 'json',
-    success: function(data) {
-        new Flexmonster({
-            container: "#pivot-table-container",
-            componentFolder: "https://cdn.flexmonster.com/",
-            width: "100%",
-            height: 430,
-            toolbar: true,
-            report: {
-                dataSource: {
-                    type: "json",
-                    data: processData(data),
-                    mapping: {
-                        "name": {
-                            "caption": "Name",
-                            "type": "string"
-                        },
-                        "desc": {
-                            "caption": "Description",
-                            "type": "string"
-                        },
-                        "question": {
-                            "caption": "Question",
-                            "type": "number"
-                        },
-                        "start_date": {
-                            "caption": "Start date",
-                            "type": "date"
-                        },
-                        "end_date": {
-                            "caption": "End date",
-                            "type": "date"
-                        },
-                        "postproc":{
-                            "caption":"Postproc",
-                            "type":"number"
-                        }
-}
-                },
-                slice: {}
-            }
-        });
-        new Flexmonster({
-            container: "#pivot-chart-container",
-            componentFolder: "https://cdn.flexmonster.com/",
-            width: "100%",
-            height: 430,
-            //toolbar: true,
-            report: {
-                dataSource: {
-                    type: "json",
-                    data: processData(data),mapping: {
-                        "name": {
-                            "caption": "Name",
-                            "type": "string"
-                        },
-                        "desc": {
-                            "caption": "Description",
-                            "type": "string"
-                        },
-                        "question": {
-                            "caption": "Question",
-                            "type": "number"
-                        },
-                        "start_date": {
-                            "caption": "Start date",
-                            "type": "date"
-                        },
-                        "end_date": {
-                            "caption": "End date",
-                            "type": "date"
-                        },
-                        "postproc":{
-                            "caption":"Postproc",
-                            "type":"number"
-                        }
-}
-                    
-                },
+    <div id = "pivot-table-container">
 
-                slice: {},
-                "options": {
-                    "viewType": "charts",
-                    "chart": {
-                        "type": "pie"
+        <H1>Nombre de la votación</H1>
+        <p>{{voting.name}}</p>
+        <H1>Descripción de la votación</H1>
+        <p>{{voting.desc}}</p>
+        <H1>Tipo de pregunta</H1>
+        <p>{{questionType}}</p>
+        <H1>Número de personas en el censo</H1>
+        <p>{{people}}</p>
+        <H1>Número de votos</H1>
+        <p>{{numberOfVotes}}</p>
+        <H1>Duración de la votación</H1>
+        <p> {{time}}</p>
+       
+    </div>
+    <H1 style="text-align: center;">
+        Resultados de la votación
+    </H1>
+    <canvas id="myChart" width="800" height="200"></canvas>
+    <H1 >
+        Porcentaje de personas que votaron
+    </H1>
+    <div>
+        <canvas id = "my2Chart" width = "100" height = "100 " ></canvas>
+    </div>
+    
+    <script src ="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+            labels : [{% for item in labels %}"{{ item }}",{% endfor %}],
+                datasets: [{
+                label: "{{item      }}",
+                data : [{% for item in values %}{{ item }},{% endfor %}],
+                backgroundColor: 'rgba(7,132,255, 0.6)',
+                borderColor: 'rgba(7,132,255, 1)',
+                borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
             }
         });
-    }
-    });
-</script>
+    </script>
+    <script>
+        const ctx2 = document.getElementById('my2Chart').getContext('2d');
+        ctx2.canvas.parentNode.style.width = "300px";
+        ctx2.canvas.parentNode.style.height = "300px"; 
+        const myChart2 = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+            labels : [{% for item in labels2 %}"{{ item }}",{% endfor %}],
+                datasets: [{
+                label: "{{voting.name}}",
+                data : [{% for item in values2 %}{{ item }},{% endfor %}],
+                backgroundColor: ['blue','orange'],
+                borderColor: 'rgba(7,132,255, 1)',
+                borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+            }
+        });
+    </script>
+
+</body>
+
+
+
