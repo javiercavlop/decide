@@ -3,7 +3,7 @@ import json
 import os
 from rest_framework import generics
 from django.contrib.auth import get_user_model
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, FileResponse
 from django.conf import settings
 from django.views.generic import TemplateView
 from dashboard.models import DashBoard, Percentages,Surveys
@@ -19,7 +19,6 @@ class DashboardView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         percentages=list(Percentages.objects.all().values())
-        print(percentages)
         context['porcentages'] = json.dumps(percentages)
         User = get_user_model()
         users = User.objects.values()
@@ -39,7 +38,7 @@ class DashboardView(TemplateView):
 
         return context
 class DashBoardFile(generics.ListCreateAPIView):
-    @api_view(['GET'])
+    @api_view(['GET',])
     def write_doc(request):
         dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -149,13 +148,12 @@ class DashBoardFile(generics.ListCreateAPIView):
                 pdf = weasyprint.HTML(dir_path + '/files/record').write_pdf()
                 open(dir_path+'/files/record.pdf', 'wb').write(pdf)
                 filepath = dir_path + '/files/record.pdf'
-                #mime_type, _ = mimetypes.guess_type(filepath)
                 content = FileWrapper(open(dir_path+'/files/record.pdf','rb'))
-                response = HttpResponse(content, content_type='application/pdf')
+                response = FileResponse(content, content_type='application/pdf')
                 filename = 'record'
 
                 response['Content-Length'] = os.path.getsize(dir_path+'/files/record.pdf')
                 response['Content-Disposition'] = "attachment; filename=%s" % 'record.pdf'
 
-                return response
+            return response
 
