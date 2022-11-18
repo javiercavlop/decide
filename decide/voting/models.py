@@ -7,8 +7,14 @@ from base import mods
 from base.models import Auth, Key
 
 
+QUESTION_TYPES = (
+    ('normal','Votación normal'),
+    ('borda', 'Votación con recuento borda')
+)
+
 class Question(models.Model):
     desc = models.TextField()
+    questionType = models.CharField(max_length=50, choices=QUESTION_TYPES, default='normal')
 
     def __str__(self):
         return self.desc
@@ -67,7 +73,6 @@ class Voting(models.Model):
         '''
         The tally is a shuffle and then a decrypt
         '''
-
         votes = self.get_votes(token)
 
         auth = self.auths.first()
@@ -94,12 +99,21 @@ class Voting(models.Model):
 
         self.tally = response.json()
         self.save()
-
+        
         self.do_postproc()
 
     def do_postproc(self):
         tally = self.tally
         options = self.question.options.all()
+
+        #Debido a que el tally viene de forma ["123",["312"]], hay que separarlos ordenados, ahora quedan todos metidos en una lista
+        if(self.question.questionType == "borda"):
+            tallyAux = []
+            for integer in tally:
+                integer = str(integer)
+                for i in integer:
+                    tallyAux.append(int(i))
+            tally = tallyAux
 
         opts = []
         for opt in options:
@@ -112,8 +126,12 @@ class Voting(models.Model):
                 'number': opt.number,
                 'votes': votes
             })
-
+        
         data = { 'type': 'IDENTITY', 'options': opts }
+        if(self.question.questionType == "borda"):
+            data = { 'type': 'IDENTITY', 'options': opts , "extra": tally, "questionType": "borda"}
+        else:
+            data = { 'type': 'IDENTITY', 'options': opts, "questionType": "normal"}
         postp = mods.post('postproc', json=data)
 
         self.postproc = postp
