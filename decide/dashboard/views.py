@@ -29,23 +29,37 @@ def vista(request,voting_id):
 
     data[0].do_postproc()
     postpro = data[0].postproc
+    numberOfVotesAux = 0
     numberOfVotes = 0
     options = []
-    votes = []
-    for vote in postpro:
-        options.append(vote['option'])
-        votes.append(vote['votes'])
-        numberOfVotes = numberOfVotes+ vote['votes']
+    values = []
+    questionType = data[0].question.questionType
+
+    if(questionType=='borda'):
+        for vote in postpro:
+            options.append(vote['option'])
+            values.append(vote['postproc'])
+            numberOfVotesAux=numberOfVotesAux + vote['votes']
+        numberOfVotes = numberOfVotesAux/len(options)
+
+    elif(questionType == 'normal'):
+        for vote in postpro:
+            options.append(vote['option'])
+            values.append(vote['votes'])
+            numberOfVotes = numberOfVotes+ vote['votes']
+    
+    
     labels2 = ["Votaron","No votaron"]
     values2 = [numberOfVotes, numberOfPeople-numberOfVotes]
     context = {
         "voting": data[0],
         "people": numberOfPeople,
         "time": duracion,
-        "numberOfVotes": numberOfVotes,
+        "numberOfVotes": int(numberOfVotes),
         #"prueba": postpro,
+        "questionType":questionType,
         "labels": options,
-        "values": votes,
+        "values": values,
         "labels2": labels2,
         "values2": values2,
     }
