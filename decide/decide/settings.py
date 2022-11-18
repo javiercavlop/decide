@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.discord',
+    'allauth.socialaccount.providers.linkedin_oauth2'
 ]
 
 REST_FRAMEWORK = {
@@ -93,6 +94,23 @@ SOCIALACCOUNT_PROVIDERS = {
             'repo',
             'read:org',
         ],
+    },
+    'linkedin': {
+        'SCOPE': [
+            'r_fullprofile ',
+            'r_emailaddress'
+        ],
+        'PROFILE_FIELDS': [
+            'id',
+            'first-name',
+            'last-name',
+            'email-address',
+            'picture-url',
+            'public-profile-url',
+        ],
+        'HEADERS': {
+            'x-li-src': 'msdk'
+        }
     }
 }
 
@@ -118,6 +136,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+  
 ]
 
 ROOT_URLCONF = 'decide.urls'
