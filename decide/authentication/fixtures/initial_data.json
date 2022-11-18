@@ -42,5 +42,17 @@
       "key": "",
       "sites": [1]
     }
+  },
+  {
+    "model": "socialaccount.socialapp", 
+    "pk": 4, 
+    "fields": {
+      "provider": "linkedin_oauth2",
+      "name": "Linkedin-OAuth2",
+      "client_id": "7794p4s8fwz84a",
+      "secret": "DWZvm1IXGhxXGwmP",
+      "key": "",
+      "sites": [1]
+    }
   }
 ]
