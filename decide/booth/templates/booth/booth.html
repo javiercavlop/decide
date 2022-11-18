@@ -207,6 +207,7 @@
                 },
                 decideSend(evt) {
                     evt.preventDefault();
+
                     if(questionType == "borda") {
                         if(this.selected != null && this.selected != ""){
                             var option = this.selected;
@@ -238,6 +239,7 @@
                                 var data = {
                                     vote: {a: v.alpha.toString(), b: v.beta.toString()},
                                     voting: this.voting.id,
+                                    opti:this.selected.toString(),
                                     voter: this.user.id,
                                     token: this.token
                                 }
@@ -256,6 +258,7 @@
                         var data = {
                             vote: {a: v.alpha.toString(), b: v.beta.toString()},
                             voting: this.voting.id,
+                            opti:this.selected.toString(),
                             voter: this.user.id,
                             token: this.token
                         }
@@ -266,6 +269,14 @@
                             .catch(error => {
                                 this.showAlert("danger", '{% trans "Error: " %}' + error);
                             });
+
+                    var v = this.decideEncrypt();
+                    var data = {
+                        vote: {a: v.alpha.toString(), b: v.beta.toString()},
+                        voting: this.voting.id,
+                        voter: this.user.id,
+                        token: this.token
+
                     }
                 },
                 showAlert(lvl, msg) {
