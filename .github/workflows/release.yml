@@ -7,7 +7,7 @@ on:
 
 jobs:
   buildTest:
-    uses: egc-decide-trebujena/decide/.github/workflows/django.yml@feature/074
+    uses: egc-decide-trebujena/decide/.github/workflows/django.yml@develop
     secrets: 
       CODACY_PROJECT_TOKEN: ${{secrets.CODACY_PROJECT_TOKEN}}
      
@@ -16,6 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Release
         uses: softprops/action-gh-release@v1
