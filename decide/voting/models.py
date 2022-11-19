@@ -9,7 +9,8 @@ from base.models import Auth, Key
 
 QUESTION_TYPES = (
     ('normal','Votación normal'),
-    ('borda', 'Votación con recuento borda')
+    ('borda', 'Votación con recuento borda'),
+    ('dhondt', "Votación con sistema D'Hondt")
 )
 
 class Question(models.Model):
@@ -114,7 +115,8 @@ class Voting(models.Model):
                 for i in integer:
                     tallyAux.append(int(i))
             tally = tallyAux
-
+        #elif(self.question.questionType == "dhondt"):
+            
         opts = []
         for opt in options:
             if isinstance(tally, list):
@@ -127,9 +129,11 @@ class Voting(models.Model):
                 'votes': votes
             })
         
-        data = { 'type': 'IDENTITY', 'options': opts }
+        #data = { 'type': 'IDENTITY', 'options': opts }
         if(self.question.questionType == "borda"):
             data = { 'type': 'IDENTITY', 'options': opts , "extra": tally, "questionType": "borda"}
+        elif(self.question.questionType == "dhondt"):
+            data = { 'type': 'IDENTITY', 'options': opts , "extra": tally, "questionType": "dhondt"}
         else:
             data = { 'type': 'IDENTITY', 'options': opts, "questionType": "normal"}
         postp = mods.post('postproc', json=data)
