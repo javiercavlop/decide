@@ -56,17 +56,18 @@ class CensusCreate(generics.ListCreateAPIView):
 
 class CensusImport(generics.ListCreateAPIView):
     permission_classes = (UserIsStaff,)
-    
+
     @transaction.atomic
     @api_view(['GET','POST'])
     def import_csv(request):
+        cont=2
         try: 
             if request.method == 'POST':
                 census_from_csv=[]
             
                 myfile = request.FILES['myfile'] 
                 df=pd.read_csv(myfile)
-                cont=2
+
                 for d in df.values:
                     try:
                         group = None
@@ -77,16 +78,17 @@ class CensusImport(generics.ListCreateAPIView):
                         census_from_csv.append(census)
                         cont+=1
                     except CensusGroup.DoesNotExist:
-                        return Response('The input Voter does not exist, in row {}'.format(cont-1), status=ST_400)
-                    except CensusGroup.DoesNotExist:
                         return Response('The input Census Group does not exist, in row {}'.format(cont-1), status=ST_400)
-                    except IntegrityError:
-                        return Response('Error trying to import CSV, in row {}. All previous census has been dissmised'.format(cont), status=ST_409)
+                cont=0
                 for c in census_from_csv:
-                    c.save()
+                    try:
+                        cont+=1
+                        c.save()
+                    except IntegrityError:
+                        return Response('Error trying to import CSV, in row {}. A census cannot be repeated.'.format(cont), status=ST_409)
                 return Response('Census created', status=ST_201)
         except:
-            return Response('Error in CSV data.', status=ST_409)
+            return Response('Error in CSV data. There are wrong data in row {}'.format(cont+1), status=ST_409)
         return render(request,"csv.html")
 
 
