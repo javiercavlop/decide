@@ -34,7 +34,7 @@
             <div>
                 <h1>Do you want to delete your user account?</h1>
                 <br>
-                <a class="btn btn-primary" href="http://localhost:8000/authentication/deleteUser" role="button">Delete account</a>
+                <a class="btn btn-primary" onclick="delete_user()" href="http://localhost:8000/authentication/deleteUser" role="button">Delete account</a>
 
 
             </div>
@@ -47,6 +47,13 @@
     </div>
     
     {% endif %}
+
+
+<script>
+  function delete_user() {
+    alert('Are you sure you want to delete your user account?');
+  }
+</script>
 
 
 {% endblock %}

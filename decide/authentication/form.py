@@ -20,8 +20,8 @@ class CustomAuthenticationForm(AuthenticationForm):
     )
 	
 class NewUserForm(UserCreationForm):
-	first_name = forms.CharField(max_length=30, required=True)
-	last_name = forms.CharField(max_length=30, required=True)
+	first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
+	last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
 	email = forms.EmailField(required=True)
 	password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
 	password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
@@ -38,8 +38,8 @@ class NewUserForm(UserCreationForm):
 		return user
 
 class UserEditForm(forms.ModelForm):
-	first_name = forms.CharField(max_length=30, required=True)
-	last_name = forms.CharField(max_length=30, required=True)
+	first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
+	last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
 	email = forms.EmailField(required=True)
 
 	class Meta:
