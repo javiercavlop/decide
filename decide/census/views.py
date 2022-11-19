@@ -91,6 +91,45 @@ class CensusImport(generics.ListCreateAPIView):
             return Response('Error in CSV data. There are wrong data in row {}'.format(cont+1), status=ST_409)
         return render(request,"csv.html")
 
+    @transaction.atomic
+    @api_view(['GET','POST'])
+    def import_json(request):
+        cont=2
+        try: 
+            if request.method == 'POST':
+                census_from_json=[]
+            
+                myfile = request.FILES['myfile'] 
+                df=pd.read_json(myfile)
+
+                for d in df.values:
+                    try:
+                        group= None
+                        if d[2]:
+                            if d[2] == "":
+                                group = None
+                            else: 
+                                group = CensusGroup.objects.get(id=d[2])
+
+                        census = Census(voting_id=d[0], voter_id=d[1],group=group)
+                        census_from_json.append(census)
+
+                        cont+=1
+                    except CensusGroup.DoesNotExist:
+                        return Response('The input Census Group does not exist, in row {}'.format(cont-1), status=ST_400)
+                cont=0
+                for c in census_from_json:
+                    try:
+                        cont+=1
+                        c.save()
+                    except IntegrityError:
+                        return Response('Error trying to import JSON, in row {}. A census cannot be repeated.'.format(cont), status=ST_409)
+                return Response('Census created', status=ST_201)
+        except:
+            return Response('Error in JSON data. There are wrong data in row {}'.format(cont), status=ST_409)
+        return render(request,"json.html")
+
+
 
 
 class CensusDetail(generics.RetrieveDestroyAPIView):
