@@ -77,6 +77,8 @@ class CensusImport(generics.ListCreateAPIView):
                         census_from_csv.append(census)
                         cont+=1
                     except CensusGroup.DoesNotExist:
+                        return Response('The input Voter does not exist, in row {}'.format(cont-1), status=ST_400)
+                    except CensusGroup.DoesNotExist:
                         return Response('The input Census Group does not exist, in row {}'.format(cont-1), status=ST_400)
                     except IntegrityError:
                         return Response('Error trying to import CSV, in row {}. All previous census has been dissmised'.format(cont), status=ST_409)
@@ -86,66 +88,6 @@ class CensusImport(generics.ListCreateAPIView):
         except:
             return Response('Error in CSV data.', status=ST_409)
         return render(request,"csv.html")
-
-    @transaction.atomic
-    @api_view(['GET','POST'])
-    def import_json(request):
-        try: 
-            if request.method == 'POST':
-                census_from_json=[]
-            
-                myfile = request.FILES['myfile'] 
-                df=pd.read_json(myfile)
-                cont=2
-                for d in df.values:
-                    try:
-                        group = None
-                        if not math.isnan(d[2]):
-                            group = CensusGroup.objects.get(id=d[2])
-
-                        census = Census(voting_id=d[0], voter_id=d[1],group=group)
-                        census_from_json.append(census)
-                        cont+=1
-                    except CensusGroup.DoesNotExist:
-                        return Response('The input Census Group does not exist, in row {}'.format(cont-1), status=ST_400)
-                    except IntegrityError:
-                        return Response('Error trying to import JSON, in row {}. All previous census has been dissmised'.format(cont), status=ST_409)
-                for c in census_from_json:
-                    c.save()
-                return Response('Census created', status=ST_201)
-        except:
-            return Response('Error in JSON data. There are null data in rows', status=ST_409)
-        return render(request,"json.html")
-    
-    @transaction.atomic
-    @api_view(['GET','POST'])
-    def import_excel(request):
-        try: 
-            if request.method == 'POST':
-                census_from_excel=[]
-            
-                myfile = request.FILES['myfile'] 
-                df=pd.read_excel(myfile)
-                cont=2
-                for d in df.values:
-                    try:
-                        group = None
-                        if not math.isnan(d[2]):
-                            group = CensusGroup.objects.get(id=d[2])
-
-                        census = Census(voting_id=d[0], voter_id=d[1],group=group)
-                        census_from_excel.append(census)
-                        cont+=1
-                    except CensusGroup.DoesNotExist:
-                        return Response('The input Census Group does not exist, in row {}'.format(cont-1), status=ST_400)
-                    except IntegrityError:
-                        return Response('Error trying to import excel, in row {}. All previous census has been dissmised'.format(cont), status=ST_409)
-                for c in census_from_excel:
-                    c.save()
-                return Response('Census created', status=ST_201)
-        except:
-            return Response('Error in excel data. There are null data in rows', status=ST_409)
-        return render(request,"excel.html")
 
 
 

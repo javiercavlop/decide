@@ -12,4 +12,3 @@ jsonnet==0.12.1
 selenium
 pandas==1.5.1
 django-import-export==2.1
-ldif
