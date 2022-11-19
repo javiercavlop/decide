@@ -7,6 +7,22 @@ from .models import Census,CensusGroup
 from base import mods
 from base.tests import BaseTestCase
 
+from pyexpat import model
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
+
+from base.tests import BaseTestCase
+from voting.models import Question, Voting
+from time import sleep
+import sys, os
+import xlsxwriter
+
+
 
 class CensusTestCase(BaseTestCase):
 
@@ -117,3 +133,153 @@ class CensusGroupTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 204)
         self.assertEqual(before-1,CensusGroup.objects.count())
 
+class SeleniumImportExcelTestCase(StaticLiveServerTestCase):
+    def setUp(self):
+        #Load base test functionality for decide
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        options = webdriver.ChromeOptions()
+        options.headless = False
+        self.driver = webdriver.Chrome(options=options)
+
+        superuser_admin = User(username='superadmin', is_staff=True, is_superuser=True)
+        superuser_admin.set_password('qwerty')
+        superuser_admin.save()
+
+        super().setUp()            
+            
+    def tearDown(self):           
+        super().tearDown()
+        self.driver.quit()
+        self.base.tearDown()
+        self.census_group = None
+
+
+
+
+    def test_import_excel_positive(self):
+        test = xlsxwriter.Workbook('census/test_import.xlsx')
+        testfile = test.add_worksheet()
+        expenses = (['voting_id', 'voter_id','group'],
+                    [1,1,''])
+
+        for i in range(len(expenses)):
+            for j in range(3):
+                testfile.write(i, j, expenses[i][j])
+        test.close()
+
+        ROOT_DIR = os.path.dirname(os.path.abspath("./test_import.xlsx"))
+        screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'census/test_import.xlsx')
+
+        self.driver.get(f'{self.live_server_url}/census/import')
+        uploadElement=self.driver.find_element(by=By.ID, value="customFile")
+
+        uploadElement.send_keys(screenshotpath)
+
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-success'))==1)
+        self.assertEqual(1,Census.objects.count())
+        os.remove("census/test_import.xlsx")
+
+    def test_import_excel_positive_with_group(self):
+        self.census_group = CensusGroup(name='Test Group 1')
+        self.census_group.save()
+        test = xlsxwriter.Workbook('census/test_import.xlsx')
+        testfile = test.add_worksheet()
+        expenses = (['voting_id', 'voter_id','group'],
+                    [1,1,''])
+
+        for i in range(len(expenses)):
+            for j in range(3):
+                testfile.write(i, j, expenses[i][j])
+        test.close()
+
+        ROOT_DIR = os.path.dirname(os.path.abspath("./test_import.xlsx"))
+        screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'census/test_import.xlsx')
+
+        self.driver.get(f'{self.live_server_url}/census/import')
+        uploadElement=self.driver.find_element(by=By.ID, value="customFile")
+
+        uploadElement.send_keys(screenshotpath)
+
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-success'))==1)
+        self.assertEqual(1,Census.objects.count())
+        os.remove("census/test_import.xlsx")
+
+    def test_import_excel_negative_no_group(self):
+
+        test = xlsxwriter.Workbook('census/test_import.xlsx')
+        testfile = test.add_worksheet()
+        expenses = (['voting_id', 'voter_id','group'],
+                    [1,1,1])
+
+        for i in range(len(expenses)):
+            for j in range(3):
+                testfile.write(i, j, expenses[i][j])
+        test.close()
+
+        ROOT_DIR = os.path.dirname(os.path.abspath("./test_import.xlsx"))
+        screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'census/test_import.xlsx')
+
+        self.driver.get(f'{self.live_server_url}/census/import')
+        uploadElement=self.driver.find_element(by=By.ID, value="customFile")
+
+        uploadElement.send_keys(screenshotpath)
+
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-danger'))==1)
+        self.assertEqual(0,Census.objects.count())
+        os.remove("census/test_import.xlsx")
+
+    def test_import_excel_negative_null_data(self):
+
+        test = xlsxwriter.Workbook('census/test_import.xlsx')
+        testfile = test.add_worksheet()
+        expenses = (['voting_id', 'voter_id','group'],
+                    [1,None,''])
+
+        for i in range(len(expenses)):
+            for j in range(3):
+                testfile.write(i, j, expenses[i][j])
+        test.close()
+
+        ROOT_DIR = os.path.dirname(os.path.abspath("./test_import.xlsx"))
+        screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'census/test_import.xlsx')
+
+        self.driver.get(f'{self.live_server_url}/census/import')
+        uploadElement=self.driver.find_element(by=By.ID, value="customFile")
+
+        uploadElement.send_keys(screenshotpath)
+
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-danger'))==1)
+        self.assertEqual(0,Census.objects.count())
+        os.remove("census/test_import.xlsx")
+
+    def test_import_excel_negative_integrity_error(self):
+
+        test = xlsxwriter.Workbook('census/test_import.xlsx')
+        testfile = test.add_worksheet()
+        expenses = (['voting_id', 'voter_id','group'],
+                    [1,1,''],
+                    [1,1,''])
+
+        for i in range(len(expenses)):
+            for j in range(3):
+                testfile.write(i, j, expenses[i][j])
+        test.close()
+
+        ROOT_DIR = os.path.dirname(os.path.abspath("./test_import.xlsx"))
+        screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'census/test_import.xlsx')
+
+        self.driver.get(f'{self.live_server_url}/census/import')
+        uploadElement=self.driver.find_element(by=By.ID, value="customFile")
+
+        uploadElement.send_keys(screenshotpath)
+
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-danger'))==1)
+        self.assertEqual(0,Census.objects.count())
+        os.remove("census/test_import.xlsx")
