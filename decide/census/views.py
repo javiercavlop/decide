@@ -20,6 +20,7 @@ import pandas as pd
 from rest_framework.decorators import api_view
 from django.db import transaction
 import math
+from django.contrib import messages
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -78,17 +79,21 @@ class CensusImport(generics.ListCreateAPIView):
                         census_from_csv.append(census)
                         cont+=1
                     except CensusGroup.DoesNotExist:
-                        return Response('The input Census Group does not exist, in row {}'.format(cont-1), status=ST_400)
+                        messages.error(request, 'The input Census Group does not exist, in row {}'.format(cont-1))
+                        return render(request, "csv.html")
                 cont=0
                 for c in census_from_csv:
                     try:
                         cont+=1
                         c.save()
                     except IntegrityError:
-                        return Response('Error trying to import CSV, in row {}. A census cannot be repeated.'.format(cont), status=ST_409)
-                return Response('Census created', status=ST_201)
+                        messages.error(request, 'Error trying to import CSV, in row {}. A census cannot be repeated.'.format(cont))
+                        return render(request,"csv.html")
+                messages.success(request, 'Census Created')
+                return render(request,"csv.html")
         except:
-            return Response('Error in CSV data. There are wrong data in row {}'.format(cont+1), status=ST_409)
+            messages.error(request, 'Error in CSV data. There are wrong data in row {}'.format(cont+1)) 
+            return render(request,"csv.html")
         return render(request,"csv.html")
 
 
