@@ -20,6 +20,8 @@ import pandas as pd
 from rest_framework.decorators import api_view
 from django.db import transaction
 import math
+from django.http import HttpResponse
+import csv
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -55,18 +57,19 @@ class CensusCreate(generics.ListCreateAPIView):
 
 
 class CensusImport(generics.ListCreateAPIView):
-    permission_classes = (UserIsStaff,)
+    permission_classes = (IsAdminUser,)
     
     @transaction.atomic
     @api_view(['GET','POST'])
     def import_excel(request):
+        cont=2
         try: 
             if request.method == 'POST':
                 census_from_excel=[]
             
                 myfile = request.FILES['myfile'] 
                 df=pd.read_excel(myfile)
-                cont=2
+
                 for d in df.values:
                     try:
                         group = None
@@ -78,15 +81,17 @@ class CensusImport(generics.ListCreateAPIView):
                         cont+=1
                     except CensusGroup.DoesNotExist:
                         return Response('The input Census Group does not exist, in row {}'.format(cont-1), status=ST_400)
-                    except IntegrityError:
-                        return Response('Error trying to import excel, in row {}. All previous census has been dissmised'.format(cont), status=ST_409)
+                cont=0
                 for c in census_from_excel:
-                    c.save()
+                    try:
+                        cont+=1
+                        c.save()
+                    except IntegrityError:
+                        return Response('Error trying to import excel, in row {}. A census cannot be repeated.'.format(cont), status=ST_409)
                 return Response('Census created', status=ST_201)
         except:
-            return Response('Error in excel data. There are null data in rows', status=ST_409)
-        return render(request,"excel.html")
-
+            return Response('Error in excel data. There are wrong data in row {}'.format(cont+1), status=ST_409)
+        return render(request,"census/import.html")
 
 
 class CensusDetail(generics.RetrieveDestroyAPIView):

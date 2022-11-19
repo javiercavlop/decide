@@ -116,3 +116,4 @@ class CensusGroupTestCase(BaseTestCase):
         response = self.client.delete('/census/censusgroups/{}/'.format(group_id),format='json')
         self.assertEqual(response.status_code, 204)
         self.assertEqual(before-1,CensusGroup.objects.count())
+
