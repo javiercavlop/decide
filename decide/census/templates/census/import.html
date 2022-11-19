@@ -2,11 +2,10 @@
 {% block content %}
 
 {% if messages %}
-<ul class="messages">
     {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    <div {% if message.tags == 'error' %} class="alert alert-danger" {% elif message.tags == 'success' %} class="alert alert-success"{% endif %}  role="alert">
+      {{ message }}</div>
     {% endfor %}
-</ul>
 {% endif %}
 <div class="shadow-lg continer">
   <form method="post" enctype="multipart/form-data">
