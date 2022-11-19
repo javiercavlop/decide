@@ -20,6 +20,7 @@ import pandas as pd
 from rest_framework.decorators import api_view
 from django.db import transaction
 import math
+from django.contrib import messages
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -49,9 +50,6 @@ class CensusCreate(generics.ListCreateAPIView):
         voting_id = request.GET.get('voting_id')
         voters = Census.objects.filter(voting_id=voting_id).values_list('voter_id', flat=True)
         return Response({'voters': voters})
-
-
- 
 
 
 class CensusImport(generics.ListCreateAPIView):
@@ -113,20 +111,19 @@ class CensusImport(generics.ListCreateAPIView):
 
                         census = Census(voting_id=d[0], voter_id=d[1],group=group)
                         census_from_json.append(census)
-
-                        cont+=1
                     except CensusGroup.DoesNotExist:
-                        return Response('The input Census Group does not exist, in row {}'.format(cont-1), status=ST_400)
-                cont=0
+                        messages.error(request,'The input Census Group does not exist')
+                        return render(request,"json.html")
                 for c in census_from_json:
                     try:
-                        cont+=1
                         c.save()
                     except IntegrityError:
-                        return Response('Error trying to import JSON, in row {}. A census cannot be repeated.'.format(cont), status=ST_409)
-                return Response('Census created', status=ST_201)
+                        messages.error(request, 'Error trying to import JSON. A census cannot be repeated.')
+                        return render(request,"json.html")
+                messages.success(request, 'Census created')
         except:
-            return Response('Error in JSON data. There are wrong data in row {}'.format(cont), status=ST_409)
+            messages.error(request, 'Error in JSON data.') 
+            return render(request,"json.html")
         return render(request,"json.html")
 
 
