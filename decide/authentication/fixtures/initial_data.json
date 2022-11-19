@@ -54,5 +54,17 @@
       "key": "",
       "sites": [1]
     }
+  },
+  {
+    "model": "socialaccount.socialapp", 
+    "pk": 5, 
+    "fields": {
+      "provider": "vimeo_oauth2",
+      "name": "Vimeo-OAuth2",
+      "client_id": "336b8640e0d467d7a74b9e170a6821ac692cd917",
+      "secret": "6Xv4p5N6ycU+Ebq3pooYDQzxFX4JN5xGOinJxLezmqEeawpJl2mSJMVstYh+CF05FS4JwWibpcaFjXwph81xEvkBlCxyIf+wV//CxzubSXQo4nlnJw49yAQr5u/35o1p",
+      "key": "",
+      "sites": [1]
+    }
   }
 ]

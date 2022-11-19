@@ -52,7 +52,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.discord',
-    'allauth.socialaccount.providers.linkedin_oauth2'
+    'allauth.socialaccount.providers.linkedin_oauth2',
+    'allauth.socialaccount.providers.vimeo_oauth2'
+
 ]
 
 REST_FRAMEWORK = {
