@@ -3,7 +3,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 
 from authentication.form import NewUserForm, UserEditForm
 import re
-
+from allauth.socialaccount.models import SocialAccount
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -205,6 +205,14 @@ class EditUserView(APIView):
                         errors.append(username_exists)
                 except User.DoesNotExist:
                     pass
+            try:
+                account = SocialAccount.objects.get(user=request.user)
+            
+                if request.user.email == account.user.email and request.POST['email'] != request.user.email: 
+                    change_email = "You can't change your email"
+                    errors.append(change_email)
+            except:
+                pass
             
             if request.POST['email'] == "":
                 no_email = "You must enter an email"

@@ -34,7 +34,7 @@
             <div>
                 <h1>Do you want to delete your user account?</h1>
                 <br>
-                <a class="btn btn-primary" onclick="delete_user()" href="http://localhost:8000/authentication/deleteUser" role="button">Delete account</a>
+                <button class="btn btn-primary" onclick="delete_user()">Delete account</button>
 
 
             </div>
@@ -51,7 +51,10 @@
 
 <script>
   function delete_user() {
-    confirm('Are you sure you want to delete your user account?');
+    if (confirm("Are you sure you want to delete your user account?")) {
+      window.location.href = "http://localhost:8000/authentication/deleteUser/";
+    }
+
   }
 </script>
 
