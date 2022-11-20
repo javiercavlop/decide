@@ -2,29 +2,75 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 import numpy
 
+GIVEN_SEATS = 4
+
+def d_hondt_ratio(votes, seats_taken):
+    #Cociente de D'Hondt a ser calculado para cada opción, para cada escaño
+    ratio = votes / (seats_taken+1)
+    return ratio
+
+def d_hondt_vote_count(tally, options):
+    #Diccionario con una clave por opción, con el número de votos recibidos en los valores
+    result = {}
+    for option in options:
+        result[option["number"]] = 0
+
+    for vote in tally:
+        result[vote] += 1
+    
+    return result
+
+def d_hondt(tally, given_seats, options):
+    #Diccionario con una clave por opción, con el número de escaños asignados en los valores
+    result = {}
+    for option in options:
+        result[option["number"]] = 0
+    
+    votes = d_hondt_vote_count(tally, options)
+
+    #Para cada escaño, calcula el cociente de D'Hondt 
+    for i in range(given_seats):
+        ratio_dict = {}
+        for option in options:
+            opt_ratio = d_hondt_ratio(votes[option["number"]],result[option["number"]])
+            ratio_dict[option["number"]] = opt_ratio
+        max_ratio_index = max(ratio_dict.keys(), key=(lambda key: ratio_dict[key]))
+        result[max_ratio_index] += 1
+    
+    return result
+
 
 class PostProcView(APIView):
 
-    #aux y request utilizados en caso de recuento borda, y para ver el tipo de votacion
+    #aux y request utilizados en caso de recuento borda y sistema D'Hondt, y para ver el tipo de votacion
     def identity(self, options,aux=False,request=False):
         out = []
         if(request != False and request.data.get("questionType") == "borda"):
-            dictPost = {}
+            dict_post = {}
 
             #Rellena el diccionario auxiliar con claves, cada clave es un numero que equivale al numero total de opciones
             for i in range(1,len(aux[0])+1):
-                dictPost[i] = 0
+                dict_post[i] = 0
             
             #Rellena la puntuacion con el orden de cada una de las opciones
             for array in aux:
                 for i, item in enumerate(array):
-                    dictPost[item] = dictPost[item] + len(options)-i
+                    dict_post[item] = dict_post[item] + len(options)-i
             
             #Devuelve en el campo 'postproc' de cada opcion su puntuacion, de cara a otros modulos esto es invisible
             for opt in options:
                 out.append({
                     **opt,
-                    'postproc': dictPost[opt["number"]],
+                    'postproc': dict_post[opt["number"]],
+                });
+        elif(request != False and request.data.get("questionType") == "dhondt"):
+
+            votes_dict = d_hondt(aux, GIVEN_SEATS, options)
+
+            for opt in options:
+                out.append({
+                    **opt,
+                    'postproc': votes_dict[opt["number"]],
                 });
         else:
             for opt in options:
@@ -54,13 +100,20 @@ class PostProcView(APIView):
         #Debido a que por ejemplo, para una lista con 3 opciones y 2 votantes le entra [1,3,2,3,1,2], hay que separar en [[1,3,2],[3,1,2]]
         if(request.data.get("questionType") == "borda"):
             aux=[]
-            tally = request.data.get("extra",[])
+            tally = request.data.get("extra", [])
+            #print(tally)
             l = numpy.array_split(numpy.array(tally),len(tally)/len(opts))
             for array in l:
                 aux.append(list(array))
+        elif(request.data.get("questionType") == "dhondt"):
+            tally = request.data.get("extra", [])
 
         if (t == 'IDENTITY' and request.data.get("questionType") == "borda"):
             return self.identity(opts,aux,request)
+        elif (t == 'IDENTITY' and request.data.get("questionType") == "dhondt"):
+            #print(opts)
+            #print(tally)
+            return self.identity(opts,tally,request)
         elif (t == 'IDENTITY'):
             return self.identity(opts)
 
