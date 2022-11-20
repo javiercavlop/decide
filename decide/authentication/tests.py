@@ -128,3 +128,22 @@ class AuthTestCase(APITestCase):
             sorted(list(response.json().keys())),
             ['token', 'user_pk']
         )
+
+    # #New tests for the new urls
+
+    # def test_login_user_by_mail(self):
+    #     self.client = APIClient()
+    #     mods.mock_query(self.client)
+    #     u = User(username='josgarmar31', email='josgarmar31@alum.us.es')
+    #     u.set_password('contraseña1')
+    #     u.save()
+    #     data = {'username': 'josgarmar31@alum.us.es', 'password': 'contraseña1'}
+    #     response = self.client.post('/authentication/signin/', data, format='json')
+    #     print(response)
+    #     self.assertEqual(response.status_code, 200)
+
+    #     token = response.json()
+    #     self.assertTrue(token.get('token'))
+
+
+

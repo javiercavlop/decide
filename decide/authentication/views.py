@@ -1,9 +1,9 @@
 from django.utils import timezone
 from rest_framework.authtoken.views import ObtainAuthToken
 
-from authentication.form import NewUserForm
+from authentication.form import NewUserForm, UserEditForm
 import re
-
+from allauth.socialaccount.models import SocialAccount
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -76,67 +76,71 @@ class SignUpView(APIView):
             return redirect('hello')
         
         if request.method == "POST":
-            form = NewUserForm(request.POST)
-            if form.is_valid():
+
+            errors = []
+            if request.user.username != request.POST['username']:  
                 try:
                     user = User.objects.get(email=request.POST['email'])
                     if user:
                         email_exists = "Email already exists"
-                        return render(request, 'signup.html', {
-                            'register_form': form, 
-                            'errors': [email_exists],
-                            'are_errors': True})
+                        errors.append(email_exists)
                 except User.DoesNotExist:
-                    user = form.save()
-                    login(request, user)
-                return redirect("hello")
-            else:
-
-                errors = []
-                if request.POST['password1'] != request.POST['password2']:
-                    differents_passwords = "Passwords don't match"
-                    errors.append(differents_passwords)
-                if len(request.POST['password1']) < 8:
-                    short_password = "Password must be at least 8 characters"
-                    errors.append(short_password)
-                if request.POST['password1'].isdigit():
-                    only_numbers = "Password must contain at least one letter"
-                    errors.append(only_numbers)
-                if request.POST['password1'].isalpha():
-                    only_letters = "Password must contain at least one number"
-                    errors.append(only_letters)
-                if request.POST['first_name'] == "":
-                    no_name = "You must enter a name"
-                    errors.append(no_name)
-                if request.POST['last_name'] == "":
-                    no_surname = "You must enter a surname"
-                    errors.append(no_surname)
-                if request.POST['email'] == "":
-                    no_email = "You must enter an email"
-                    errors.append(no_email)
-                if request.POST['username'] == "":
-                    no_username = "You must enter a username"
-                    errors.append(no_username)
+                    pass
+            if request.user.username != request.POST['username']:
+                try:
+                    user = User.objects.get(username=request.POST['username'])
+                    if user:
+                        username_exists = "Username already exists"
+                        errors.append(username_exists)
+                except User.DoesNotExist:
+                    pass
+            if request.POST['password1'] != request.POST['password2']:
+                differents_passwords = "Passwords don't match"
+                errors.append(differents_passwords)
+            if len(request.POST['password1']) < 8:
+                short_password = "Password must be at least 8 characters"
+                errors.append(short_password)
+            if request.POST['password1'].isdigit():
+                only_numbers = "Password must contain at least one letter"
+                errors.append(only_numbers)
+            if request.POST['password1'].isalpha():
+                only_letters = "Password must contain at least one number"
+                errors.append(only_letters)
+            if request.POST['email'] == "":
+                no_email = "You must enter an email"
+                errors.append(no_email)
+            if request.POST['username'] == "":
+                no_username = "You must enter a username"
+                errors.append(no_username)
+            if request.POST['first_name'] != "":
                 if request.POST['first_name'][0].isupper() == False:
                     name_not_capitalized = "Name must be capitalized"
                     errors.append(name_not_capitalized)
+            if request.POST['last_name'] != "":
                 if request.POST['last_name'][0].isupper() == False:
                     surname_not_capitalized = "Surname must be capitalized"
                     errors.append(surname_not_capitalized)
+            form = NewUserForm(request.POST)
 
-                are_errors = False
-                if len(errors) > 0:
-                    are_errors = True
-                form = NewUserForm()
-                
+            are_errors = False
+
+            if len(errors) > 0:
+                are_errors = True
+
                 return render(request, 'signup.html', {
-                        'register_form':form ,
-                        'errors': errors,
-                        'are_errors': are_errors
-                        })
-        form = NewUserForm()
-        return render (request, "signup.html", {
-            "register_form":form})
+                    'register_form':form ,
+                    'errors': errors,
+                    'are_errors': are_errors
+                    })
+            else:
+                user = form.save()
+                login(request, user)
+                return redirect("hello")
+            
+        else:
+            form = NewUserForm()
+            return render(request, 'signup.html', {'register_form': form})
+
 
 class SignInView(APIView):
 
@@ -175,6 +179,96 @@ class SignInView(APIView):
     def sign_out(request):
        logout(request)
        return redirect('signin')
+
+class EditUserView(APIView):
+
+    @staticmethod
+    def edit(request):
+        
+        if request.method == "POST":
+
+            errors = []
+
+            if request.user.email != request.POST['email']:
+                try:
+                    user = User.objects.get(email=request.POST['email'])
+                    if user:
+                        email_exists = "Email already exists"
+                        errors.append(email_exists)
+                except User.DoesNotExist:
+                    pass
+            if request.user.username != request.POST['username']:
+                try:
+                    user = User.objects.get(username=request.POST['username'])
+                    if user:
+                        username_exists = "Username already exists"
+                        errors.append(username_exists)
+                except User.DoesNotExist:
+                    pass
+            try:
+                account = SocialAccount.objects.get(user=request.user)
+            
+                if request.user.email == account.user.email and request.POST['email'] != request.user.email: 
+                    change_email = "You can't change your email"
+                    errors.append(change_email)
+            except:
+                pass
+            
+            if request.POST['email'] == "":
+                no_email = "You must enter an email"
+                errors.append(no_email)
+            if request.POST['username'] == "":
+                no_username = "You must enter a username"
+                errors.append(no_username)
+            if request.POST['first_name'] != "":
+                if request.POST['first_name'][0].isupper() == False:
+                    name_not_capitalized = "Name must be capitalized"
+                    errors.append(name_not_capitalized)
+            if request.POST['last_name'] != "":
+                if request.POST['last_name'][0].isupper() == False:
+                    surname_not_capitalized = "Surname must be capitalized"
+                    errors.append(surname_not_capitalized)
+
+            are_errors = False
+
+            form = UserEditForm(initial={'first_name': request.user.first_name,
+                                            'last_name': request.user.last_name, 
+                                            'email': request.user.email, 
+                                            'username': request.user.username})
+
+            if len(errors) > 0:
+                are_errors = True
+
+                return render(request, 'profile.html', {
+                    'register_form':form ,
+                    'errors': errors,
+                    'are_errors': are_errors
+                    })
+            
+            else:
+                user = request.user
+                user.first_name = request.POST['first_name']
+                user.last_name = request.POST['last_name']
+                user.email = request.POST['email']
+                user.username = request.POST['username']
+                user.save()
+                return redirect('hello')
+        else:
+
+            form = UserEditForm(initial={'first_name': request.user.first_name,
+                                            'last_name': request.user.last_name, 
+                                            'email': request.user.email, 
+                                            'username': request.user.username})
+            return render (request, "profile.html", {
+                "register_form":form})
+
+class DeleteUserView(APIView):
+
+    @staticmethod
+    def delete(request):
+        user = request.user
+        user.delete()
+        return redirect('signin')
 
 
 # Register API
