@@ -14,73 +14,87 @@
 <div id="app-main">
     <!-- Navbar -->
     <b-navbar toggleable="lg" type="dark" variant="dark">
+        <!-- TRADUCCION -->
         <b-navbar-brand href="#">Decide</b-navbar-brand>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-    
-        <b-collapse id="nav-collapse" is-nav>
-            <b-navbar-nav>
-              <b-nav-item href="#">Iniciar sesión</b-nav-item>
-            </b-navbar-nav>
-        </b-collapse>
     </b-navbar>
 
     <div id="header" class="container text-center my-4">
+        <!-- TRADUCCION -->
         <h1>Bienvenido a Decide</h1>
     </div>
 
     <div id="content" class="container">
         <div class="row">
 
+            <div class="col-lg-6 text-center my-3 mx-auto">
 
-            <div class="col-lg-6 text-center my-3">
-                <h2>Si vienes a votar...</h2>
-                <b-card header="Busca tu votación">
-                    {% if is_anonymous %}
-                        <p>Debes estar registrado para poder votar.</p>
-                    {% else %}
+                <div class="row">
+                    <!-- TRADUCCION -->
+                    <h2>Si vienes a votar...</h2>
+                    <b-card header="Busca tu votación">
                         <b-list-group class="voting-list my-3">
-                            {% for voting in votings %}
-                                <b-list-group-item href="/voting/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
+                            {% for voting in voting_votings %}
+                                <b-list-group-item href="/booth/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
                             {% endfor %}
                         </b-list-group>
-                    {% endif %}
-                </b-card>
+                    </b-card>
+                </div>
+
+                <div class="row my-3">
+                    <!-- TRADUCCION -->
+                    <h2>Si vienes a ver resultados...</h2>
+                    <b-card header="Busca tu votación">
+                        <b-list-group class="voting-list my-3">
+                            {% for voting in visualize_votings %}
+                                <b-list-group-item href="/visualizer/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
+                            {% endfor %}
+                        </b-list-group>
+                    </b-card>
+                </div>
             </div>
 
 
-            <div class="col-lg-6 text-center my-3">
+
+            {% if is_staff %}
+            <div class="col-lg-6 text-center my-3 mx-auto">
+                <!-- TRADUCCION -->
                 <h2>Si eres administrador...</h2>
                 <div class="row my-3">
                     <div class="d-grid gap-2 col-8 mx-auto">
                         <b-button size="lg" block variant="outline-primary" href="/admin">
                             <div class="row">
                                 <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
+                                <!-- TRADUCCION -->
                                 <div class="col-10 text-start">Administra Decide</div>
                             </div>
                         </b-button>
                     </div>
                 </div>
-                <div class="row my-3">
+                <div class="row my-4">
                     <div class="d-grid gap-2 col-8 mx-auto">
                         <b-button size="lg" block variant="outline-primary" href="/voting">
                             <div class="row">
                                 <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                                <div class="col-10 text-start">Crea Votaciones</div>
+                                <!-- TRADUCCION -->
+                                <div class="col-10 text-start">Administra Votaciones</div>
                             </div>
                         </b-button>
                     </div>
                 </div>
-                <div class="row my-3">
+                <div class="row my-4">
                     <div class="d-grid gap-2 col-8 mx-auto">
                         <b-button size="lg" block variant="outline-primary" href="/census">
                             <div class="row">
                                 <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                                <div class="col-10 text-start">Crea Censos</div>
+                                <!-- TRADUCCION -->
+                                <div class="col-10 text-start">Administra Censos</div>
                             </div>
                         </b-button>
                     </div>
                 </div>
             </div>
+            {%endif%}
         </div>
     </div>
 </div>
