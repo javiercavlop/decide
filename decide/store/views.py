@@ -9,7 +9,6 @@ from .models import Vote
 from .serializers import VoteSerializer
 from base import mods
 from base.perms import UserIsStaff
-from dashboard.models import DashBoard
 
 
 class StoreView(generics.ListAPIView):
@@ -27,13 +26,10 @@ class StoreView(generics.ListAPIView):
         """
          * voting: id
          * voter: id
-         * opti: int
          * vote: { "a": int, "b": int }
         """
 
         vid = request.data.get('voting')
-        dataux=request.data.get('opti')
-        print("data",dataux)
         voting = mods.get('voting', params={'id': vid})
         if not voting or not isinstance(voting, list):
             return Response({}, status=status.HTTP_401_UNAUTHORIZED)
@@ -46,21 +42,6 @@ class StoreView(generics.ListAPIView):
 
         uid = request.data.get('voter')
         vote = request.data.get('vote')
-        options=voting[0]['question']['options']
-        options_list=[]
-        for o in options:
-            if str(o['number'])!=str(dataux):
-                options_list.append(o['number'])
-
-        DashBoard.objects.get_or_create(voting=int(voting[0]['id']), voter=int(uid), option=dataux)
-        for o in options_list:
-
-            try:
-                d=DashBoard.objects.get(voting=int(voting[0]['id']), voter=int(uid), option=o)
-                d.delete()
-            except:
-                print("p")
-
 
         if not vid or not uid or not vote:
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
