@@ -54,5 +54,17 @@
       "key": "",
       "sites": [1]
     }
+  },
+  {
+    "model": "socialaccount.socialapp", 
+    "pk": 5, 
+    "fields": {
+      "provider": "auth0",
+      "name": "Auth0",
+      "client_id": "zZnNdlQHtw09td7XGTlFA05b0flJjkaB",
+      "secret": "30nuQuKdAOBT2ljV00B-Nwf0V2RxzSQjqvKSusXajtdfDvcL2PsQAz8Qh0kA5WO3",
+      "key": "",
+      "sites": [1]
+    }
   }
 ]
