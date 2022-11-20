@@ -66,5 +66,17 @@
       "key": "",
       "sites": [1]
     }
+  },
+    {
+    "model": "socialaccount.socialapp", 
+    "pk": 6, 
+    "fields": {
+      "provider": "facebook",
+      "name": "Facebook-OAuth",
+      "client_id": "822012832216050",
+      "secret": "e208f5b514bb93f4699e268324d51f8b",
+      "key": "",
+      "sites": [1]
+    }
   }
 ]

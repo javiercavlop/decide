@@ -53,8 +53,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.discord',
     'allauth.socialaccount.providers.linkedin_oauth2',
-    'allauth.socialaccount.providers.auth0'
-
+    'allauth.socialaccount.providers.auth0',
+    'allauth.socialaccount.providers.facebook',
 ]
 
 REST_FRAMEWORK = {
@@ -79,6 +79,8 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
+SOCIALACCOUNT_AUTO_SIGNUP=True
+
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
@@ -96,27 +98,6 @@ SOCIALACCOUNT_PROVIDERS = {
             'repo',
             'read:org',
         ],
-    },
-    'linkedin': {
-        'SCOPE': [
-            'r_fullprofile ',
-            'r_emailaddress'
-        ],
-        'PROFILE_FIELDS': [
-            'id',
-            'first-name',
-            'last-name',
-            'email-address',
-            'picture-url',
-            'public-profile-url',
-        ],
-        'HEADERS': {
-            'x-li-src': 'msdk'
-        }
-    },
-    'auth0': {
-        'AUTH0_URL': 'https://dev-cr6yxrgox1uigx6a.us.auth0.com',
-        'OAUTH_PKCE_ENABLED': True,
     }
 }
 
@@ -243,3 +224,4 @@ if os.path.exists("config.jsonnet"):
 
 
 INSTALLED_APPS = INSTALLED_APPS + MODULES
+
