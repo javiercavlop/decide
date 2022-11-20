@@ -101,3 +101,9 @@ ENV/
 .mypy_cache/
 
 .vagrant
+
+#Visual Studio
+.vscode/
+
+#Migrations
+migrations/
