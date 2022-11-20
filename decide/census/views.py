@@ -22,6 +22,7 @@ from django.db import transaction
 import math
 from django.http import HttpResponse
 import csv
+from django.contrib import messages
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -56,55 +57,25 @@ class CensusCreate(generics.ListCreateAPIView):
  
 
 
-class CensusImport(generics.ListCreateAPIView):
-    permission_classes = (UserIsStaff,)
-    
-    @transaction.atomic
-    @api_view(['GET','POST'])
-    def import_excel(request):
-        try: 
-            if request.method == 'POST':
-                census_from_excel=[]
-            
-                myfile = request.FILES['myfile'] 
-                df=pd.read_excel(myfile)
-                cont=2
-                for d in df.values:
-                    try:
-                        group = None
-                        if not math.isnan(d[2]):
-                            group = CensusGroup.objects.get(id=d[2])
-
-                        census = Census(voting_id=d[0], voter_id=d[1],group=group)
-                        census_from_excel.append(census)
-                        cont+=1
-                    except CensusGroup.DoesNotExist:
-                        return Response('The input Census Group does not exist, in row {}'.format(cont-1), status=ST_400)
-                    except IntegrityError:
-                        return Response('Error trying to import excel, in row {}. All previous census has been dissmised'.format(cont), status=ST_409)
-                for c in census_from_excel:
-                    c.save()
-                return Response('Census created', status=ST_201)
-        except:
-            return Response('Error in excel data. There are null data in rows', status=ST_409)
-        return render(request,"excel.html")
 
 
-    def export_excel(request):
-        try:           
-            if request.method == 'POST':
-                census=Census.objects.all()
-                response=HttpResponse()
-                response['Content-Disposition']= 'attachment; filename=census.xlsx'
-                writer=csv.writer(response)
-                writer.writerow(['voting_id','voter_id','group'])
-                census_fields=census.values_list('voting_id','voter_id','group')
-                for c in census_fields:
-                    writer.writerow(c)
-                return response
-        except:
-             return Response('Error in exporting data. There are null data in rows', status=ST_409)
-        return render(request,"export.html")
+def export_excel(request):
+    try:           
+        if request.method == 'POST':
+            census=Census.objects.all()
+            response=HttpResponse()
+            response['Content-Disposition']= 'attachment; filename=census.xlsx'
+            writer=csv.writer(response)
+            writer.writerow(['voting_id','voter_id','group'])
+            census_fields=census.values_list('voting_id','voter_id','group')
+            for c in census_fields:
+                writer.writerow(c)
+            messages.success(request,"Exportado correctamente")
+            return response
+    except:
+            messages.error(request,'Error in exporting data. There are null data in rows')
+            return render(request, "export.html")
+    return render(request,"export.html")
 
 
 
