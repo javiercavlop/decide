@@ -9,3 +9,4 @@ urlpatterns = [
 
     path('<int:voting_id>/', views.vista, name = "VotingDashboard")
 
+    ]

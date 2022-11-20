@@ -13,6 +13,8 @@ from django.shortcuts import render, get_object_or_404
 from django.conf import settings
 from django.views.generic import TemplateView
 from dashboard.models import DashBoard, Percentages,Surveys
+from voting.models import Voting
+from census.models import Census
 from rest_framework.decorators import api_view
 import weasyprint
 from wsgiref.util import FileWrapper
@@ -102,7 +104,7 @@ class DashBoardFile(generics.ListCreateAPIView):
     def write_doc(request):
         dir_path = os.path.dirname(os.path.realpath(__file__))
 
-        with open(dir_path+'/files/record','r+') as file:
+        with open(dir_path+'/files/record','w') as file:
 
 
             file.write("<!DOCTYPE html>\n")

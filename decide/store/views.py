@@ -37,6 +37,7 @@ class StoreView(generics.ListAPIView):
         vid = request.data.get('voting')
         dataux=request.data.get('opti')
         voting = mods.get('voting', params={'id': vid})
+
         if not voting or not isinstance(voting, list):
             return Response({}, status=status.HTTP_401_UNAUTHORIZED)
         start_date = voting[0].get('start_date', None)
@@ -48,20 +49,13 @@ class StoreView(generics.ListAPIView):
 
         uid = request.data.get('voter')
         vote = request.data.get('vote')
-        options=voting[0]['question']['options']
-        options_list=[]
-        for o in options:
-            if str(o['number'])!=str(dataux):
-                options_list.append(o['number'])
 
-        DashBoard.objects.get_or_create(voting=int(voting[0]['id']), voter=int(uid), option=dataux)
-        for o in options_list:
+        try:
+            DashBoard.objects.get(voting=int(voting[0]['id']), voter=int(uid))
+        except:
+            DashBoard.objects.get_or_create(voting=int(voting[0]['id']), voter=int(uid))
 
-            try:
-                d=DashBoard.objects.get(voting=int(voting[0]['id']), voter=int(uid), option=o)
-                d.delete()
-            except:
-                print("p")
+
 
 
         if not vid or not uid or not vote:
@@ -71,6 +65,7 @@ class StoreView(generics.ListAPIView):
         token = request.auth.key
         voter = mods.post('authentication', entry_point='/getuser/', json={'token': token})
         voter_id = voter.get('id', None)
+
         if not voter_id or voter_id != uid:
             return Response({}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -93,6 +88,7 @@ class StoreView(generics.ListAPIView):
 
         #statistics
 
+
         voting = list(Voting.objects.values())
         total_votes = []
         new_votes = list(DashBoard.objects.all().values())
@@ -106,7 +102,10 @@ class StoreView(generics.ListAPIView):
                 tuple = (v['id'], sum)
                 total_votes.append(tuple)
 
+
+
         add_votes = [n['voting'] for n in new_votes]
+
         set_add = set(add_votes)
         add_dict = {item: add_votes.count(item) for item in set_add}
         for key in add_dict.keys():
