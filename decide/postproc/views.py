@@ -28,14 +28,22 @@ def d_hondt(tally, given_seats, options):
     
     votes = d_hondt_vote_count(tally, options)
 
-    #Para cada escaño, calcula el cociente de D'Hondt 
+    #Memoria donde, para cada escaño, calcula el cociente de D'Hondt 
+    ratio_dict = {}
+    for option in options:
+        opt_ratio = d_hondt_ratio(votes[option["number"]],result[option["number"]])
+        ratio_dict[option["number"]] = opt_ratio
+
     for i in range(given_seats):
-        ratio_dict = {}
-        for option in options:
-            opt_ratio = d_hondt_ratio(votes[option["number"]],result[option["number"]])
-            ratio_dict[option["number"]] = opt_ratio
+        #Calcula la opción con más votos según el cociente de D'Hondt
         max_ratio_index = max(ratio_dict.keys(), key=(lambda key: ratio_dict[key]))
+        
+        #Añade un escaño a la opción ganadora de esta iteración
         result[max_ratio_index] += 1
+
+        #Actualiza en la memoria únicamente el individuo ganador de esta iteración, excepto si se trata de la última
+        if(i < given_seats-1):
+            ratio_dict[max_ratio_index] = d_hondt_ratio(votes[max_ratio_index], result[max_ratio_index])
     
     return result
 
@@ -101,7 +109,6 @@ class PostProcView(APIView):
         if(request.data.get("questionType") == "borda"):
             aux=[]
             tally = request.data.get("extra", [])
-            #print(tally)
             l = numpy.array_split(numpy.array(tally),len(tally)/len(opts))
             for array in l:
                 aux.append(list(array))
@@ -111,8 +118,6 @@ class PostProcView(APIView):
         if (t == 'IDENTITY' and request.data.get("questionType") == "borda"):
             return self.identity(opts,aux,request)
         elif (t == 'IDENTITY' and request.data.get("questionType") == "dhondt"):
-            #print(opts)
-            #print(tally)
             return self.identity(opts,tally,request)
         elif (t == 'IDENTITY'):
             return self.identity(opts)

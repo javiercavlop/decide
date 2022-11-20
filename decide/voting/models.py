@@ -115,6 +115,7 @@ class Voting(models.Model):
                 for i in integer:
                     tallyAux.append(int(i))
             tally = tallyAux
+        #No es necesario cambiar el formato del tally para D'Hondt
         #elif(self.question.questionType == "dhondt"):
             
         opts = []
@@ -129,7 +130,6 @@ class Voting(models.Model):
                 'votes': votes
             })
         
-        #data = { 'type': 'IDENTITY', 'options': opts }
         if(self.question.questionType == "borda"):
             data = { 'type': 'IDENTITY', 'options': opts , "extra": tally, "questionType": "borda"}
         elif(self.question.questionType == "dhondt"):
