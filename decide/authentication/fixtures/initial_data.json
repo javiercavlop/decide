@@ -59,10 +59,10 @@
     "model": "socialaccount.socialapp", 
     "pk": 5, 
     "fields": {
-      "provider": "vimeo_oauth2",
-      "name": "Vimeo-OAuth2",
-      "client_id": "336b8640e0d467d7a74b9e170a6821ac692cd917",
-      "secret": "6Xv4p5N6ycU+Ebq3pooYDQzxFX4JN5xGOinJxLezmqEeawpJl2mSJMVstYh+CF05FS4JwWibpcaFjXwph81xEvkBlCxyIf+wV//CxzubSXQo4nlnJw49yAQr5u/35o1p",
+      "provider": "auth0",
+      "name": "Auth0",
+      "client_id": "zZnNdlQHtw09td7XGTlFA05b0flJjkaB",
+      "secret": "30nuQuKdAOBT2ljV00B-Nwf0V2RxzSQjqvKSusXajtdfDvcL2PsQAz8Qh0kA5WO3",
       "key": "",
       "sites": [1]
     }

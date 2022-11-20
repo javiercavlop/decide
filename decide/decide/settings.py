@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.discord',
     'allauth.socialaccount.providers.linkedin_oauth2',
-    'allauth.socialaccount.providers.vimeo_oauth2'
+    'allauth.socialaccount.providers.auth0'
 
 ]
 
@@ -113,6 +113,10 @@ SOCIALACCOUNT_PROVIDERS = {
         'HEADERS': {
             'x-li-src': 'msdk'
         }
+    },
+    'auth0': {
+        'AUTH0_URL': 'https://dev-cr6yxrgox1uigx6a.us.auth0.com',
+        'OAUTH_PKCE_ENABLED': True,
     }
 }
 
