@@ -130,6 +130,7 @@ class CensusExportTestCase(BaseTestCase):
     def tearDown(self):
         super().tearDown()
         self.census = None
+        
     
     def test_export_census_data_without_groups(self):
         #Comprobamos que la petición es correcta
@@ -161,10 +162,10 @@ class CensusExportTestCase(BaseTestCase):
                 self.assertEqual(None, census_values[0][i])
         
     def test_export_census_data_with_groups(self):
-        data = {'voters': [1]}
-        response = self.client.delete('/census/{}/'.format(1), data, format='json')
-        self.census = Census(voting_id=1, voter_id=1,group=CensusGroup.objects.get(id=1))
+
+        self.census = Census(voting_id=2, voter_id=2,group=CensusGroup.objects.get(id=1))
         self.census.save()
+        
 
         #Comprobamos que la petición es correcta
         response = self.client.get('/census/export/', format='json')
