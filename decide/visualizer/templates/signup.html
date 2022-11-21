@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block extrahead %}
     <link type="text/css" rel="stylesheet"
@@ -21,12 +22,15 @@
 		{% endfor %}
 	{% endif %}
 <div class="container py-5">
+	<!--Traducir--> 
 	<h1>Register</h1>
 	<form method="POST">
 		{% csrf_token %}
-		{{ register_form.as_p }}                    
+		{{ register_form.as_p }} 
+		<!--Traducir-->                    
 		<button class="btn btn-primary" type="submit">Register</button>
 	</form>
+	<!--Traducir--> 
 	<p>Already have an account? <a href="{% url 'signin' %}">Log in</a></p>
 </div>
 

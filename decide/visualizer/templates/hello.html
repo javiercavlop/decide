@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block extrahead %}
     <link type="text/css" rel="stylesheet"
@@ -13,13 +14,16 @@
 
 <div class="container-md">
   {% csrf_token %}
+  <!--Traducir--> 
   <h1>Hello, {{user.username}}</h1>
+  <!--Traducir--> 
   <a class="btn btn-primary" href="http://localhost:8000/authentication/signout" role="button">Logout</a>
   <a class="btn btn-primary" href="http://localhost:8000/authentication/profile" role="button">Ver Perfil</a>
 </div>
 {% else %}
 <div class="container-md">
   {% csrf_token %}
+  <!--Traducir--> 
   <a class="btn btn-primary" href="http://localhost:8000/authentication/signin/" role="button">Sign in</a>
 </div>
 
