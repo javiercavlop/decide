@@ -3,9 +3,24 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from rest_framework.test import APIClient
 
-from .models import Census
+from .models import Census,CensusGroup
 from base import mods
 from base.tests import BaseTestCase
+
+from pyexpat import model
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
+
+from base.tests import BaseTestCase
+from time import sleep
+import sys, os
+import csv
+import pandas as pd
 
 
 class CensusTestCase(BaseTestCase):
@@ -73,3 +88,87 @@ class CensusTestCase(BaseTestCase):
         response = self.client.delete('/census/{}/'.format(1), data, format='json')
         self.assertEqual(response.status_code, 204)
         self.assertEqual(0, Census.objects.count())
+
+
+class SeleniumImportCSVTestCase(StaticLiveServerTestCase):
+    def setUp(self):
+        #Load base test functionality for decide
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+
+        superuser_admin = User(username='superadmin', is_staff=True, is_superuser=True)
+        superuser_admin.set_password('qwerty')
+        superuser_admin.save()
+
+        super().setUp()            
+            
+    def tearDown(self):           
+        super().tearDown()
+        self.driver.quit()
+        self.base.tearDown()
+        self.census_group = None
+        os.remove("census/test_import_census_csv.csv")
+    
+
+    def create_csv_file(self,expenses):
+
+        header = ['voting_id', 'voter_id', 'group']
+
+        with open('census/test_import_census_csv.csv', 'a', newline='') as f:
+            
+            writer = csv.writer(f)
+            writer.writerow(header)
+
+            if len(expenses) == 1:
+                writer.writerow(expenses)
+            elif len(expenses) > 1:
+                writer.writerows(expenses)
+            
+            
+    def test_import_csv_positive(self):
+
+        expenses = [
+            [1,1,''],
+            [2,2,'']
+        ]
+
+        self.create_csv_file(expenses)
+        
+        ROOT_DIR = os.path.dirname(os.path.abspath("census/test_import_census_csv.csv"))
+        screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'test_import_census_csv.csv')
+
+        self.driver.get(f'{self.live_server_url}/census/import_csv')
+        uploadElement=self.driver.find_element(by=By.ID, value="customFile")
+
+        uploadElement.send_keys(screenshotpath)
+
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-success'))==1)
+        self.assertEqual(2,Census.objects.count())
+       
+
+
+    def test_import_excel_positive_with_group(self):
+        expenses = [
+            [1,1,1],
+            [2,2,2]
+        ]
+
+        self.create_csv_file(expenses)
+        
+        ROOT_DIR = os.path.dirname(os.path.abspath("census/test_import_census_csv.csv"))
+        screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'test_import_census_csv.csv')
+
+        self.driver.get(f'{self.live_server_url}/census/import_csv')
+        uploadElement=self.driver.find_element(by=By.ID, value="customFile")
+
+        uploadElement.send_keys(screenshotpath)
+
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-success'))==1)
+        self.assertEqual(2,Census.objects.count())
+    
