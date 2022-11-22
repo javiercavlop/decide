@@ -1,0 +1,73 @@
+{% extends  "base.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+    <link type="text/css" rel="stylesheet"
+    href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet"
+    href="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.css" />
+    <link type="text/css" rel="stylesheet" href="{% static "base/style.css" %}" />
+{% endblock %}
+
+
+{% block content %}
+<div id="app-census">
+    <!-- Navbar -->
+    <b-navbar toggleable="lg" type="dark" variant="dark">
+        <!-- TRADUCCION -->
+        <b-navbar-brand href="#">Decide</b-navbar-brand>
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+    </b-navbar>
+</div>
+<div class="container-fluid">
+<div class="col-md-6">
+    <div class="row justify-content-center">
+            <div class="col-md-10">
+            <h3 class="mt-5 text-center">Lista de censos</h3>
+            <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Escribe para buscar">
+            <datalist id="datalistOptions">
+                <option value="San Francisco">
+                <option value="New York">
+                <option value="Seattle">
+                <option value="Los Angeles">
+                <option value="Chicago">
+            </datalist>
+
+            <table class="table table-bordered table-striped mt-2">
+                <thead>
+                    <tr>
+                        <th>Votación</th>
+                        <th>Votante</th>
+                        <th>Grupo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for censo in censos %}
+                    <tr>
+                        <th>{{censo.voting_id}}</th>
+                        <th>{{censo.voter}}</th>
+                        <th>{{censo.group}}<b-icon icon="x-square" class="ms-3" variant="danger"></b-icon></th>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>
+            </div>
+</div>
+<div class="col-md-6">
+    <p>PUTA</p>
+</div>
+</div>
+{% endblock %}
+
+{% block extrabody %}
+     <!-- Vuejs -->
+     <script src="https://unpkg.com/vue@2.6/dist/vue.min.js"></script>
+     <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.min.js"></script>
+     <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+     <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue-icons.min.js"></script>
+     
+     <script>
+        new Vue({ el: '#app-census' });
+     </script>
+{% endblock %}

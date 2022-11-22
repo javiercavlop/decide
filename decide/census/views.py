@@ -1,6 +1,7 @@
 from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -11,13 +12,13 @@ from rest_framework.status import (
         HTTP_409_CONFLICT as ST_409
 )
 
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser,IsAuthenticated
 from base.perms import UserIsStaff
 from .models import Census,CensusGroup
 from .forms import CensusReuseForm
 from .serializers import CensusGroupSerializer,CensusSerializer
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes 
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -83,13 +84,13 @@ class CensusGroupCreate(generics.ListCreateAPIView):
 def CensusReuse(request):
     if request.method == 'POST':
             form = CensusReuseForm(request.POST)
+            print(form)
             if form.is_valid():
                 cd = form.cleaned_data
                 voting_id = cd['voting_id']
                 new_voting = cd['new_voting']
                 censos = Census.objects.all().values()
                 for c in censos:
-                    print(c)
                     if(c['voting_id'] == voting_id):
                             try:
                                 census = Census(voting_id=new_voting, voter_id=c['voter_id'], group_id=c['group_id'])
@@ -103,7 +104,23 @@ def CensusReuse(request):
         form = CensusReuseForm()
     return render(request,'census/censusform.html',{'form':form})
 
-    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def CensusList(request):
+    censos = Census.objects.all().values()
+    res = []
+    for c in censos:
+        votante = User.objects.get(pk=c['voter_id'])
+        censo = c['voting_id']
+        try:
+            grupo = CensusGroup.objects.get(id=c['group_id'])
+        except:
+            grupo = "No tiene grupo asignado"
+        if request.user.is_superuser or str(votante) == request.user.username:
+            res.append({'voting_id':censo,'voter':votante,'group':grupo})
+    return render(request,'census/census.html',{'censos':res})
+
+
 class CensusGroupDetail(generics.RetrieveDestroyAPIView):
     serializer_class = CensusGroupSerializer
     queryset = CensusGroup.objects.all()
