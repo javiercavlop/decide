@@ -104,3 +104,7 @@ ENV/
 .mypy_cache/
 
 .vagrant
+
+#pycharm
+.idea/workspace.xml
+
