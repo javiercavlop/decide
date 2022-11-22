@@ -167,7 +167,7 @@ class SeleniumImportExcelTestCase(StaticLiveServerTestCase):
 
 
 
-    def test_import_excel_positive(self):
+    def test_import_excel_positive_no_group(self):
         expenses = (['voting_id', 'voter_id','group'],
                     [1,1,''])
         self.create_excel_file(expenses)
@@ -186,8 +186,11 @@ class SeleniumImportExcelTestCase(StaticLiveServerTestCase):
        
 
     def test_import_excel_positive_with_group(self):
+        self.census_group = CensusGroup(name='Test Group 1')
+        self.census_group.save()
+
         expenses = (['voting_id', 'voter_id','group'],
-                    [1,1,''])
+                    [1,1,CensusGroup.objects.get(name='Test Group 1').pk])
         self.create_excel_file(expenses)
 
         ROOT_DIR = os.path.dirname(os.path.abspath("./test_import.xlsx"))
@@ -203,7 +206,7 @@ class SeleniumImportExcelTestCase(StaticLiveServerTestCase):
         self.assertEqual(1,Census.objects.count())
         
 
-    def test_import_excel_negative_no_group(self):
+    def test_import_excel_negative_with_group(self):
         expenses = (['voting_id', 'voter_id','group'],
                     [1,1,1])
         self.create_excel_file(expenses)
