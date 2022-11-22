@@ -142,11 +142,10 @@ class SeleniumImportJSONTestCase(StaticLiveServerTestCase):
         uploadElement.send_keys(screenshotpath)
 
         self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
-        sleep(3)
         self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-success'))==1)
         self.assertEqual(1,Census.objects.count())
 
-    def test_import_csv_positive_with_group(self):
+    def test_import_json_positive_with_group(self):
 
         group_name = 'Test Group 1'
         group_id = CensusGroup.objects.get(name=group_name).pk
@@ -164,69 +163,60 @@ class SeleniumImportJSONTestCase(StaticLiveServerTestCase):
         uploadElement.send_keys(screenshotpath)
 
         self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
-        sleep(3)
         self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-success'))==1)
         self.assertEqual(2,Census.objects.count())
 
-    # def test_import_csv_negative_nonexistent_group(self):
-    #     expenses = [
-    #         [1,1,28],
-    #         [2,2,39]
-    #     ]
+    def test_import_json_negative_nonexistent_group(self):
 
-    #     self.create_csv_file(expenses)
+        expenses = [{"voting_id":1, "voter_id":1, "group": 18}, {"voting_id":2, "voter_id":2, "group": 28}]
+
+        self.create_json_file(expenses)
         
-    #     ROOT_DIR = os.path.dirname(os.path.abspath("census/test_import_census_csv.csv"))
-    #     screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'test_import_census_csv.csv')
+        ROOT_DIR = os.path.dirname(os.path.abspath("census/test_import_census_json.json"))
+        screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'test_import_census_json.json')
 
-    #     self.driver.get(f'{self.live_server_url}/census/import_csv')
-    #     uploadElement=self.driver.find_element(by=By.ID, value="customFile")
+        self.driver.get(f'{self.live_server_url}/census/import_json')
+        uploadElement=self.driver.find_element(by=By.ID, value="customFile")
 
-    #     uploadElement.send_keys(screenshotpath)
+        uploadElement.send_keys(screenshotpath)
 
-    #     self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
-    #     self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-danger'))==1)
-    #     self.assertEqual(0,Census.objects.count())
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-danger'))==1)
+        self.assertEqual(0,Census.objects.count())
         
-    # def test_import_csv_negative_null_data(self):
+    def test_import_json_negative_null_data(self):
 
-    #     expenses = [
-    #         [None,1,28],
-    #         [2,None,39]
-    #     ]
+        expenses = [{"voting_id":1, "voter_id":1, "group": None}, {"voting_id":2, "voter_id":2, "group": None}]
 
-    #     self.create_csv_file(expenses)
+        self.create_json_file(expenses)
         
-    #     ROOT_DIR = os.path.dirname(os.path.abspath("census/test_import_census_csv.csv"))
-    #     screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'test_import_census_csv.csv')
+        ROOT_DIR = os.path.dirname(os.path.abspath("census/test_import_census_json.json"))
+        screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'test_import_census_json.json')
 
-    #     self.driver.get(f'{self.live_server_url}/census/import_csv')
-    #     uploadElement=self.driver.find_element(by=By.ID, value="customFile")
+        self.driver.get(f'{self.live_server_url}/census/import_json')
+        uploadElement=self.driver.find_element(by=By.ID, value="customFile")
 
-    #     uploadElement.send_keys(screenshotpath)
+        uploadElement.send_keys(screenshotpath)
 
-    #     self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
-    #     self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-danger'))==1)
-    #     self.assertEqual(0,Census.objects.count())
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-danger'))==1)
+        self.assertEqual(0,Census.objects.count())
         
 
-    # def test_import_csv_negative_integrity_error(self):
+    def test_import_json_negative_integrity_error(self):
         
-    #     expenses = [
-    #         [1,1,''],
-    #         [1,1,'']
-    #     ]
+        expenses = [{"voting_id":1, "voter_id":1, "group": ""}, {"voting_id":1, "voter_id":1, "group": ""}]
 
-    #     self.create_csv_file(expenses)
+        self.create_json_file(expenses)
         
-    #     ROOT_DIR = os.path.dirname(os.path.abspath("census/test_import_census_csv.csv"))
-    #     screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'test_import_census_csv.csv')
+        ROOT_DIR = os.path.dirname(os.path.abspath("census/test_import_census_json.json"))
+        screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'test_import_census_json.json')
 
-    #     self.driver.get(f'{self.live_server_url}/census/import_csv')
-    #     uploadElement=self.driver.find_element(by=By.ID, value="customFile")
+        self.driver.get(f'{self.live_server_url}/census/import_json')
+        uploadElement=self.driver.find_element(by=By.ID, value="customFile")
 
-    #     uploadElement.send_keys(screenshotpath)
+        uploadElement.send_keys(screenshotpath)
 
-    #     self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
-    #     self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-danger'))==1)
-    #     self.assertEqual(0,Census.objects.count())
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-danger'))==1)
+        self.assertEqual(0,Census.objects.count())
