@@ -197,7 +197,7 @@ class SeleniumImportCSVTestCase(StaticLiveServerTestCase):
         self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-danger'))==1)
         self.assertEqual(0,Census.objects.count())
         
-    def test_import_excel_negative_null_data(self):
+    def test_import_csv_negative_null_data(self):
 
         expenses = [
             [None,1,28],
@@ -219,7 +219,7 @@ class SeleniumImportCSVTestCase(StaticLiveServerTestCase):
         self.assertEqual(0,Census.objects.count())
         
 
-    def test_import_excel_negative_integrity_error(self):
+    def test_import_csv_negative_integrity_error(self):
         
         expenses = [
             [1,1,''],
