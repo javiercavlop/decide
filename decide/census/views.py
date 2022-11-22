@@ -1,5 +1,6 @@
 from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -13,6 +14,15 @@ from rest_framework.permissions import IsAdminUser
 from base.perms import UserIsStaff
 from .models import Census,CensusGroup
 from .serializers import CensusGroupSerializer,CensusSerializer
+
+from django.conf import settings
+import pandas as pd
+from rest_framework.decorators import api_view
+from django.db import transaction
+import math
+from django.http import HttpResponse
+import csv
+from django.contrib import messages
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -42,6 +52,32 @@ class CensusCreate(generics.ListCreateAPIView):
         voting_id = request.GET.get('voting_id')
         voters = Census.objects.filter(voting_id=voting_id).values_list('voter_id', flat=True)
         return Response({'voters': voters})
+
+
+ 
+
+
+
+
+def export_excel(request):
+    try:           
+        if request.method == 'POST':
+            census=Census.objects.all()
+            response=HttpResponse()
+            response['Content-Disposition']= 'attachment; filename=census.xlsx'
+            writer=csv.writer(response)
+            writer.writerow(['voting_id','voter_id','group'])
+            census_fields=census.values_list('voting_id','voter_id','group')
+            for c in census_fields:
+                writer.writerow(c)
+            messages.success(request,"Exportado correctamente")
+            return response
+    except:
+            messages.error(request,'Error in exporting data. There are null data in rows')
+            return render(request, "export.html")
+    return render(request,"export.html")
+
+
 
 class CensusDetail(generics.RetrieveDestroyAPIView):
     serializer_class = CensusSerializer
