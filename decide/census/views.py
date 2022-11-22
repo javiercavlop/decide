@@ -109,16 +109,25 @@ def CensusReuse(request):
 def CensusList(request):
     censos = Census.objects.all().values()
     res = []
+    options = []
     for c in censos:
         votante = User.objects.get(pk=c['voter_id'])
+        if(votante not in options):
+            options.append(votante.username)
         censo = c['voting_id']
         try:
             grupo = CensusGroup.objects.get(id=c['group_id'])
+            if(grupo not in options):
+                options.append(grupo.name)
         except:
+            ###    <!-- TRADUCCIÓN -->
             grupo = "No tiene grupo asignado"
+            if(grupo not in options):
+                options.append(grupo)
+
         if request.user.is_superuser or str(votante) == request.user.username:
             res.append({'voting_id':censo,'voter':votante,'group':grupo})
-    return render(request,'census/census.html',{'censos':res})
+    return render(request,'census/census.html',{'censos':res, 'options':options})
 
 
 class CensusGroupDetail(generics.RetrieveDestroyAPIView):
