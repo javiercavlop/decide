@@ -76,8 +76,6 @@ def vista(request,voting_id):
 class DashboardView(TemplateView):
     template_name = 'dashboard/dashboard.html'
 
-
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         percentages=list(Percentages.objects.all().values())
