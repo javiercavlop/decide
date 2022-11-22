@@ -1,4 +1,4 @@
-
+{% load i18n %}
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
@@ -10,7 +10,7 @@
 <body>
 
     <div id = "pivot-table-container">
-
+        <!-- TRADUCCION -->
         <H1>Nombre de la votación</H1>
         <p>{{voting.name}}</p>
         <H1>Descripción de la votación</H1>
@@ -25,20 +25,24 @@
         <p> {{time}}</p>
        
     </div>
+    <!-- TRADUCCION -->
     <H1 style="text-align: center;">
         Resultados de la votación
     </H1>
     <canvas id="myChart" width="800" height="200"></canvas>
+    <!-- TRADUCCION -->
     <H1 >
         Porcentaje de personas que votaron
     </H1>
     <div>
         <canvas id = "my2Chart" width = "100" height = "100 " ></canvas>
-    </div>
-    
+    </div> 
     <script src ="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- TRADUCCION -->
     <script>
         const ctx = document.getElementById('myChart').getContext('2d');
+
         const myChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -63,10 +67,12 @@
     <script>
         const ctx2 = document.getElementById('my2Chart').getContext('2d');
         ctx2.canvas.parentNode.style.width = "300px";
-        ctx2.canvas.parentNode.style.height = "300px"; 
+        ctx2.canvas.parentNode.style.height = "300px";
         const myChart2 = new Chart(ctx2, {
             type: 'pie',
+            
             data: {
+                
             labels : [{% for item in labels2 %}"{{ item }}",{% endfor %}],
                 datasets: [{
                 label: "{{voting.name}}",
