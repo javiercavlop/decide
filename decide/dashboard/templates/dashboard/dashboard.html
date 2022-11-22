@@ -16,7 +16,7 @@
             <b-navbar-brand tag="h1">Decide</b-navbar-brand>
         </b-navbar>
 
-        <div class="voting container">
+        <div id="users" class="voting container">
                 <h2 class="heading">Resultados:</h2>
 
                 <table class="table table-bordered table-striped">
@@ -28,13 +28,13 @@
                     <tbody>
 
                         <tr v-for="us in users" :key="us.username">
-                            <th>[[us]]</th>
+                            <th v-bind:id="[[us]]"  >[[us]]</th>
                         </tr>
 
                     </tbody>
                 </table>
             <h3>Porcentages de votaciones según censo</h3>
-             <table class="table table-bordered table-striped">
+             <table id= "vot-census" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>Id de votacion</th>
@@ -46,8 +46,8 @@
                     <tbody>
 
                         <tr v-for="por in porcentages">
-                            <th>[[por.votingid]]</th>
-                            <th>[[por.porc*100]]% </th>
+                            <th v-bind:id="[[por.voting]]" >[[por.voting]]</th>
+                            <th>[[por.percen*100]]% </th>
 
 
 
@@ -56,7 +56,7 @@
                     </tbody>
                 </table>
             <h3>Número de encuestas votadas en tiempo real</h3>
-             <table class="table table-bordered table-striped">
+             <table id="vot-real" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>Votante</th>
@@ -68,7 +68,7 @@
                     <tbody>
 
                         <tr v-for="f in new_votes">
-                            <th>[[f.voter]]</th>
+                            <th v-bind:id="[[f.voter]]">[[f.voter]]</th>
                             <th>[[f.number]] </th>
 
 
@@ -77,6 +77,9 @@
 
                     </tbody>
                 </table>
+                    <input type="button" value="Download" onclick="window.open('download')">
+                <br/>
+
 
 
 
