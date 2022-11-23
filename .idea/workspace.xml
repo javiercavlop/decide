@@ -2,10 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="38b1f5b1-67c5-4f9d-80de-73011c1e668a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitmessage" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/decide/postproc/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/decide/voting/migrations/0004_question_questiontype.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/decide/voting/migrations/0005_auto_20221118_1544.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/django.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/django.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/decide/booth/templates/booth/booth.html" beforeDir="false" afterPath="$PROJECT_DIR$/decide/booth/templates/booth/booth.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/decide/booth/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/decide/booth/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/decide/dashboard/files/record" beforeDir="false" afterPath="$PROJECT_DIR$/decide/dashboard/files/record" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/decide/dashboard/files/record.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/decide/dashboard/files/record.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/decide/dashboard/templates/dashboard/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/decide/dashboard/templates/dashboard/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/decide/dashboard/templates/dashboard_with_pv.html" beforeDir="false" afterPath="$PROJECT_DIR$/decide/dashboard/templates/dashboard_with_pv.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/decide/dashboard/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/decide/dashboard/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/decide/dashboard/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/decide/dashboard/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/decide/dashboard/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/decide/dashboard/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/decide/decide/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/decide/decide/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/decide/postproc/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/decide/postproc/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/decide/postproc/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/decide/postproc/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/decide/postproc/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/decide/postproc/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/decide/store/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/decide/store/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/decide/voting/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/decide/voting/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/decide/voting/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/decide/voting/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

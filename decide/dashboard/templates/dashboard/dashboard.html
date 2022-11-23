@@ -7,17 +7,26 @@
     <link type="text/css" rel="stylesheet"
          href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
     <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
+   
 {% endblock %}
 
 {% block content %}
     <div id="app-dashboard">
+
         <!-- Navbar -->
         <b-navbar type="dark" variant="secondary">
             <b-navbar-brand tag="h1">Decide</b-navbar-brand>
         </b-navbar>
 
+
+        <b-button type="button" variant="primary" href="https://t.me/decide_stadistics_bot">
+            TELEGRAM BOT
+        </b-button>
+
+
         <div id="users" class="voting container">
                     <!-- TRADUCCION -->
+
 
                 <h2 class="heading">Resultados:</h2>
 
