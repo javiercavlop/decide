@@ -54,9 +54,42 @@ class CensusCreate(generics.ListCreateAPIView):
         return Response({'voters': voters})
 
 
- 
 
+@transaction.atomic
+def import_json(request):
+    cont=2
+    try: 
+        if request.method == 'POST':
+            census_from_json=[]
+        
+            myfile = request.FILES['myfile'] 
+            df=pd.read_json(myfile)
 
+            for d in df.values:
+                try:
+                    group= None
+                    if d[2]:
+                        if d[2] == "":
+                            group = None
+                        else: 
+                            group = CensusGroup.objects.get(id=d[2])
+
+                    census = Census(voting_id=d[0], voter_id=d[1],group=group)
+                    census_from_json.append(census)
+                except CensusGroup.DoesNotExist:
+                    messages.error(request,'The input Census Group does not exist')
+                    return render(request,"json.html")
+            for c in census_from_json:
+                try:
+                    c.save()
+                except IntegrityError:
+                    messages.error(request, 'Error trying to import JSON. A census cannot be repeated.')
+                    return render(request,"json.html")
+            messages.success(request, 'Census created')
+    except:
+        messages.error(request, 'Error in JSON data.') 
+        return render(request,"json.html")
+    return render(request,"json.html")
 
 @transaction.atomic
 def import_csv(request):
