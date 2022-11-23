@@ -222,3 +222,152 @@ class SeleniumImportJSONTestCase(StaticLiveServerTestCase):
         self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-danger'))==1)
         self.assertEqual(0,Census.objects.count())
 
+class SeleniumImportCSVTestCase(StaticLiveServerTestCase):
+    def setUp(self):
+        #Load base test functionality for decide
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+
+        superuser_admin = User(username='superadmin', is_staff=True, is_superuser=True)
+        superuser_admin.set_password('qwerty')
+        superuser_admin.save()
+        
+        self.census_group = CensusGroup(name='Test Group 1')
+        self.census_group.save() 
+        super().setUp()
+          
+            
+    def tearDown(self):           
+        super().tearDown()
+        self.driver.quit()
+        self.base.tearDown()
+        self.census_group = None
+        os.remove("census/test_import_census_csv.csv")
+    
+
+    def create_csv_file(self,expenses):
+
+        header = ['voting_id', 'voter_id', 'group']
+
+        with open('census/test_import_census_csv.csv', 'a', newline='') as f:
+            
+            writer = csv.writer(f)
+            writer.writerow(header)
+
+            if len(expenses) == 1:
+                writer.writerow(expenses)
+            elif len(expenses) > 1:
+                writer.writerows(expenses)
+            
+            
+    def test_import_csv_positive(self):
+
+        expenses = [
+            [1,1,''],
+            [2,2,'']
+        ]
+
+        self.create_csv_file(expenses)
+        
+        ROOT_DIR = os.path.dirname(os.path.abspath("census/test_import_census_csv.csv"))
+        screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'test_import_census_csv.csv')
+
+        self.driver.get(f'{self.live_server_url}/census/import_csv')
+        uploadElement=self.driver.find_element(by=By.ID, value="customFile")
+
+        uploadElement.send_keys(screenshotpath)
+
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-success'))==1)
+        self.assertEqual(2,Census.objects.count())
+
+    def test_import_csv_positive_with_group(self):
+
+        group_name = 'Test Group 1'
+        group_id = CensusGroup.objects.get(name=group_name).pk
+
+        expenses = [
+            [1,1,group_id],
+            [2,2,group_id]
+        ]
+
+        self.create_csv_file(expenses)
+        
+        ROOT_DIR = os.path.dirname(os.path.abspath("census/test_import_census_csv.csv"))
+        screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'test_import_census_csv.csv')
+
+        self.driver.get(f'{self.live_server_url}/census/import_csv')
+        uploadElement=self.driver.find_element(by=By.ID, value="customFile")
+
+        uploadElement.send_keys(screenshotpath)
+
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-success'))==1)
+        self.assertEqual(2,Census.objects.count())
+
+    def test_import_csv_negative_nonexistent_group(self):
+        expenses = [
+            [1,1,28],
+            [2,2,39]
+        ]
+
+        self.create_csv_file(expenses)
+        
+        ROOT_DIR = os.path.dirname(os.path.abspath("census/test_import_census_csv.csv"))
+        screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'test_import_census_csv.csv')
+
+        self.driver.get(f'{self.live_server_url}/census/import_csv')
+        uploadElement=self.driver.find_element(by=By.ID, value="customFile")
+
+        uploadElement.send_keys(screenshotpath)
+
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-danger'))==1)
+        self.assertEqual(0,Census.objects.count())
+        
+    def test_import_csv_negative_null_data(self):
+
+        expenses = [
+            [None,1,28],
+            [2,None,39]
+        ]
+
+        self.create_csv_file(expenses)
+        
+        ROOT_DIR = os.path.dirname(os.path.abspath("census/test_import_census_csv.csv"))
+        screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'test_import_census_csv.csv')
+
+        self.driver.get(f'{self.live_server_url}/census/import_csv')
+        uploadElement=self.driver.find_element(by=By.ID, value="customFile")
+
+        uploadElement.send_keys(screenshotpath)
+
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-danger'))==1)
+        self.assertEqual(0,Census.objects.count())
+        
+
+    def test_import_csv_negative_integrity_error(self):
+        
+        expenses = [
+            [1,1,''],
+            [1,1,'']
+        ]
+
+        self.create_csv_file(expenses)
+        
+        ROOT_DIR = os.path.dirname(os.path.abspath("census/test_import_census_csv.csv"))
+        screenshotpath = os.path.join(os.path.sep, ROOT_DIR,'test_import_census_csv.csv')
+
+        self.driver.get(f'{self.live_server_url}/census/import_csv')
+        uploadElement=self.driver.find_element(by=By.ID, value="customFile")
+
+        uploadElement.send_keys(screenshotpath)
+
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-danger'))==1)
+        self.assertEqual(0,Census.objects.count())
