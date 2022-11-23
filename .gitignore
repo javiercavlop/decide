@@ -102,8 +102,15 @@ ENV/
 
 .vagrant
 
+<<<<<<< HEAD
+#Visual Studio
+.vscode/
+
+#Migrations
+=======
 # visual studio code
 .vscode/
 
 # Census migrations
+>>>>>>> module/diseño
 migrations/
