@@ -169,8 +169,6 @@ def import_csv(request):
         return render(request,"csv.html")
     return render(request,"csv.html")
 
-<<<<<<< HEAD
-=======
 @transaction.atomic
 def import_excel(request):
     cont=2
@@ -213,7 +211,6 @@ def import_excel(request):
     return render(request,"census/import.html")
 
 
->>>>>>> ffdaec2f5671f6a9f755a0922ed07bf1461ccc97
 
 def export_excel(request):
     try:           
