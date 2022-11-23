@@ -67,6 +67,7 @@ class StoreView(generics.ListAPIView):
         v.a = a
         v.b = b
 
+
         v.save()
 
         return  Response({})

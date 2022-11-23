@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_swagger',
-    'gateway',
+    'gateway'
 ]
 
 REST_FRAMEWORK = {
@@ -63,7 +63,7 @@ MODULES = [
     'base',
     'booth',
     'census',
-    'mixnet',
+    'mixnet'
     'postproc',
     'store',
     'visualizer',

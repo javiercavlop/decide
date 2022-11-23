@@ -8,8 +8,15 @@ from base.models import Auth, Key
 from postproc.admin import *
 
 
+QUESTION_TYPES = (
+    ('normal','Votación normal'),
+    ('borda', 'Votación con recuento borda'),
+    ('dhondt', "Votación con sistema D'Hondt")
+)
+
 class Question(models.Model):
     desc = models.TextField()
+    questionType = models.CharField(max_length=50, choices=QUESTION_TYPES, default='normal')
 
     def __str__(self):
         return self.desc
@@ -105,7 +112,6 @@ class Voting(models.Model):
         '''
         The tally is a shuffle and then a decrypt
         '''
-
         votes = self.get_votes(token)
 
         #userid llama a la función donde sacamos una lista con todos los user_id que han partidicpado en la votación
@@ -141,13 +147,24 @@ class Voting(models.Model):
 
         self.tally = response.json()
         self.save()
+
         self.do_postproc()
 
     def do_postproc(self):
         tally = self.tally
         options = self.question.options.all()
-        
-    
+
+        #Debido a que el tally viene de forma ["123",["312"]], hay que separarlos ordenados, ahora quedan todos metidos en una lista
+        if(self.question.questionType == "borda"):
+            tallyAux = []
+            for integer in tally:
+                integer = str(integer)
+                for i in integer:
+                    tallyAux.append(int(i))
+            tally = tallyAux
+        #No es necesario cambiar el formato del tally para D'Hondt
+        #elif(self.question.questionType == "dhondt"):
+
         opts = []
         for opt in options:
             if isinstance(tally, list):
@@ -160,8 +177,13 @@ class Voting(models.Model):
                 'votes': votes,
                 
             })
-
-        data = { 'type': 'IDENTITY', 'options': opts }
+        
+        if(self.question.questionType == "borda"):
+            data = { 'type': 'IDENTITY', 'options': opts , "extra": tally, "questionType": "borda"}
+        elif(self.question.questionType == "dhondt"):
+            data = { 'type': 'IDENTITY', 'options': opts , "extra": tally, "questionType": "dhondt"}
+        else:
+            data = { 'type': 'IDENTITY', 'options': opts, "questionType": "normal"}
         postp = mods.post('postproc', json=data)
 
         self.postproc = postp
@@ -171,4 +193,4 @@ class Voting(models.Model):
 
     def __str__(self):
         return self.name
-        
+
