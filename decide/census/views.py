@@ -81,7 +81,7 @@ class CensusGroupCreate(generics.ListCreateAPIView):
         return Response('Census created', status=ST_201)
 
 @api_view(['GET','POST'])
-def CensusReuse(request):
+def censusReuse(request):
     if request.method == 'POST':
             form = CensusReuseForm(request.POST)
             print(form)
@@ -102,18 +102,20 @@ def CensusReuse(request):
                 return Response('Error try to create census', status=ST_400)
     else:
         form = CensusReuseForm()
-    return render(request,'census/censusform.html',{'form':form})
+    return render(request,'census/census_reuse_form.html',{'form':form})
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def CensusList(request):
+@permission_classes([IsAdminUser])
+def censusList(request):
     censos = Census.objects.all().values()
     res = []
     options = []
     for c in censos:
-        votante = User.objects.get(pk=c['voter_id'])
+        votante = User.objects.filter(pk=c['voter_id'])
+        for v in votante:
+            votante = v
         if(votante not in options):
-            options.append(votante.username)
+            options.append(votante)
         censo = c['voting_id']
         try:
             grupo = CensusGroup.objects.get(id=c['group_id'])
@@ -124,8 +126,6 @@ def CensusList(request):
             grupo = "No tiene grupo asignado"
             if(grupo not in options):
                 options.append(grupo)
-
-        if request.user.is_superuser or str(votante) == request.user.username:
             res.append({'voting_id':censo,'voter':votante,'group':grupo})
     return render(request,'census/census.html',{'censos':res, 'options':options})
 
