@@ -1,0 +1,82 @@
+[
+  {
+    "model": "sites.site", 
+    "pk": 1, 
+    "fields": {
+      "domain": "127.0.0.1:8000", 
+      "name": "127.0.0.1:8000"
+    }
+  },
+  {
+    "model": "socialaccount.socialapp", 
+    "pk": 1, 
+    "fields": {
+      "provider": "google",
+      "name": "Google-OAuth",
+      "client_id": "995930996365-d2gdomursgafst0ug1ips8t22i3l3dkn.apps.googleusercontent.com",
+      "secret": "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",
+      "key" :"",
+      "sites": [1]
+    }
+  },
+  {
+    "model": "socialaccount.socialapp", 
+    "pk": 2, 
+    "fields": {
+      "provider": "github",
+      "name": "GitHub-OAuth",
+      "client_id": "9e679d98f86cfc3f1de5",
+      "secret": "87ba4ec0041035939bf67a4a2e3813172492001f",
+      "key": "",
+      "sites": [1]
+    }
+  },
+  {
+    "model": "socialaccount.socialapp", 
+    "pk": 3, 
+    "fields": {
+      "provider": "discord",
+      "name": "Discord-OAuth",
+      "client_id": "1041796957267570738",
+      "secret": "WScC0VSYKDwC6tXHZ-VNvP6xTExVu4IQ",
+      "key": "",
+      "sites": [1]
+    }
+  },
+  {
+    "model": "socialaccount.socialapp", 
+    "pk": 4, 
+    "fields": {
+      "provider": "linkedin_oauth2",
+      "name": "Linkedin-OAuth2",
+      "client_id": "7794p4s8fwz84a",
+      "secret": "DWZvm1IXGhxXGwmP",
+      "key": "",
+      "sites": [1]
+    }
+  },
+  {
+    "model": "socialaccount.socialapp", 
+    "pk": 5, 
+    "fields": {
+      "provider": "auth0",
+      "name": "Auth0",
+      "client_id": "zZnNdlQHtw09td7XGTlFA05b0flJjkaB",
+      "secret": "30nuQuKdAOBT2ljV00B-Nwf0V2RxzSQjqvKSusXajtdfDvcL2PsQAz8Qh0kA5WO3",
+      "key": "",
+      "sites": [1]
+    }
+  },
+    {
+    "model": "socialaccount.socialapp", 
+    "pk": 6, 
+    "fields": {
+      "provider": "facebook",
+      "name": "Facebook-OAuth",
+      "client_id": "822012832216050",
+      "secret": "e208f5b514bb93f4699e268324d51f8b",
+      "key": "",
+      "sites": [1]
+    }
+  }
+]

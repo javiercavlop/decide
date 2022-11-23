@@ -105,6 +105,16 @@ ENV/
 
 .vagrant
 
+
 #pycharm
 .idea/workspace.xml
+
+
+.vscode/
+
+# DS_Store (macOS)
+**/.DS_Store
+
+#migration files
+**/migrations/
 

@@ -26,7 +26,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('doc/', schema_view),
     path('gateway/', include('gateway.urls')),
-    path('dashboard/', include('dashboard.urls')),
+    path('i18n/', include('django.conf.urls.i18n')),
+
 ]
 
 for module in settings.MODULES:
