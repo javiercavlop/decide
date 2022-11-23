@@ -49,6 +49,7 @@ class MainPageTestCase(StaticLiveServerTestCase):
         self.base.setUp()
 
         super().setUp()       
+        self.base.login()
 
         options = webdriver.ChromeOptions()
         options.headless = False
@@ -66,8 +67,3 @@ class MainPageTestCase(StaticLiveServerTestCase):
 
         self.driver.get(f'{self.live_server_url}/')
         self.assertTrue(len(self.driver.find_elements(By.ID,'id-admin-panel')) == 1)
-
-    def test_access_mainpage_as_not_staff(self):
-        self.base.login()
-        self.driver.get(f'{self.live_server_url}/')
-        time.sleep(10)
