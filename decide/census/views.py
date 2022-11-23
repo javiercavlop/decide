@@ -57,6 +57,7 @@ class CensusCreate(generics.ListCreateAPIView):
  
 
 
+
 @transaction.atomic
 def import_excel(request):
     cont=2
@@ -88,7 +89,7 @@ def import_excel(request):
                 except IntegrityError:
                     messages.error(request, 'Error trying to import excel, in row {}. A census cannot be repeated.'.format(cont))
                     return render(request,"census/import.html")
-
+                    
             messages.success(request, 'Census Created')
             return render(request,"census/import.html")
 
@@ -97,6 +98,29 @@ def import_excel(request):
         return render(request,"census/import.html")
 
     return render(request,"census/import.html")
+
+
+
+def export_excel(request):
+    try:           
+        if request.method == 'POST':
+            census=Census.objects.all()
+            response=HttpResponse()
+            response['Content-Disposition']= 'attachment; filename=census.xlsx'
+            writer=csv.writer(response)
+            writer.writerow(['voting_id','voter_id','group'])
+            census_fields=census.values_list('voting_id','voter_id','group')
+            for c in census_fields:
+                writer.writerow(c)
+            messages.success(request,"Exportado correctamente")
+            return response
+    except:
+            messages.error(request,'Error in exporting data. There are null data in rows')
+            return render(request, "export.html")
+    return render(request,"export.html")
+
+
+
 
 
 class CensusDetail(generics.RetrieveDestroyAPIView):
