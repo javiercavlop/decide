@@ -1,8 +1,10 @@
-
 import json
 import os
 from rest_framework import generics
 from django.contrib.auth import get_user_model
+
+from django.http import HttpResponse, Http404, FileResponse
+
 
 # Create your views here.
 import datetime
@@ -11,6 +13,8 @@ from django.shortcuts import render, get_object_or_404
 from django.conf import settings
 from django.views.generic import TemplateView
 from dashboard.models import DashBoard, Percentages,Surveys
+from voting.models import Voting
+from census.models import Census
 from rest_framework.decorators import api_view
 import weasyprint
 from wsgiref.util import FileWrapper
@@ -33,23 +37,37 @@ def vista(request,voting_id):
 
     data[0].do_postproc()
     postpro = data[0].postproc
+    numberOfVotesAux = 0
     numberOfVotes = 0
     options = []
-    votes = []
-    for vote in postpro:
-        options.append(vote['option'])
-        votes.append(vote['votes'])
-        numberOfVotes = numberOfVotes+ vote['votes']
+    values = []
+    questionType = data[0].question.questionType
+
+    if(questionType=='borda'):
+        for vote in postpro:
+            options.append(vote['option'])
+            values.append(vote['postproc'])
+            numberOfVotesAux=numberOfVotesAux + vote['votes']
+        numberOfVotes = numberOfVotesAux/len(options)
+
+    elif(questionType == 'normal'):
+        for vote in postpro:
+            options.append(vote['option'])
+            values.append(vote['votes'])
+            numberOfVotes = numberOfVotes+ vote['votes']
+    
+    
     labels2 = ["Votaron","No votaron"]
     values2 = [numberOfVotes, numberOfPeople-numberOfVotes]
     context = {
         "voting": data[0],
         "people": numberOfPeople,
         "time": duracion,
-        "numberOfVotes": numberOfVotes,
+        "numberOfVotes": int(numberOfVotes),
         #"prueba": postpro,
+        "questionType":questionType,
         "labels": options,
-        "values": votes,
+        "values": values,
         "labels2": labels2,
         "values2": values2,
     }
@@ -60,12 +78,9 @@ def vista(request,voting_id):
 class DashboardView(TemplateView):
     template_name = 'dashboard/dashboard.html'
 
-
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         percentages=list(Percentages.objects.all().values())
-        print(percentages)
         context['porcentages'] = json.dumps(percentages)
         User = get_user_model()
         users = User.objects.values()
@@ -85,11 +100,11 @@ class DashboardView(TemplateView):
 
         return context
 class DashBoardFile(generics.ListCreateAPIView):
-    @api_view(['GET'])
+    @api_view(['GET',])
     def write_doc(request):
         dir_path = os.path.dirname(os.path.realpath(__file__))
 
-        with open(dir_path+'/files/record','r+') as file:
+        with open(dir_path+'/files/record','w') as file:
 
 
             file.write("<!DOCTYPE html>\n")
@@ -195,13 +210,12 @@ class DashBoardFile(generics.ListCreateAPIView):
                 pdf = weasyprint.HTML(dir_path + '/files/record').write_pdf()
                 open(dir_path+'/files/record.pdf', 'wb').write(pdf)
                 filepath = dir_path + '/files/record.pdf'
-                #mime_type, _ = mimetypes.guess_type(filepath)
                 content = FileWrapper(open(dir_path+'/files/record.pdf','rb'))
-                response = HttpResponse(content, content_type='application/pdf')
+                response = FileResponse(content, content_type='application/pdf')
                 filename = 'record'
 
                 response['Content-Length'] = os.path.getsize(dir_path+'/files/record.pdf')
                 response['Content-Disposition'] = "attachment; filename=%s" % 'record.pdf'
 
-                return response
+            return response
 

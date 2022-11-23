@@ -18,32 +18,45 @@
             <b-navbar-brand tag="h1">Decide</b-navbar-brand>
         </b-navbar>
 
+
         <b-button type="button" variant="primary" href="https://t.me/decide_stadistics_bot">
             TELEGRAM BOT
         </b-button>
 
-        <div class="voting container">
+
+        <div id="users" class="voting container">
+                    <!-- TRADUCCION -->
+
+
                 <h2 class="heading">Resultados:</h2>
 
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
+                                    <!-- TRADUCCION -->
+
                             <th>Perfiles</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         <tr v-for="us in users" :key="us.username">
-                            <th>[[us]]</th>
+                            <th v-bind:id="[[us]]"  >[[us]]</th>
                         </tr>
 
                     </tbody>
                 </table>
+                    <!-- TRADUCCION -->
+
             <h3>Porcentages de votaciones según censo</h3>
-             <table class="table table-bordered table-striped">
+             <table id= "vot-census" class="table table-bordered table-striped">
                     <thead>
                         <tr>
+                                    <!-- TRADUCCION -->
+
                             <th>Id de votacion</th>
+                                    <!-- TRADUCCION -->
+
                             <th>Porcentage del censo</th>
 
 
@@ -52,7 +65,7 @@
                     <tbody>
 
                         <tr v-for="por in porcentages">
-                            <th>[[por.voting]]</th>
+                            <th v-bind:id="[[por.voting]]" >[[por.voting]]</th>
                             <th>[[por.percen*100]]% </th>
 
 
@@ -61,11 +74,17 @@
 
                     </tbody>
                 </table>
+                    <!-- TRADUCCION -->
+
             <h3>Número de encuestas votadas en tiempo real</h3>
-             <table class="table table-bordered table-striped">
+             <table id="vot-real" class="table table-bordered table-striped">
                     <thead>
                         <tr>
+                                    <!-- TRADUCCION -->
+
                             <th>Votante</th>
+                                    <!-- TRADUCCION -->
+
                             <th>Encuestas</th>
 
 
@@ -74,7 +93,7 @@
                     <tbody>
 
                         <tr v-for="f in new_votes">
-                            <th>[[f.voter]]</th>
+                            <th v-bind:id="[[f.voter]]">[[f.voter]]</th>
                             <th>[[f.number]] </th>
 
 

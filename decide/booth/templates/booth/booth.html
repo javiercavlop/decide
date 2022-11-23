@@ -52,19 +52,35 @@
             <!-- Voting -->
             <div v-if="!signup">
                 <h2>[[ voting.question.desc ]]</h2>
+                
+                <div id="warning"></div>
+                {% if auxBorda%}
+                    <br>
+                    <p style="color: rgb(155, 85, 85);">This votation has been configured as an ordenation, so you have to vote for each one of the options.</p>
+                {% endif %}
+                
                 <b-form-group v-for="opt in voting.question.options" :key="opt.number">
-                    <b-form-radio v-model="selected"
-                                  :id="'q' + opt.number"
-                                  name="question"
-                                  :value="opt.number">
-                        [[ opt.option ]]
-                    </b-form-radio>
+                        <b-form-radio v-model="selected"
+                                    :id="'q' + opt.number"
+                                    name="question"
+                                    :value="opt.number">
+                            [[ opt.option ]]
+                        </b-form-radio>
+
                 </b-form-group>
-                <b-button type="button" variant="primary" v-on:click="decideSend">
-                    {% trans "Vote" %}
+                <b-button type="button" variant="primary" v-on:click="decideSend" id="send">
+                    {% trans "Vote" %}  
                 </b-button>
             </div>
         </div>
+        {% if auxBorda%}
+            <br>
+            <h5 style="padding-left: 2%;">Order: </h5>
+            <div id="answers">
+
+            </div>
+        {% endif %}
+        
     </div>
 {% endblock %}
 
@@ -86,7 +102,11 @@
     <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
 
     <script>
-        var voting = {{voting|safe}};
+
+        var voting = {{ voting|safe }};
+        var questionType = {{ questionType|safe }};
+        var options = []
+
         var app = new Vue({
             delimiters: ['[[', ']]'],
             el: '#app-booth',
@@ -178,6 +198,7 @@
                     this.user = null;
                     document.cookie = 'decide=;';
                     this.signup = true;
+                    window.location.reload();
                 },
                 decideEncrypt() {
                     var bigmsg = BigInt.fromJSONObject(this.selected.toString());
@@ -186,21 +207,69 @@
                 },
                 decideSend(evt) {
                     evt.preventDefault();
-                    var v = this.decideEncrypt();
-                    var data = {
-                        vote: {a: v.alpha.toString(), b: v.beta.toString()},
-                        voting: this.voting.id,
-                        opti:this.selected.toString(),
-                        voter: this.user.id,
-                        token: this.token
+
+                    if(questionType == "borda") {
+                        if(this.selected != null && this.selected != ""){
+                            var option = this.selected;
+                            this.selected=null
+                            options.push(option)
+                            questionOptions = voting.question.options
+                            
+                            for (var question of questionOptions) {
+                                if(option == question.number){
+                                    textSelected = question.option
+                                }   
+                            }
+
+                            option = (option-1)*2
+                            document.getElementById('__BVID__1'+option).remove();
+                            
+                            
+                            var h6= document.createElement('H6');
+                            h6.innerText = options.length+". " +textSelected;
+                            h6.style.paddingLeft="2%";
+                            var answers = document.getElementById("answers");
+                            answers.appendChild(h6)
+                            if(options.length == voting.question.options.length){
+                                evt.preventDefault();
+                                document.getElementById("send").remove();
+                                this.selected=options.toString()
+                                console.log(this.selected)
+                                var v = this.decideEncrypt();
+                                var data = {
+                                    vote: {a: v.alpha.toString(), b: v.beta.toString()},
+                                    voting: this.voting.id,
+                                    opti:this.selected.toString(),
+                                    voter: this.user.id,
+                                    token: this.token
+                                }
+                                this.postData("{% url "gateway" "store" "/" %}", data)
+                                    .then(data => {
+                                        this.showAlert("success", '{% trans "Conglatulations. Your vote has been sent" %}');
+                                    })
+                                    .catch(error => {
+                                        this.showAlert("danger", '{% trans "Error: " %}' + error);
+                                    });
+                            }
+                        }
+                    } else{
+                        evt.preventDefault();
+                        var v = this.decideEncrypt();
+                        var data = {
+                            vote: {a: v.alpha.toString(), b: v.beta.toString()},
+                            voting: this.voting.id,
+                            opti:this.selected.toString(),
+                            voter: this.user.id,
+                            token: this.token
+                        }
+                        this.postData("{% url "gateway" "store" "/" %}", data)
+                            .then(data => {
+                                this.showAlert("success", '{% trans "Conglatulations. Your vote has been sent" %}');
+                            })
+                            .catch(error => {
+                                this.showAlert("danger", '{% trans "Error: " %}' + error);
+                            });
                     }
-                    this.postData("{% url "gateway" "store" "/" %}", data)
-                        .then(data => {
-                            this.showAlert("success", '{% trans "Conglatulations. Your vote has been sent" %}');
-                        })
-                        .catch(error => {
-                            this.showAlert("danger", '{% trans "Error: " %}' + error);
-                        });
                 },
                 showAlert(lvl, msg) {
                     this.alertLvl = lvl;
@@ -210,5 +279,4 @@
             },
         })
     </script>
-</body>
 {% endblock %}

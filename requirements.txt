@@ -9,6 +9,12 @@ django-rest-swagger==2.2.0
 coverage==4.5.2
 django-nose==1.4.6
 jsonnet==0.12.1
+<<<<<<< HEAD
 selenium
 python-telegram-bot
 weasyprint
+=======
+weasyprint==57.1
+selenium
+numpy
+>>>>>>> a04ec92e8f860649ecfbfd2f69cf83551653e4f1

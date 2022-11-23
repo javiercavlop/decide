@@ -86,6 +86,9 @@ celerybeat-schedule
 .venv
 venv/
 ENV/
+#pycharm
+.idea/workspace.xml
+
 
 # Spyder project settings
 .spyderproject
@@ -101,3 +104,7 @@ ENV/
 .mypy_cache/
 
 .vagrant
+
+#pycharm
+.idea/workspace.xml
+
