@@ -1,7 +1,9 @@
 Django==2.0
 pycryptodome==3.6.6
+django-allauth==0.51.0
 djangorestframework==3.7.7
 django-cors-headers==2.1.0
+django-rest-auth==0.9.5
 requests==2.18.4
 django-filter==1.1.0
 psycopg2==2.8.4
@@ -9,7 +11,10 @@ django-rest-swagger==2.2.0
 coverage==4.5.2
 django-nose==1.4.6
 jsonnet==0.12.1
-selenium
 pandas==1.5.1
 django-import-export==2.1
 XlsxWriter==3.0.3
+python-telegram-bot
+weasyprint==57.1
+numpy
+selenium==3.141.0
