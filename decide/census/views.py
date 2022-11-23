@@ -186,8 +186,8 @@ def export_excel(request):
             return response
     except:
             messages.error(request,'Error in exporting data. There are null data in rows')
-            return render(request, "export.html")
-    return render(request,"export.html")
+            return render(request, "census/export.html")
+    return render(request,"census/export.html")
 
 
 
