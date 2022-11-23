@@ -111,9 +111,10 @@ def censusList(request):
     res = []
     options = []
     for c in censos:
-        votante = User.objects.filter(pk=c['voter_id'])
-        for v in votante:
-            votante = v
+        try:
+            votante = User.objects.get(pk=c['voter_id'])
+        except:
+            votante = "El votante todavía no ha sido añadido"
         if(votante not in options):
             options.append(votante)
         censo = c['voting_id']
@@ -126,7 +127,7 @@ def censusList(request):
             grupo = "No tiene grupo asignado"
             if(grupo not in options):
                 options.append(grupo)
-            res.append({'voting_id':censo,'voter':votante,'group':grupo})
+        res.append({'voting_id':censo,'voter':votante,'group':grupo})
     return render(request,'census/census.html',{'censos':res, 'options':options})
 
 
