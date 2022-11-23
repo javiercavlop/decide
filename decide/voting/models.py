@@ -45,9 +45,9 @@ class Voting(models.Model):
 
     #Estas nuevas tres variables nos servirán para calcular los porcentajes de genero que hay en una votación
     #Cada variable corresponde con el numero de votos de un genero
-    num_votes_M = models.PositiveIntegerField()
-    num_votes_W = models.PositiveIntegerField()
-    num_votes_O = models.PositiveIntegerField()
+    num_votes_M = models.PositiveIntegerField(default=0)
+    num_votes_W = models.PositiveIntegerField(default=0)
+    num_votes_O = models.PositiveIntegerField(default=0)
 
     def create_pubkey(self):
         if self.pub_key or not self.auths.count():
