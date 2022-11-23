@@ -117,6 +117,7 @@ class CensusGroupTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 204)
         self.assertEqual(before-1,CensusGroup.objects.count())
 
+
 class CensusExportTestCase(BaseTestCase):
 
     def setUp(self):
@@ -197,4 +198,4 @@ class CensusExportTestCase(BaseTestCase):
 
 
 
-    
+
