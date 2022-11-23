@@ -1,3 +1,4 @@
+import json
 import logging
 import datetime
 from telegram import Update, ForceReply, ReplyKeyboardMarkup
@@ -18,7 +19,7 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "decide.settings")
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
-from dashboard.models import DashBoard, Percentages
+from dashboard.models import DashBoard, Percentages, Surveys
 from census.models import Census
 from voting.models import Voting
 
@@ -27,11 +28,9 @@ def echo(update: Update, _: CallbackContext) -> None:
     User = get_user_model()
     users = User.objects.values()
     us=list(users.all())
-    usern_id={}
-    for u in us:
-        usern_id[u['id']]=u['username']
 
-    new_votes=list(DashBoard.objects.all().values())
+
+    new_votes=list(Surveys.objects.all().values())
     votes_user={}
     for  vote in new_votes:
         if vote['voter'] in votes_user.keys():
@@ -47,7 +46,7 @@ def echo(update: Update, _: CallbackContext) -> None:
         text = fr"Hola {user.first_name}! Escribe help para saber que comandos puedes usar"
 
     elif query in ['help','Help'] :
-        text = "Los comando que puede probar son:  \n start  \n profiles  "
+        text = "LOS COMANDOS QUE SE PUEDEN PROBAR SON:  \n start  \n profiles  "
         text = text + f"\n voting \n votings \n voting-<voting_id>\n percentages"
 
     elif query in ['profiles','Profiles'] :
@@ -58,16 +57,17 @@ def echo(update: Update, _: CallbackContext) -> None:
 
     elif query in ['percentages','Percentages'] :
         percentages=list(Percentages.objects.all().values())
+        text = 'PORCENTAJES DE VOTACIONES SEGÚN CENSO\n';
         for p in percentages:
             voting = p['voting']
             perc = p['percen']*100
             text = text + f'Encuesta: {voting}  // Porcentage: {perc}%\n'
     
     elif query in ['voting','Voting'] :
-        for it in votes_user.keys():
-            voter = usern_id[it]
-            number = votes_user[it]
-            text = f"Votante: {voter}  //  Encuestas: {number}\n"
+        for it in new_votes:
+            voter = it['voter']
+            number = it['number']
+            text = f"NÚMEROS DE ENCUESTAS VOTADAS EN TIEMPO REAL \nVotante: {voter}  //  Encuestas: {number}\n"
 
     
     elif query in ['votings', 'Votings']:
@@ -94,7 +94,6 @@ def echo(update: Update, _: CallbackContext) -> None:
             data[0].do_postproc()
             postpro = data[0].postproc
             numberOfVotes = 0
-            #graficas
             options = []
             votes = []
             for vote in postpro:
