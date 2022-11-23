@@ -117,3 +117,85 @@ class CensusGroupTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 204)
         self.assertEqual(before-1,CensusGroup.objects.count())
 
+
+class CensusExportTestCase(BaseTestCase):
+
+    def setUp(self):
+        super().setUp()
+
+        self.census_group = CensusGroup(name='Test Group 1')
+        self.census_group.save()
+        self.census = Census(voting_id=1, voter_id=1)
+        self.census.save()
+
+    def tearDown(self):
+        super().tearDown()
+        self.census = None
+        
+    
+    def test_export_census_data_without_groups(self):
+        #Comprobamos que la petición es correcta
+        response = self.client.get('/census/export/', format='json')
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post('/census/export/', format='json')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Disposition'], 'attachment; filename=census.xlsx')
+        #Leemos el fichero creado y comprobamos los resultados
+        myfile=response.content.decode("utf-8") 
+       
+        rows=myfile.split("\n")
+        fields=[f.name for f in Census._meta.fields + Census._meta.many_to_many ]
+        fields=fields[1:]
+        headers=[f for f in rows[0].split(",")]
+        headers[-1]=headers[-1].replace("\r","")
+
+        self.assertEqual(headers, fields)
+        print(rows[1])
+        census_values=Census.objects.all().values_list('voting_id','voter_id','group')
+        print(census_values)
+        values=rows[1].split(",")
+        values[-1]=values[-1].replace("\r","")
+        print(values)
+        for i in range(len(census_values[0])):
+            if values[i] != "":
+                self.assertEqual(int(values[i]), census_values[0][i])
+            else:
+                self.assertEqual(None, census_values[0][i])
+        
+    def test_export_census_data_with_groups(self):
+
+        self.census = Census(voting_id=2, voter_id=2,group=CensusGroup.objects.get(id=1))
+        self.census.save()
+        
+
+        #Comprobamos que la petición es correcta
+        response = self.client.get('/census/export/', format='json')
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post('/census/export/', format='json')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Disposition'], 'attachment; filename=census.xlsx')
+        #Leemos el fichero creado y comprobamos los resultados
+        myfile=response.content.decode("utf-8") 
+       
+        rows=myfile.split("\n")
+        fields=[f.name for f in Census._meta.fields + Census._meta.many_to_many ]
+        fields=fields[1:]
+        headers=[f for f in rows[0].split(",")]
+        headers[-1]=headers[-1].replace("\r","")
+
+        self.assertEqual(headers, fields)
+        print(rows[1])
+        census_values=Census.objects.all().values_list('voting_id','voter_id','group')
+        print(census_values)
+        values=rows[1].split(",")
+        values[-1]=values[-1].replace("\r","")
+        print(values)
+        for i in range(len(census_values[0])):
+            if values[i] != "":
+                self.assertEqual(int(values[i]), census_values[0][i])
+            else:
+                self.assertEqual(None, census_values[0][i])
+
+
+
+
