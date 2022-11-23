@@ -33,10 +33,9 @@ class StoreView(generics.ListAPIView):
         """
 
         vid = request.data.get('voting')
-<<<<<<< HEAD
+
         dataux=request.data.get('opti')
-=======
->>>>>>> e2860329066fb2ca16c6242577c96d6bbaad294b
+
         voting = mods.get('voting', params={'id': vid})
 
         if not voting or not isinstance(voting, list):
@@ -50,7 +49,7 @@ class StoreView(generics.ListAPIView):
 
         uid = request.data.get('voter')
         vote = request.data.get('vote')
-<<<<<<< HEAD
+
 
         try:
             DashBoard.objects.get(voting=int(voting[0]['id']), voter=int(uid))
@@ -59,8 +58,6 @@ class StoreView(generics.ListAPIView):
 
 
 
-=======
->>>>>>> e2860329066fb2ca16c6242577c96d6bbaad294b
 
         if not vid or not uid or not vote:
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
