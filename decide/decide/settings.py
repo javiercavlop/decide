@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_swagger',
     'gateway',
-    
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -56,6 +55,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.linkedin_oauth2',
     'allauth.socialaccount.providers.auth0',
     'allauth.socialaccount.providers.facebook',
+    'dashboard'
 
 ]
 

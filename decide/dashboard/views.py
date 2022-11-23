@@ -1,8 +1,8 @@
-
 import json
 import os
 from rest_framework import generics
 from django.contrib.auth import get_user_model
+
 from django.http import HttpResponse, Http404, FileResponse
 
 
@@ -18,6 +18,8 @@ from census.models import Census
 from rest_framework.decorators import api_view
 import weasyprint
 from wsgiref.util import FileWrapper
+from voting.models import Voting
+from census.models import Census
 
 def vista(request,voting_id):
     data = get_object_or_404(Voting,id=voting_id)

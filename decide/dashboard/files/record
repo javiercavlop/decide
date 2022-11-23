@@ -85,6 +85,14 @@ tr:nth-child(even){
     <td>8</td>
     <td>100.0%</td>
     </tr>
+    <tr>
+    <td>9</td>
+    <td>100.0%</td>
+    </tr>
+    <tr>
+    <td>10</td>
+    <td>50.0%</td>
+    </tr>
 </table>
 <h2>Encuestas votadas</h2>
 <p>También se han recogido datos sobre las encuestas contestadas por usuario, cabe recalcar que este datos se toma a partir de la implementaciónde este módulo en el sistema, la sencuestas votads previas a la misma n estaŕan reflejadas en las estaísticas.
@@ -96,7 +104,7 @@ tr:nth-child(even){
     <tr>
     <tr>
     <td>ana2022</td>
-    <td>9</td>
+    <td>11</td>
     </tr>
     <tr>
     <td>roberto</td>
@@ -104,7 +112,7 @@ tr:nth-child(even){
     </tr>
     <tr>
     <td>pepe</td>
-    <td>1</td>
+    <td>2</td>
     </tr>
 </table>
 </body>
