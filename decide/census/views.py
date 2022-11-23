@@ -58,6 +58,43 @@ class CensusCreate(generics.ListCreateAPIView):
 
 
 
+@transaction.atomic
+def import_csv(request):
+    cont=2
+    try: 
+        if request.method == 'POST':
+            census_from_csv=[]
+        
+            myfile = request.FILES['myfile'] 
+            df=pd.read_csv(myfile)
+
+            for d in df.values:
+                try:
+                    group = None
+                    if not math.isnan(d[2]):
+                        group = CensusGroup.objects.get(id=d[2])
+
+                    census = Census(voting_id=d[0], voter_id=d[1],group=group)
+                    census_from_csv.append(census)
+                    cont+=1
+                except CensusGroup.DoesNotExist:
+                    messages.error(request, 'The input Census Group does not exist, in row {}'.format(cont-1))
+                    return render(request, "csv.html")
+            cont=0
+            for c in census_from_csv:
+                try:
+                    cont+=1
+                    c.save()
+                except IntegrityError:
+                    messages.error(request, 'Error trying to import CSV, in row {}. A census cannot be repeated.'.format(cont))
+                    return render(request,"csv.html")
+            messages.success(request, 'Census Created')
+            return render(request,"csv.html")
+    except:
+        messages.error(request, 'Error in CSV data. There are wrong data in row {}'.format(cont+1)) 
+        return render(request,"csv.html")
+    return render(request,"csv.html")
+
 
 def export_excel(request):
     try:           
@@ -76,6 +113,7 @@ def export_excel(request):
             messages.error(request,'Error in exporting data. There are null data in rows')
             return render(request, "export.html")
     return render(request,"export.html")
+
 
 
 
