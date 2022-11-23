@@ -1,5 +1,6 @@
 from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -13,6 +14,15 @@ from rest_framework.permissions import IsAdminUser
 from base.perms import UserIsStaff
 from .models import Census,CensusGroup
 from .serializers import CensusGroupSerializer,CensusSerializer
+
+from django.conf import settings
+import pandas as pd
+from rest_framework.decorators import api_view
+from django.db import transaction
+import math
+from django.http import HttpResponse
+import csv
+from django.contrib import messages
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -42,6 +52,70 @@ class CensusCreate(generics.ListCreateAPIView):
         voting_id = request.GET.get('voting_id')
         voters = Census.objects.filter(voting_id=voting_id).values_list('voter_id', flat=True)
         return Response({'voters': voters})
+
+
+ 
+
+
+
+@transaction.atomic
+def import_csv(request):
+    cont=2
+    try: 
+        if request.method == 'POST':
+            census_from_csv=[]
+        
+            myfile = request.FILES['myfile'] 
+            df=pd.read_csv(myfile)
+
+            for d in df.values:
+                try:
+                    group = None
+                    if not math.isnan(d[2]):
+                        group = CensusGroup.objects.get(id=d[2])
+
+                    census = Census(voting_id=d[0], voter_id=d[1],group=group)
+                    census_from_csv.append(census)
+                    cont+=1
+                except CensusGroup.DoesNotExist:
+                    messages.error(request, 'The input Census Group does not exist, in row {}'.format(cont-1))
+                    return render(request, "csv.html")
+            cont=0
+            for c in census_from_csv:
+                try:
+                    cont+=1
+                    c.save()
+                except IntegrityError:
+                    messages.error(request, 'Error trying to import CSV, in row {}. A census cannot be repeated.'.format(cont))
+                    return render(request,"csv.html")
+            messages.success(request, 'Census Created')
+            return render(request,"csv.html")
+    except:
+        messages.error(request, 'Error in CSV data. There are wrong data in row {}'.format(cont+1)) 
+        return render(request,"csv.html")
+    return render(request,"csv.html")
+
+
+def export_excel(request):
+    try:           
+        if request.method == 'POST':
+            census=Census.objects.all()
+            response=HttpResponse()
+            response['Content-Disposition']= 'attachment; filename=census.xlsx'
+            writer=csv.writer(response)
+            writer.writerow(['voting_id','voter_id','group'])
+            census_fields=census.values_list('voting_id','voter_id','group')
+            for c in census_fields:
+                writer.writerow(c)
+            messages.success(request,"Exportado correctamente")
+            return response
+    except:
+            messages.error(request,'Error in exporting data. There are null data in rows')
+            return render(request, "export.html")
+    return render(request,"export.html")
+
+
+
 
 class CensusDetail(generics.RetrieveDestroyAPIView):
     serializer_class = CensusSerializer
