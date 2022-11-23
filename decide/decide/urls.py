@@ -19,6 +19,7 @@ from django.urls import path, include
 from rest_framework_swagger.views import get_swagger_view
 
 
+
 schema_view = get_swagger_view(title='Decide API')
 
 urlpatterns = [
@@ -26,6 +27,7 @@ urlpatterns = [
     path('doc/', schema_view),
     path('gateway/', include('gateway.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
+
 ]
 
 for module in settings.MODULES:

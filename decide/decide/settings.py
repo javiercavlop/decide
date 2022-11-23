@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.linkedin_oauth2',
     'allauth.socialaccount.providers.auth0',
     'allauth.socialaccount.providers.facebook',
+
 ]
 
 REST_FRAMEWORK = {
@@ -107,7 +108,7 @@ MODULES = [
     'base',
     'booth',
     'census',
-    'mixnet',
+    'mixnet'
     'postproc',
     'store',
     'visualizer',
