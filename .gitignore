@@ -101,3 +101,11 @@ ENV/
 .mypy_cache/
 
 .vagrant
+
+.vscode/
+
+# DS_Store (macOS)
+**/.DS_Store
+
+#migration files
+**/migrations/
