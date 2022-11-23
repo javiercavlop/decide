@@ -169,6 +169,48 @@ def import_csv(request):
         return render(request,"csv.html")
     return render(request,"csv.html")
 
+@transaction.atomic
+def import_excel(request):
+    cont=2
+    try: 
+        if request.method == 'POST':
+            census_from_excel=[]
+        
+            myfile = request.FILES['myfile'] 
+            df=pd.read_excel(myfile)
+
+            for d in df.values:
+                try:
+                    group = None
+                    if not math.isnan(d[2]):
+                        group = CensusGroup.objects.get(id=d[2])
+
+                    census = Census(voting_id=d[0], voter_id=d[1],group=group)
+                    census_from_excel.append(census)
+                    cont+=1
+                except CensusGroup.DoesNotExist:
+                    messages.error(request,'The input Census Group does not exist, in row {}'.format(cont-1))
+                    return render(request,"census/import.html")
+
+            cont=0
+            for c in census_from_excel:
+                try:
+                    cont+=1
+                    c.save()
+                except IntegrityError:
+                    messages.error(request, 'Error trying to import excel, in row {}. A census cannot be repeated.'.format(cont))
+                    return render(request,"census/import.html")
+                    
+            messages.success(request, 'Census Created')
+            return render(request,"census/import.html")
+
+    except:
+        messages.error(request, 'Error in excel data. There are wrong data in row {}'.format(cont+1)) 
+        return render(request,"census/import.html")
+
+    return render(request,"census/import.html")
+
+
 
 def export_excel(request):
     try:           
@@ -185,8 +227,8 @@ def export_excel(request):
             return response
     except:
             messages.error(request,'Error in exporting data. There are null data in rows')
-            return render(request, "export.html")
-    return render(request,"export.html")
+            return render(request, "census/export.html")
+    return render(request,"census/export.html")
 
 
 
