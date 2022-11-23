@@ -1,5 +1,7 @@
 from python:alpine
 
+ENV CRYPTOGRAPHY_DONT_BUILD_RUST=1
+
 RUN apk add --no-cache git postgresql-dev gcc libc-dev
 RUN apk add --no-cache gcc g++ make libffi-dev python3-dev build-base
 
@@ -10,7 +12,9 @@ RUN pip install ipython
 
 WORKDIR /app
 
-RUN git clone https://github.com/wadobo/decide.git .
+RUN git clone https://github.com/egc-decide-trebujena/decide.git .
+RUN git checkout milestone/M2
+RUN pip install -U pip
 RUN pip install -r requirements.txt
 
 WORKDIR /app/decide
