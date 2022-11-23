@@ -29,6 +29,8 @@ class CensusTestCase(BaseTestCase):
         super().setUp()
         self.census = Census(voting_id=1, voter_id=1)
         self.census.save()
+        self.census_group = CensusGroup(name='Test Group 1')
+        self.census_group.save()
 
     def tearDown(self):
         super().tearDown()
@@ -90,7 +92,6 @@ class CensusTestCase(BaseTestCase):
         self.assertEqual(0, Census.objects.count())
 
 
-
 class SeleniumImportJSONTestCase(StaticLiveServerTestCase):
     def setUp(self):
         #Load base test functionality for decide
@@ -98,7 +99,7 @@ class SeleniumImportJSONTestCase(StaticLiveServerTestCase):
         self.base.setUp()
 
         options = webdriver.ChromeOptions()
-        options.headless = False
+        options.headless = True
         self.driver = webdriver.Chrome(options=options)
 
         superuser_admin = User(username='superadmin', is_staff=True, is_superuser=True)
@@ -220,3 +221,4 @@ class SeleniumImportJSONTestCase(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
         self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-danger'))==1)
         self.assertEqual(0,Census.objects.count())
+
