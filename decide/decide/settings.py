@@ -44,12 +44,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_swagger',
     'gateway',
-<<<<<<< HEAD
     'dashboard'
-   
-=======
-    'dashboard',
->>>>>>> a04ec92e8f860649ecfbfd2f69cf83551653e4f1
+
 ]
 
 REST_FRAMEWORK = {
