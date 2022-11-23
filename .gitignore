@@ -104,4 +104,8 @@ ENV/
 
 .vscode/
 
-migrations/
+# DS_Store (macOS)
+**/.DS_Store
+
+#migration files
+**/migrations/
