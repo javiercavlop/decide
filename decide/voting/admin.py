@@ -27,7 +27,6 @@ def stop(ModelAdmin, request, queryset):
 def tally(ModelAdmin, request, queryset):
     for v in queryset.filter(end_date__lt=timezone.now()):
         token1= str(Token.objects.filter(user__username=request.user.username)[0])
-        token = request.session.get('auth-token', '')
         v.tally_votes(token1)
 
 
