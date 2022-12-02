@@ -55,6 +55,12 @@ def vista(request,voting_id):
             options.append(vote['option'])
             values.append(vote['votes'])
             numberOfVotes = numberOfVotes+ vote['votes']
+
+    elif(questionType == 'dhondt'):
+        for vote in postpro:
+            options.append(vote['option'])
+            values.append(vote['postproc'])
+            numberOfVotes = numberOfVotes + vote['votes']
     
     
     labels2 = ["Votaron","No votaron"]
