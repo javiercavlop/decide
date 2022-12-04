@@ -1,26 +1,16 @@
-import random
 from django.contrib.auth.models import User
-from django.test import TestCase
-from rest_framework.test import APIClient
-
 from .models import Census,CensusGroup
-from base import mods
 from base.tests import BaseTestCase
 
 from pyexpat import model
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 
 from base.tests import BaseTestCase
-from time import sleep
-import sys, os
+import os
 import csv
-import pandas as pd
 import json
 import xlsxwriter
 
@@ -92,6 +82,39 @@ class CensusTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 204)
         self.assertEqual(0, Census.objects.count())
 
+class CensusGroupTestCase(BaseTestCase):
+    def setUp(self):
+        super().setUp()
+        self.census_group = CensusGroup(name='Test Group 1')
+        self.census_group.save()
+
+    def tearDown(self):
+        super().tearDown()
+        self.census_group = None
+
+    def test_group_creation(self):
+        data = {'name':'Test Group 2'}
+        response = self.client.post('/census/censusgroups/',data,format='json')
+        self.assertEqual(response.status_code, 401)
+
+        self.login(user='noadmin')
+        response = self.client.post('/census/censusgroups/',data,format='json')
+        self.assertEqual(response.status_code, 403)
+
+        self.login()
+        response = self.client.post('/census/censusgroups/',data,format='json')
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(2,CensusGroup.objects.count())
+
+    def test_group_destroy(self):
+        group_name = 'Test Group 1'
+        group_id = CensusGroup.objects.get(name=group_name).pk
+        before = CensusGroup.objects.count()
+
+        self.login()
+        response = self.client.delete('/census/censusgroups/{}/'.format(group_id),format='json')
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(before-1,CensusGroup.objects.count())
 
 class SeleniumImportExcelTestCase(StaticLiveServerTestCase):
     def setUp(self):
@@ -534,12 +557,9 @@ class CensusExportTestCase(BaseTestCase):
         headers[-1]=headers[-1].replace("\r","")
 
         self.assertEqual(headers, fields)
-        print(rows[1])
         census_values=Census.objects.all().values_list('voting_id','voter_id','group')
-        print(census_values)
         values=rows[1].split(",")
         values[-1]=values[-1].replace("\r","")
-        print(values)
         for i in range(len(census_values[0])):
             if values[i] != "":
                 self.assertEqual(int(values[i]), census_values[0][i])
@@ -568,12 +588,9 @@ class CensusExportTestCase(BaseTestCase):
         headers[-1]=headers[-1].replace("\r","")
 
         self.assertEqual(headers, fields)
-        print(rows[1])
         census_values=Census.objects.all().values_list('voting_id','voter_id','group')
-        print(census_values)
         values=rows[1].split(",")
         values[-1]=values[-1].replace("\r","")
-        print(values)
         for i in range(len(census_values[0])):
             if values[i] != "":
                 self.assertEqual(int(values[i]), census_values[0][i])
