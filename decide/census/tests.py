@@ -1,8 +1,6 @@
 from django.contrib.auth.models import User
 from .models import Census,CensusGroup
 from base.tests import BaseTestCase
-
-from pyexpat import model
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 from selenium import webdriver
@@ -28,59 +26,68 @@ class CensusTestCase(BaseTestCase):
         self.census = None
 
     def test_check_vote_permissions(self):
-        response = self.client.get('/census/{}/?voter_id={}'.format(1, 2), format='json')
+        response = self.client.get('/census/api/{}/?voter_id={}'.format(1, 2), format='json')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.json(), 'Invalid voter')
 
-        response = self.client.get('/census/{}/?voter_id={}'.format(1, 1), format='json')
+        response = self.client.get('/census/api/{}/?voter_id={}'.format(1, 1), format='json')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), 'Valid voter')
 
     def test_list_voting(self):
-        response = self.client.get('/census/?voting_id={}'.format(1), format='json')
+        response = self.client.get('/census/api?voting_id={}'.format(1), format='json')
         self.assertEqual(response.status_code, 401)
 
         self.login(user='noadmin')
-        response = self.client.get('/census/?voting_id={}'.format(1), format='json')
+        response = self.client.get('/census/api?voting_id={}'.format(1), format='json')
         self.assertEqual(response.status_code, 403)
 
         self.login()
-        response = self.client.get('/census/?voting_id={}'.format(1), format='json')
+        response = self.client.get('/census/api?voting_id={}'.format(1), format='json')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {'voters': [1]})
 
     def test_add_new_voters_conflict(self):
         data = {'voting_id': 1, 'voters': [1]}
-        response = self.client.post('/census/', data, format='json')
+        response = self.client.post('/census/api', data, format='json')
         self.assertEqual(response.status_code, 401)
 
         self.login(user='noadmin')
-        response = self.client.post('/census/', data, format='json')
+        response = self.client.post('/census/api', data, format='json')
         self.assertEqual(response.status_code, 403)
 
         self.login()
-        response = self.client.post('/census/', data, format='json')
+        response = self.client.post('/census/api', data, format='json')
         self.assertEqual(response.status_code, 409)
 
     def test_add_new_voters(self):
         data = {'voting_id': 2, 'voters': [1,2,3,4]}
-        response = self.client.post('/census/', data, format='json')
+        response = self.client.post('/census/api', data, format='json')
         self.assertEqual(response.status_code, 401)
 
         self.login(user='noadmin')
-        response = self.client.post('/census/', data, format='json')
+        response = self.client.post('/census/api', data, format='json')
         self.assertEqual(response.status_code, 403)
 
         self.login()
-        response = self.client.post('/census/', data, format='json')
+        response = self.client.post('/census/api', data, format='json')
         self.assertEqual(response.status_code, 201)
         self.assertEqual(len(data.get('voters')), Census.objects.count() - 1)
 
     def test_destroy_voter(self):
         data = {'voters': [1]}
-        response = self.client.delete('/census/{}/'.format(1), data, format='json')
+
+        self.login()
+        response = self.client.delete('/census/api/{}/'.format(1), data, format='json')
         self.assertEqual(response.status_code, 204)
         self.assertEqual(0, Census.objects.count())
+    
+    def test_add_new_voters_with_group(self):
+        data = {'voting_id': 1,'voters':[2],'group':{'name':'Test Group 1'}}
+        self.login()
+        response = self.client.post('/census/api', data, format='json')
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(len(data.get('voters')), Census.objects.count() - 1)
 
 class CensusGroupTestCase(BaseTestCase):
     def setUp(self):
@@ -525,6 +532,23 @@ class SeleniumImportCSVTestCase(StaticLiveServerTestCase):
         self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-danger'))==1)
         self.assertEqual(0,Census.objects.count())
 
+
+class CensusReuseTestCase(BaseTestCase):
+    def setUp(self):
+        super().setUp()
+    
+    def test_census_reuse(self):
+        self.login()
+
+        data = {'voting_id':'x','new_voting':'y'}
+        response = self.client.post('/census/reuse',data=data)
+        self.assertEqual(response.status_code, 400)
+
+        data = {'voting_id':1,'new_voting':2}
+        response = self.client.post('/census/reuse',data=data)
+        self.assertEqual(response.status_code, 302)
+        
+
 class CensusExportTestCase(BaseTestCase):
 
     def setUp(self):
@@ -537,6 +561,7 @@ class CensusExportTestCase(BaseTestCase):
 
     def tearDown(self):
         super().tearDown()
+        self.census_group = None
         self.census = None
         
     
