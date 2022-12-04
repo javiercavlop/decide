@@ -12,6 +12,7 @@ urlpatterns = [
     path('import_csv/', views.import_csv,name="import_csv"),
     path('export/', views.export_excel,name="export_excel"),
     path('censusgroups/<int:pk>/',views.CensusGroupDetail.as_view(), name='census_group_detail'),
-    path('reuse',views.censusReuse, name="census_reuse")
+    path('reuse',views.censusReuse, name="census_reuse"),
+    path('census_grouping/',views.census_grouping, name="census_grouping"),
 ]
 

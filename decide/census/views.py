@@ -17,7 +17,7 @@ from rest_framework.status import (
 from rest_framework.permissions import IsAdminUser,IsAuthenticated
 from base.perms import UserIsStaff
 from .models import Census,CensusGroup
-from .forms import CensusReuseForm
+from .forms import CensusReuseForm, CensusGroupingForm
 from .serializers import CensusGroupSerializer,CensusSerializer
 from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes 
@@ -338,3 +338,37 @@ class CensusGroupDetail(generics.RetrieveDestroyAPIView):
         except ObjectDoesNotExist:
             return Response('Non-existent group', status=ST_401)
         return Response('Valid group')
+
+@api_view(['GET','POST'])
+def census_grouping(request):
+    
+    if request.method == 'POST':
+        form = CensusGroupingForm(request.POST)
+        #print(form.is_valid())
+        #for field in form:
+        #    print("Field Error:", field.name,  field.errors)
+        
+        
+        if form.is_valid():
+            formData = form.cleaned_data
+            voting_id = formData['voting_id']
+            voter_id = formData['voter_id']
+            group_name = formData['group']
+            group = CensusGroup.objects.get(name=group_name)
+            censos = Census.objects.all().values()
+            #censoPrueba = Census.objects.get(voting_id=voting_id, voter_id=voter_id)
+            #print(censoPrueba)
+            
+            for censo in censos:
+                if(censo['voting_id'] == voting_id and censo['voter_id'] == voter_id):
+                        try:
+                            census = Census(id=censo['id'], voting_id=censo['voting_id'], voter_id=censo['voter_id'], group=group)
+                            census.save()
+                        except:
+                            return Response('Census or Group of Census does not exist', status=ST_400)
+            return HttpResponseRedirect('/census')
+        else:
+            return Response('Wrong type of value', status=ST_400)
+    else:
+        form = CensusGroupingForm()
+    return render(request,'census/census_grouping.html',{'form':form})

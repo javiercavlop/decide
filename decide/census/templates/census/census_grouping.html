@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+    <link type="text/css" rel="stylesheet"
+    href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet"
+    href="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.css" />
+    <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
+{% endblock %}
+
+{% block content %}
+<div id="app-census-grouping">
+    <!-- Navbar -->
+    <b-navbar toggleable="lg" type="dark" variant="dark">
+        <!-- TRADUCCION -->
+        <b-navbar-brand href="#">Decide</b-navbar-brand>
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+    </b-navbar>
+</div>
+<div class="container-fluid">
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+    <div class="card">
+        <article class="card-body">
+
+        <h4 class="card-title mb-4 mt-1 text-align-center text-center">Agrupar Censo</h4>
+            <form action="/census/census_grouping/" method="post">
+                {% csrf_token %}
+                <div class="mb-3 row">
+                    
+                    <div class="mb-3 row">
+                        <label for="voting_id" class="col-sm-5 col-form-label">Votación del censo: </label>
+                        <div class="col-sm-7">
+                            <input class="form-control" id="voting_id" name="voting_id" placeholder="Id de la votación a copiar">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="voter_id" class="col-sm-5 col-form-label">Votante: </label>
+                    
+                        <div class="col-sm-7">
+                            <input class="form-control" id="voter_id" name="voter_id" placeholder="Id del votante">
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="group" class="col-sm-5 col-form-label">Grupo de censos: </label>
+                        <div class="col-sm-7">
+                            <input class="form-control" id="group" name="group" placeholder="Nombre del grupo">
+                        </div>
+                    </div>
+                
+
+                    <div class="form-group mt-4 text-center">
+                        <button type="submit" class="btn btn-primary btn-block" value="OK"> Aceptar  </button>
+                    </div>
+                </div>                                                          
+            </form>
+        </article>
+    </div>
+    </div>
+
+</div>
+</div>
+
+{% endblock %}
+
+{% block extrabody %}
+    <!-- Vuejs -->
+    <script src="https://unpkg.com/vue@2.6/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.min.js"></script>
+    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue-icons.min.js"></script>
+    
+    <script>
+        new Vue({ el: '#app-census-grouping' }); 
+    </script>
+{% endblock %}
