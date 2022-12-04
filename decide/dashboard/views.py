@@ -4,9 +4,6 @@ from rest_framework import generics
 from django.contrib.auth import get_user_model
 
 from django.http import HttpResponse, Http404, FileResponse
-
-
-# Create your views here.
 import datetime
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
@@ -36,6 +33,14 @@ def vista(request,voting_id):
         duracion = str(time - datetime.timedelta(microseconds=time.microseconds))
 
     data[0].do_postproc()
+
+    if data[0].desc != "":
+        description = data[0].desc
+    elif data[0].question.desc != "":
+        description = data[0].question.desc
+    else:
+        description = "No hay una descripción asociada a esta votación ni a esta pregunta"
+
     postpro = data[0].postproc
     numberOfVotesAux = 0
     numberOfVotes = 0
@@ -64,19 +69,50 @@ def vista(request,voting_id):
     
     
     labels2 = ["Votaron","No votaron"]
-    values2 = [numberOfVotes, numberOfPeople-numberOfVotes]
+    values2 = [int(numberOfVotes), int(numberOfPeople-numberOfVotes)]
+
+    aux = {}
+    aux['Hombre'] = data[0].num_votes_M
+    aux['Mujer'] = data[0].num_votes_W
+    aux['Otros'] = numberOfVotes - (aux['Hombre'] + aux['Mujer'])
+    labels3 = aux.keys()
+    values3 = []
+    for label in labels3:
+        values3.append(aux[label])
+    
+    parity = False
+    mayor = ''
+    menor = ''
+    numDif = abs(aux['Hombre'] - aux['Mujer'])
+    if(aux['Hombre'] == aux['Mujer']):
+        parity = True
+    elif(aux['Hombre'] > aux['Mujer']):
+        mayor = 'hombres'
+        menor = 'mujeres'
+    else:
+        mayor = 'mujeres'
+        menor = 'hombres'
+
+
     context = {
-        "voting": data[0],
-        "people": numberOfPeople,
-        "time": duracion,
-        "numberOfVotes": int(numberOfVotes),
-        #"prueba": postpro,
-        "questionType":questionType,
-        "labels": options,
-        "values": values,
-        "labels2": labels2,
-        "values2": values2,
+        "voting" : data[0],
+        "description" : description,
+        "parity" : parity,
+        "mayor" : mayor,
+        "menor" : menor,
+        "numDif" : numDif,
+        "people" : numberOfPeople,
+        "time" : duracion,
+        "numberOfVotes" : int(numberOfVotes),
+        "questionType" :questionType,
+        "labels" : options,
+        "values" : values,
+        "labels2" : labels2,
+        "values2" : values2,
+        "labels3" : labels3,
+        "values3" : values3,
     }
+
 
     return render(request,"dashboard_with_pv.html",context)
 
