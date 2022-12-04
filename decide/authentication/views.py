@@ -234,7 +234,7 @@ class EditUserView(APIView):
                 are_errors = True
 
                 return render(request, 'profile.html', {
-                    'register_form':form ,
+                    'form':form ,
                     'errors': errors,
                     'are_errors': are_errors
                     })
@@ -253,8 +253,9 @@ class EditUserView(APIView):
                                             'last_name': request.user.last_name, 
                                             'email': request.user.email, 
                                             'username': request.user.username})
+                                            
             return render (request, "profile.html", {
-                "register_form":form})
+                "form":form})
 
 class DeleteUserView(APIView):
 
