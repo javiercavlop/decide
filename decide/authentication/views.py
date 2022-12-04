@@ -66,7 +66,7 @@ class SignUpView(APIView):
     def register(request):
         
         if request.user.is_authenticated:
-            return redirect('hello')
+            return redirect('main')
         
         if request.method == "POST":
 
@@ -129,7 +129,7 @@ class SignUpView(APIView):
                 user = form.save()
                 Token.objects.create(user=user)
                 login(request, user)
-                return redirect("hello")
+                return redirect("main")
             
         else:
             form = NewUserForm()
@@ -141,7 +141,7 @@ class SignInView(APIView):
     def sing_in(request):
 
         if request.user.is_authenticated:
-            return redirect('hello')
+            return redirect('main')
 
         if request.method == 'GET':
             
@@ -161,7 +161,7 @@ class SignInView(APIView):
             else:
                 Token.objects.update_or_create(user=user)
                 login(request, user)
-                return redirect('hello')
+                return redirect('main')
 
     @staticmethod     
     def hello(request):
@@ -246,7 +246,7 @@ class EditUserView(APIView):
                 user.email = request.POST['email']
                 user.username = request.POST['username']
                 user.save()
-                return redirect('hello')
+                return redirect('main')
         else:
 
             form = UserEditForm(initial={'first_name': request.user.first_name,
