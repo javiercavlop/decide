@@ -31,7 +31,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         user.save()
 
         options = webdriver.ChromeOptions()
-        options.headless = False
+        options.headless = True
         path = Path.cwd()
         prefs = {"download.default_directory": str(path)}
         options.add_experimental_option("prefs", prefs)

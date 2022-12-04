@@ -55,6 +55,12 @@ def vista(request,voting_id):
             options.append(vote['option'])
             values.append(vote['votes'])
             numberOfVotes = numberOfVotes+ vote['votes']
+
+    elif(questionType == 'dhondt'):
+        for vote in postpro:
+            options.append(vote['option'])
+            values.append(vote['postproc'])
+            numberOfVotes = numberOfVotes + vote['votes']
     
     
     labels2 = ["Votaron","No votaron"]
@@ -81,6 +87,7 @@ class DashboardView(TemplateView):
 
         percentages=list(Percentages.objects.all().values())
         pools=[p['voting'] for p in percentages]
+
         User = get_user_model()
         users = User.objects.values()
         us = list(users.all())
@@ -106,7 +113,7 @@ class DashboardView(TemplateView):
                 
 
         context = {
-            "porcentajes": percentages,
+            "percentages": percentages,
             "users": lista,
             "new_votes": surveys,
 
