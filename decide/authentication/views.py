@@ -1,7 +1,6 @@
 from django.utils import timezone
 from rest_framework.authtoken.views import ObtainAuthToken
-from authentication.form import NewUserForm, UserEditForm
-import re
+from authentication.form import NewUserForm, UserEditForm, LoginUserForm
 from allauth.socialaccount.models import SocialAccount
 from rest_framework import generics
 from rest_framework.response import Response
@@ -18,14 +17,8 @@ from django.contrib.auth import  login, logout, authenticate
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.exceptions import ObjectDoesNotExist
-from django.conf import settings
-from django.contrib.auth import get_user_model
-from django.contrib.auth.backends import ModelBackend
-from django.db.models import Q
 
 from .serializers import UserSerializer, RegisterSerializer
-
-from django.conf import settings
 
 class GetUserView(APIView):
     def post(self, request):
@@ -142,7 +135,6 @@ class SignUpView(APIView):
             form = NewUserForm()
             return render(request, 'signup.html', {'register_form': form})
 
-
 class SignInView(APIView):
  
     @staticmethod     
@@ -154,7 +146,7 @@ class SignInView(APIView):
         if request.method == 'GET':
             
             return render(request, 'signin.html', {
-                'form' : AuthenticationForm
+                'form' : LoginUserForm
             })
         else:
             print(request.POST)
@@ -163,7 +155,7 @@ class SignInView(APIView):
             if user is None:
                 
                 return render(request, 'signin.html', {
-                    'form' : AuthenticationForm,
+                    'form' : LoginUserForm,
                     'error': 'Username or password is incorrect'
                 })
             else:

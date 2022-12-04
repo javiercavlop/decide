@@ -2,19 +2,13 @@
 {% load i18n %}
 
 {% block extrahead %}
-    <link type="text/css" rel="stylesheet"
-         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-    <link type="text/css" rel="stylesheet"
-         href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
 {% endblock %}
 
 {% block content %} 
 
-
-
 <div class="container-md">
 	<!--Register--> 
-	{% if are_errors == True %}
+	{% if errors %}
 		{% for error in errors%}
 			<div class="alert alert-danger" role="alert">
 				{{error}}
@@ -26,7 +20,7 @@
 	<h1>Register</h1>
 	<form method="POST">
 		{% csrf_token %}
-		{{ register_form.as_p }} 
+		{{ register_form.as_p }}
 		<!--Traducir-->                    
 		<button class="btn btn-primary" type="submit">Register</button>
 	</form>
@@ -35,6 +29,5 @@
 </div>
 
 </div>
-
 
 {% endblock %}
