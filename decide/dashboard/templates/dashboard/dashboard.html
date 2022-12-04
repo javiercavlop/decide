@@ -64,6 +64,7 @@
                     </thead>
                     <tbody>
 
+
                         <tr v-for="por in percentages">
                             <th v-bind:id="[[por.voting]]" >[[por.voting]]</th>
                             <th>[[por.percen*100]]% </th>
@@ -123,6 +124,7 @@
 
     <script>
         var users = {{users|safe}};
+
         var percentages={{percentages|safe}};
         var new_votes={{new_votes|safe}};
         var app = new Vue({
@@ -130,6 +132,7 @@
             el: '#app-dashboard',
             data: {
                 users: users,
+
                 percentages:percentages,
                 new_votes:new_votes
             }

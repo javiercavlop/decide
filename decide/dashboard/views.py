@@ -82,12 +82,12 @@ def vista(request,voting_id):
 
 
 class DashboardView(TemplateView):
-    template_name = 'dashboard/dashboard.html'
+    def as_view(request):
+        template_name = 'dashboard/dashboard.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
         percentages=list(Percentages.objects.all().values())
-        context['percentages'] = json.dumps(percentages)
+        pools=[p['voting'] for p in percentages]
+
         User = get_user_model()
         users = User.objects.values()
         us = list(users.all())
@@ -98,13 +98,29 @@ class DashboardView(TemplateView):
         lista = []
         for i in us:
             lista.append(i['username'])
-        context['users'] = json.dumps(lista)
-        context['KEYBITS'] = settings.KEYBITS
+
         surveys=list(Surveys.objects.all().values())
-        context['new_votes'] = json.dumps(surveys)
+        votings=Voting.objects.all().values()
 
 
-        return context
+        for v in votings:
+            dict={}
+            if v['id'] not in pools:
+                dict['id'] = '-'
+                dict['voting']=v['id']
+                dict['percen']=  0.0
+                percentages.append(dict)
+                
+
+        context = {
+            "percentages": percentages,
+            "users": lista,
+            "new_votes": surveys,
+
+        }
+
+        return render(request,template_name,context)
+
 class DashBoardFile(generics.ListCreateAPIView):
     @api_view(['GET',])
     def write_doc(request):
