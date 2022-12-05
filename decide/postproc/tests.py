@@ -65,6 +65,44 @@ class PostProcTestCase(APITestCase):
         values = response.json()
         self.assertEqual(values, expected_result)
     
+    def test_same_order_borda(self):
+        data = {
+            'type': 'IDENTITY', 
+            'options': [{'option': 'Respuesta 1', 'number': 1, 'votes': 3}, {'option': 'Respuesta 2', 'number': 2, 'votes': 3}, {'option': 'Respuesta 3', 'number': 3, 'votes': 3}], 
+            'extra': [1, 3, 2, 1, 3, 2, 1, 3, 2], 
+            'questionType': 'borda'}
+
+        expected_result = [
+            { 'option': 'Respuesta 1', 'number': 1, 'votes': 3, 'postproc': 9 },
+            { 'option': 'Respuesta 3', 'number': 3, 'votes': 3, 'postproc': 6 },
+            { 'option': 'Respuesta 2', 'number': 2, 'votes': 3, 'postproc': 3 }    
+        ]
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        values = response.json()
+        self.assertEqual(values, expected_result)
+
+    def test_same_results_borda(self):
+        data = {
+            'type': 'IDENTITY', 
+            'options': [{'option': 'Respuesta 1', 'number': 1, 'votes': 3}, {'option': 'Respuesta 2', 'number': 2, 'votes': 3}, {'option': 'Respuesta 3', 'number': 3, 'votes': 3}], 
+            'extra': [1, 3, 2, 3, 2, 1, 2, 1, 3], 
+            'questionType': 'borda'}
+
+        expected_result = [
+            { 'option': 'Respuesta 1', 'number': 1, 'votes': 3, 'postproc': 6 },
+            { 'option': 'Respuesta 2', 'number': 2, 'votes': 3, 'postproc': 6 },
+            { 'option': 'Respuesta 3', 'number': 3, 'votes': 3, 'postproc': 6 }    
+        ]
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        values = response.json()
+        self.assertEqual(values, expected_result)
+    
     def test_wrong_data_borda(self):
         data = {
             'type': 'IDENTITY', 
