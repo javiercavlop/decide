@@ -86,6 +86,9 @@ celerybeat-schedule
 .venv
 venv/
 ENV/
+#pycharm
+.idea/workspace.xml
+
 
 # Spyder project settings
 .spyderproject
@@ -101,3 +104,26 @@ ENV/
 .mypy_cache/
 
 .vagrant
+
+
+#Visual Studio
+.vscode/
+
+
+# visual studio code
+.vscode/
+
+
+#pycharm
+.idea/workspace.xml
+
+
+.vscode/
+
+# DS_Store (macOS)
+**/.DS_Store
+
+#migration files
+**/migrations/
+
+

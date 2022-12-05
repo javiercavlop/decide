@@ -2,6 +2,7 @@ import json
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.http import Http404
+import json
 
 from base import mods
 
@@ -27,5 +28,9 @@ class BoothView(TemplateView):
             raise Http404
 
         context['KEYBITS'] = settings.KEYBITS
-
+        aux = {}
+        qtype = aux["questionType"] = str(json.loads(context["voting"])["question"]["questionType"])
+        context['questionType'] = json.dumps(qtype)
+        if (qtype == "borda"):
+            context["auxBorda"] = True
         return context
