@@ -341,34 +341,46 @@ class CensusGroupDetail(generics.RetrieveDestroyAPIView):
 
 @api_view(['GET','POST'])
 def census_grouping(request):
-    
+
+    censos = Census.objects.all().values()
+
     if request.method == 'POST':
         form = CensusGroupingForm(request.POST)
-        #print(form.is_valid())
-        #for field in form:
-        #    print("Field Error:", field.name,  field.errors)
-        
-        
+       
         if form.is_valid():
             formData = form.cleaned_data
-            voting_id = formData['voting_id']
-            voter_id = formData['voter_id']
             group_name = formData['group']
-            group = CensusGroup.objects.get(name=group_name)
-            censos = Census.objects.all().values()
-            #censoPrueba = Census.objects.get(voting_id=voting_id, voter_id=voter_id)
-            #print(censoPrueba)
+            choices = formData['choices']
             
-            for censo in censos:
-                if(censo['voting_id'] == voting_id and censo['voter_id'] == voter_id):
-                        try:
-                            census = Census(id=censo['id'], voting_id=censo['voting_id'], voter_id=censo['voter_id'], group=group)
-                            census.save()
-                        except:
-                            return Response('Census or Group of Census does not exist', status=ST_400)
+            censosForm = choices.values()
+            group = CensusGroup.objects.get(name=group_name)
+
+            for censo in censosForm:
+                try:
+                    census = Census(id=censo['id'], voting_id=censo['voting_id'], voter_id=censo['voter_id'], group=group)
+                    census.save()
+                except:
+                    return Response('Census not selected or Group of Census does not exist', status=ST_400)
             return HttpResponseRedirect('/census')
         else:
             return Response('Wrong type of value', status=ST_400)
     else:
         form = CensusGroupingForm()
-    return render(request,'census/census_grouping.html',{'form':form})
+        census = census_list(censos)
+    return render(request,'census/census_grouping.html',{'form':form, 'censos': census})
+
+def census_list(censos):
+    res = []
+    for censo in censos:
+        try:
+            votante = User.objects.get(pk=censo['voter_id'])
+        except:
+            #       TRADUCCION
+            votante = "El votante todavía no ha sido añadido"
+        try:
+            grupo = CensusGroup.objects.get(id=censo['group_id'])
+        except:
+            #       TRADUCCION
+            grupo = "No tiene grupo asignado"
+        res.append({'id': censo['id'],'voting_id':censo['voting_id'],'voter':votante,'group':grupo})
+    return res
