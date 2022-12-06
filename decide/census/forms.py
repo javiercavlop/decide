@@ -6,7 +6,7 @@ class CensusReuseForm(forms.Form):
     new_voting = forms.IntegerField(label="new_voting")
 
 class CensusGroupingForm(forms.Form):
-    group = forms.CharField(label="group")
+    group = forms.CharField(label="group", required = False)
     choices = forms.ModelMultipleChoiceField(
     queryset= Census.objects.all(),
     widget  = forms.CheckboxSelectMultiple,

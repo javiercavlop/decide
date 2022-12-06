@@ -353,17 +353,21 @@ def census_grouping(request):
             choices = formData['choices']
             
             censosForm = choices.values()
-            group = CensusGroup.objects.get(name=group_name)
 
             for censo in censosForm:
                 try:
-                    census = Census(id=censo['id'], voting_id=censo['voting_id'], voter_id=censo['voter_id'], group=group)
-                    census.save()
+                    if group_name.strip()=="":
+                        census = Census(id=censo['id'], voting_id=censo['voting_id'], voter_id=censo['voter_id'])
+                        census.save()
+                    else:
+                        group = CensusGroup.objects.get(name=group_name)
+                        census = Census(id=censo['id'], voting_id=censo['voting_id'], voter_id=censo['voter_id'], group=group)
+                        census.save()
                 except:
-                    return Response('Census not selected or Group of Census does not exist', status=ST_400)
+                    return Response('The group of census does not exist', status=ST_400)
             return HttpResponseRedirect('/census')
         else:
-            return Response('Wrong type of value', status=ST_400)
+            return Response('You must select one census at least', status=ST_400)
     else:
         form = CensusGroupingForm()
         census = census_list(censos)
