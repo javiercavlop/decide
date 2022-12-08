@@ -34,12 +34,13 @@ def vista(request,voting_id):
 
     data[0].do_postproc()
 
-    if data[0].desc != "":
+    if data[0].desc != "" and data[0].desc is not None:
         description = data[0].desc
-    elif data[0].question.desc != "":
+    elif data[0].question.desc != "" and data[0].question.desc is not None:
         description = data[0].question.desc
     else:
         description = "No hay una descripción asociada a esta votación ni a esta pregunta"
+
 
     postpro = data[0].postproc
     numberOfVotesAux = 0
@@ -112,7 +113,6 @@ def vista(request,voting_id):
         "labels3" : labels3,
         "values3" : values3,
     }
-
 
     return render(request,"dashboard_with_pv.html",context)
 

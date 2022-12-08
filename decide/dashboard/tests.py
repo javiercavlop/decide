@@ -5,12 +5,25 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from django.utils import timezone
 from voting.models import Voting, Question, QuestionOption
+from census.models import Census
+from store.models import Vote
+from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from selenium.webdriver.common.action_chains import ActionChains
 from voting.models import Voting
 from pathlib import Path
 import time
+import datetime
 import os.path
+
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
 
@@ -289,3 +302,152 @@ class DashBoard2TestCase(BaseTestCase):
         response = self.client.get('/dashboard')
         self.assertEqual(response.status_code, 301)
 
+
+class Dashboard_votTestCase(BaseTestCase):
+
+    def setUp(self):
+
+        self.base = BaseTestCase()
+        self.base.setUp()
+        User = get_user_model()
+        user = User.objects.get(username="admin")
+        user.is_staff = True
+        user.is_admin = True
+        user.is_superuser = True
+        user.save()
+
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        path = Path.cwd()
+        prefs = {"download.default_directory": str(path)}
+        options.add_experimental_option("prefs", prefs)
+        self.driver = webdriver.Chrome(options=options)
+
+    def test_positive_model_data_normal_no_start(self):
+
+        q = Question(questionType="normal",desc = "TestQ")
+        q.save()
+        qo1 = QuestionOption(question=q, number = 1, option = "Tortilla")
+        qo2 = QuestionOption(question=q, number = 2, option = "Arroz")
+        qo1.save()
+        qo2.save()
+        q.save()
+        v = Voting(name='test v', question=q)
+        v.save()
+        v.create_pubkey()
+        v.save()
+        rq = self.client.get("/dashboard/"+str(v.id)+"/")
+        self.assertEqual(rq.status_code,200)
+        self.assertEqual(rq.context.get('time'),'Aún no ha comenzado')
+        self.assertEqual(rq.context.get('description'),q.desc)
+        self.assertEqual(rq.context.get('questionType'),q.questionType)
+        self.assertEqual(rq.context.get('numberOfVotes'),0)
+        self.assertEqual(rq.context.get('labels'),[qo1.option,qo2.option])
+        self.assertEqual(rq.context.get('values'),[0,0])
+        self.assertEqual(rq.context.get('labels2'),["Votaron","No votaron"])
+        self.assertEqual(rq.context.get('values2'),[0,0])
+        self.assertEqual(rq.context.get('parity'),True)
+        self.assertEqual(list(rq.context.get('labels3')),['Hombre','Mujer','Otros'])
+        self.assertEqual(rq.context.get('values3'),[0,0,0])
+        self.assertEqual(rq.context.get('mayor'),'')
+        self.assertEqual(rq.context.get('menor'),'')
+    
+    def test_positive_model_data_normal_no_finish(self):
+
+        q = Question(questionType="normal",desc = "TestQ")
+        q.save()
+        qo1 = QuestionOption(question=q, number = 1, option = "Tortilla")
+        qo2 = QuestionOption(question=q, number = 2, option = "Arroz")
+        qo1.save()
+        qo2.save()
+        q.save()
+        v = Voting(name='test v', question=q)
+        v.save()
+        v.create_pubkey()
+        v.save()
+        v.start_date = timezone.now()
+        v.save()
+        rq = self.client.get("/dashboard/"+str(v.id)+"/")
+        self.assertEqual(rq.status_code,200)
+        self.assertEqual(rq.context.get('time'),'Aún no ha terminado')
+        self.assertEqual(rq.context.get('description'),q.desc)
+        self.assertEqual(rq.context.get('questionType'),q.questionType)
+        self.assertEqual(rq.context.get('numberOfVotes'),0)
+        self.assertEqual(rq.context.get('labels'),[qo1.option,qo2.option])
+        self.assertEqual(rq.context.get('values'),[0,0])
+        self.assertEqual(rq.context.get('labels2'),["Votaron","No votaron"])
+        self.assertEqual(rq.context.get('values2'),[0,0])
+        self.assertEqual(rq.context.get('parity'),True)
+        self.assertEqual(list(rq.context.get('labels3')),['Hombre','Mujer','Otros'])
+        self.assertEqual(rq.context.get('values3'),[0,0,0])
+        self.assertEqual(rq.context.get('mayor'),'')
+        self.assertEqual(rq.context.get('menor'),'')
+
+    def test_positive_model_data_normal_no_tally(self):
+
+        q = Question(questionType="normal",desc = "TestQ")
+        q.save()
+        qo1 = QuestionOption(question=q, number = 1, option = "Tortilla")
+        qo2 = QuestionOption(question=q, number = 2, option = "Arroz")
+        qo1.save()
+        qo2.save()
+        q.save()
+        v = Voting(name='test v', question=q)
+        v.save()
+        v.create_pubkey()
+        v.save()
+        v.start_date = timezone.now()
+        v.end_date = timezone.now()
+        v.save()
+        rq = self.client.get("/dashboard/"+str(v.id)+"/")
+        self.assertEqual(rq.status_code,200)
+
+        time = v.end_date-v.start_date
+        duracion = str(time - datetime.timedelta(microseconds=time.microseconds))
+
+        self.assertEqual(rq.context.get('time'),duracion)
+        self.assertEqual(rq.context.get('description'),q.desc)
+        self.assertEqual(rq.context.get('questionType'),q.questionType)
+        self.assertEqual(rq.context.get('numberOfVotes'),0)
+        self.assertEqual(rq.context.get('labels'),[qo1.option,qo2.option])
+        self.assertEqual(rq.context.get('values'),[0,0])
+        self.assertEqual(rq.context.get('labels2'),["Votaron","No votaron"])
+        self.assertEqual(rq.context.get('values2'),[0,0])
+        self.assertEqual(rq.context.get('parity'),True)
+        self.assertEqual(list(rq.context.get('labels3')),['Hombre','Mujer','Otros'])
+        self.assertEqual(rq.context.get('values3'),[0,0,0])
+        self.assertEqual(rq.context.get('mayor'),'')
+        self.assertEqual(rq.context.get('menor'),'')
+
+
+
+        """
+        user1 = User(username = "usuario1")
+        user1.set_password('Constraseñaa11')
+        user1.save()
+        user2 = User(username = "usuario2")
+        user2.set_password('Constraseñaa22')
+        user2.save()
+        user3 = User(username = "usuario3")
+        user3.set_password('Constraseñaa33')
+        user3.save()
+
+        us = User.objects.filter(username="usuario2")
+        self.assertEqual(user2,us[0])
+
+        census1 = Census(voting_id = v.id, voter_id=user1.id)
+        census2 = Census(voting_id = v.id, voter_id=user2.id)
+        census3 = Census(voting_id = v.id, voter_id=user3.id)
+        census1.save()
+        census2.save()
+        census3.save()
+
+        cens = Census.objects.filter(voting_id = v.id, voter_id = user2.id)
+        self.assertEqual(census2,cens[0])
+
+        
+        vote = self.client.post("/store/",request ={'voting' : v, 'voter' : user1, 'vote' : {'a' : 1, 'b' : 2}})
+        self.assertEqual(vote.status_code,200)
+        voteAux = Vote.objects.filter(voting_id = v.id, voter_id = user1.id)
+        print(voteAux)
+        """
