@@ -4,12 +4,10 @@ from django.utils import timezone
 from .models import QuestionOption
 from .models import Question
 from .models import Voting
+from .models import DHondtQuestion
 
 from .filters import StartedFilter
 from rest_framework.authtoken.models import Token
-
-
-
 
 def start(modeladmin, request, queryset):
     for v in queryset.all():
@@ -35,8 +33,12 @@ class QuestionOptionInline(admin.TabularInline):
 
 
 class QuestionAdmin(admin.ModelAdmin):
+    exclude = ('seats',)
     inlines = [QuestionOptionInline]
 
+class DHondtQuestionAdmin(admin.ModelAdmin):
+    exclude = ('questionType',)
+    inlines = [QuestionOptionInline]
 
 class VotingAdmin(admin.ModelAdmin):
     list_display = ('name', 'start_date', 'end_date')
@@ -51,3 +53,5 @@ class VotingAdmin(admin.ModelAdmin):
 
 admin.site.register(Voting, VotingAdmin)
 admin.site.register(Question, QuestionAdmin)
+admin.site.register(DHondtQuestion, DHondtQuestionAdmin)
+
