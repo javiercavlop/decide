@@ -169,6 +169,10 @@ class SignInView(APIView):
             else:
                 Token.objects.update_or_create(user=user)
                 login(request, user)
+
+                if 'next' in request.GET:
+                    return redirect(request.GET['next'])
+
                 return redirect('hello')
 
     @staticmethod     
