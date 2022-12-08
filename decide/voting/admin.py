@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils import timezone
+from rest_framework.authtoken.models import Token
 
 from .models import QuestionOption
 from .models import Question
@@ -23,6 +24,9 @@ def stop(ModelAdmin, request, queryset):
 
 def tally(ModelAdmin, request, queryset):
     for v in queryset.filter(end_date__lt=timezone.now()):
+
+        Token.objects.get_or_create(user=request.user)
+
         token = request.session.get('auth-token', '')
         v.tally_votes(token)
 
