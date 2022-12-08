@@ -9,7 +9,6 @@ from voting.models import Voting, Question, QuestionOption
 from census.models import Census
 
 from postproc.models import UserProfile
-from voting import tests
 from django.contrib.auth.models import User
 from mixnet.models import Auth
 from django.contrib.auth import get_user_model
@@ -178,8 +177,6 @@ class DashBoard_test_case(StaticLiveServerTestCase):
 
  
         
-
-        
         
     def test_vote_dashboard_census_negative(self):
         q = Question(desc='test questcccion')
@@ -312,14 +309,29 @@ class DashBoard2TestCase(BaseTestCase):
         response = self.client.get('/dashboard')
         self.assertEqual(response.status_code, 301)
 
-
-class Dashboard_TestCase(BaseTestCase):
+    
+class Dashboard_TestCase(StaticLiveServerTestCase):
 
     def setUp(self):
+        self.base = BaseTestCase()
+        self.base.setUp()
+        User = get_user_model()
+        user = User.objects.get(username="admin")
+        user.is_staff = True
+        user.is_admin = True
+        user.is_superuser = True
+        user.save()
+
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
         super().setUp()
 
     def tearDown(self):
         super().tearDown()
+        self.driver.quit()
+
+        self.base.tearDown()
 
     def test_positive_model_data_normal_no_start(self):
 
@@ -349,6 +361,11 @@ class Dashboard_TestCase(BaseTestCase):
         self.assertEqual(rq.context.get('values3'),[0,0,0])
         self.assertEqual(rq.context.get('mayor'),'')
         self.assertEqual(rq.context.get('menor'),'')
+
+        self.driver.get(f'{self.live_server_url}/dashboard/{v.id}/')
+        tim = self.driver.find_element(By.CSS_SELECTOR, "h1:nth-child(1)").text
+        self.assertEqual(tim,"Aún no ha comenzado la votación "+ str(v.id))
+
     
     def test_positive_model_data_normal_no_finish(self):
 
@@ -380,6 +397,11 @@ class Dashboard_TestCase(BaseTestCase):
         self.assertEqual(rq.context.get('values3'),[0,0,0])
         self.assertEqual(rq.context.get('mayor'),'')
         self.assertEqual(rq.context.get('menor'),'')
+
+        self.driver.get(f'{self.live_server_url}/dashboard/{v.id}/')
+        tim = self.driver.find_element(By.CSS_SELECTOR, "h1:nth-child(1)").text
+        self.assertEqual(tim,"Aún no ha terminado la votación "+ str(v.id))
+
 
     def test_positive_model_data_normal_no_tally_and_voting_desc(self):
 
@@ -416,6 +438,14 @@ class Dashboard_TestCase(BaseTestCase):
         self.assertEqual(rq.context.get('values3'),[0,0,0])
         self.assertEqual(rq.context.get('mayor'),'')
         self.assertEqual(rq.context.get('menor'),'')
+
+
+        self.driver.get(f'{self.live_server_url}/dashboard/{v.id}/')
+        tim = self.driver.find_element(By.CSS_SELECTOR, "h1:nth-child(1)").text
+        self.assertEqual(tim,"Aún no se ha hecho el recuento de la votación "+ str(v.id))
+
+        dsc = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(5)").text
+        self.assertEqual(dsc,"Votación de prueba")
 
     
     def encrypt_msg(self, msg, v, bits=settings.KEYBITS):
@@ -525,11 +555,12 @@ class Dashboard_TestCase(BaseTestCase):
                 }
                 clear[opt.number] += 1
                 user = self.get_or_create_user(voter.voter_id)
-                self.login(user=user.username)
+                self.base.login(user=user.username)
                 voter = voters.pop()
                 mods.post('store', json=data)
         return clear
     
+
     def test_complete_voting_normal(self):
         v = self.create_voting()
         self.create_voters(v)
@@ -540,8 +571,8 @@ class Dashboard_TestCase(BaseTestCase):
 
         clear = self.store_votes(v)
 
-        self.login()  # set token
-        v.tally_votes(self.token)
+        self.base.login()  # set token
+        v.tally_votes(self.base.token)
 
         tally = v.tally
         tally.sort()
@@ -564,6 +595,7 @@ class Dashboard_TestCase(BaseTestCase):
         rq = self.client.get("/dashboard/" + str(v.id) + "/")
         self.assertEqual(rq.status_code, 200)
 
+        "Check that the data assigned to the model is correct"
         self.assertEqual(rq.context.get('time'), duracion)
         self.assertEqual(rq.context.get('description'),"No hay una descripción asociada a esta votación ni a esta pregunta")
         self.assertEqual(rq.context.get('questionType'),'normal')
@@ -587,8 +619,27 @@ class Dashboard_TestCase(BaseTestCase):
         self.assertEqual(rq.context.get('values2'),[numberOfVotes,numberOfPeople-numberOfVotes])
         self.assertEqual(rq.context.get('parity'),True)
 
+        "Get the HTML elements to check if the data from the model is processed correctly"
+        self.driver.get(f'{self.live_server_url}/dashboard/{v.id}/')
+        numeroVotos = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(10)").text
+        tipoPregunta = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(6)").text
+        desc_nav = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(4)").text
+        parity = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(14)").text
+        chart = self.driver.find_element(By.ID, "myChart")
+        chart2 = self.driver.find_element(By.ID, "my2Chart")
+        chart3 = self.driver.find_element(By.ID, "my3Chart")
+
+        self.assertEqual(tipoPregunta, "normal")
+        self.assertEqual(desc_nav,"No hay una descripción asociada a esta votación ni a esta pregunta")
+        self.assertEqual(numeroVotos,str(numberOfVotes))
+        self.assertEqual(parity,'Se ha cumplido la paridad para esta votación')
+        "Check that the charts are displayed"
+        self.assertTrue(chart != None)
+        self.assertTrue(chart2 != None)
+        self.assertTrue(chart3 != None)
 
 
+    
     def test_voting_normal_more_woman(self):
 
         v = self.create_voting()
@@ -600,8 +651,8 @@ class Dashboard_TestCase(BaseTestCase):
 
         clear = self.store_votes(v)
 
-        self.login()  # set token
-        v.tally_votes(self.token)
+        self.base.login()  # set token
+        v.tally_votes(self.base.token)
 
         tally = v.tally
         tally.sort()
@@ -646,6 +697,30 @@ class Dashboard_TestCase(BaseTestCase):
         self.assertEqual(rq.context.get('mayor'),'mujeres')
         self.assertEqual(rq.context.get('menor'),'hombres')
 
+        numDif = abs(v.num_votes_M - v.num_votes_W)
+        "Get the HTML elements to check if the data from the model is processed correctly"
+        self.driver.get(f'{self.live_server_url}/dashboard/{v.id}/')
+        numeroVotos = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(10)").text
+        tipoPregunta = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(6)").text
+        desc_nav = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(4)").text
+        parity = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(14)").text
+        chart = self.driver.find_element(By.ID, "myChart")
+        chart2 = self.driver.find_element(By.ID, "my2Chart")
+        chart3 = self.driver.find_element(By.ID, "my3Chart")
+
+        self.assertEqual(tipoPregunta, "normal")
+        self.assertEqual(desc_nav,"No hay una descripción asociada a esta votación ni a esta pregunta")
+        self.assertEqual(numeroVotos,str(numberOfVotes))
+        if(numDif == 1):
+            self.assertEqual(parity,'No se ha cumplido la paridad para esta votación, hay ' + str(numDif) + ' voto más de mujeres que de hombres')
+        else:
+            self.assertEqual(parity,'No se ha cumplido la paridad para esta votación, hay ' + str(numDif) + ' votos más de mujeres que de hombres')
+        
+        "Check that the charts are displayed"
+        self.assertTrue(chart != None)
+        self.assertTrue(chart2 != None)
+        self.assertTrue(chart3 != None)
+
     def test_voting_normal_more_man(self):
 
         v = self.create_voting()
@@ -657,8 +732,8 @@ class Dashboard_TestCase(BaseTestCase):
 
         clear = self.store_votes(v)
 
-        self.login()  # set token
-        v.tally_votes(self.token)
+        self.base.login()  # set token
+        v.tally_votes(self.base.token)
 
         tally = v.tally
         tally.sort()
@@ -703,6 +778,30 @@ class Dashboard_TestCase(BaseTestCase):
         self.assertEqual(rq.context.get('mayor'),'hombres')
         self.assertEqual(rq.context.get('menor'),'mujeres')
 
+        numDif = abs(v.num_votes_M - v.num_votes_W)
+        "Get the HTML elements to check if the data from the model is processed correctly"
+        self.driver.get(f'{self.live_server_url}/dashboard/{v.id}/')
+        numeroVotos = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(10)").text
+        tipoPregunta = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(6)").text
+        desc_nav = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(4)").text
+        parity = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(14)").text
+        chart = self.driver.find_element(By.ID, "myChart")
+        chart2 = self.driver.find_element(By.ID, "my2Chart")
+        chart3 = self.driver.find_element(By.ID, "my3Chart")
+
+        self.assertEqual(tipoPregunta, "normal")
+        self.assertEqual(desc_nav,"No hay una descripción asociada a esta votación ni a esta pregunta")
+        self.assertEqual(numeroVotos,str(numberOfVotes))
+        if(numDif == 1):
+            self.assertEqual(parity,'No se ha cumplido la paridad para esta votación, hay ' + str(numDif) + ' voto más de hombres que de mujeres')
+        else:
+            self.assertEqual(parity,'No se ha cumplido la paridad para esta votación, hay ' + str(numDif) + ' votos más de hombres que de mujeres')
+        
+        "Check that the charts are displayed"
+        self.assertTrue(chart != None)
+        self.assertTrue(chart2 != None)
+        self.assertTrue(chart3 != None)
+
     
     def test_complete_voting_dhondt(self):
 
@@ -714,8 +813,8 @@ class Dashboard_TestCase(BaseTestCase):
 
         clear = self.store_votes(v)
 
-        self.login()  # set token
-        v.tally_votes(self.token)
+        self.base.login()  # set token
+        v.tally_votes(self.base.token)
 
         tally = v.tally
         tally.sort()
@@ -756,6 +855,26 @@ class Dashboard_TestCase(BaseTestCase):
         self.assertEqual(rq.context.get('values2'),[numberOfVotes,numberOfPeople-numberOfVotes])
         self.assertEqual(rq.context.get('parity'),True)
 
+        "Get the HTML elements to check if the data from the model is processed correctly"
+        self.driver.get(f'{self.live_server_url}/dashboard/{v.id}/')
+        numeroVotos = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(10)").text
+        tipoPregunta = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(6)").text
+        desc_nav = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(4)").text
+        parity = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(14)").text
+        chart = self.driver.find_element(By.ID, "myChart")
+        chart2 = self.driver.find_element(By.ID, "my2Chart")
+        chart3 = self.driver.find_element(By.ID, "my3Chart")
+
+        self.assertEqual(parity,'Se ha cumplido la paridad para esta votación')
+        self.assertEqual(tipoPregunta, "dhondt")
+        self.assertEqual(desc_nav,"test question")
+        self.assertEqual(numeroVotos,str(numberOfVotes))
+        
+        "Check that the charts are displayed"
+        self.assertTrue(chart != None)
+        self.assertTrue(chart2 != None)
+        self.assertTrue(chart3 != None)
+    
 
 
 
