@@ -6,15 +6,22 @@ from selenium.webdriver.common.by import By
 from django.utils import timezone
 from voting.models import Voting, Question, QuestionOption
 from census.models import Census
-from store.models import Vote
+from voting import tests
 from django.contrib.auth.models import User
+from mixnet.models import Auth
 from django.contrib.auth import get_user_model
 from selenium.webdriver.common.action_chains import ActionChains
 from voting.models import Voting
 from pathlib import Path
+from django.conf import settings
 import time
 import datetime
-import os.path
+from rest_framework.authtoken.models import Token
+import random
+from mixnet.mixcrypt import ElGamal
+from mixnet.mixcrypt import MixCrypt
+import itertools
+from base import mods
 
 import time
 from selenium import webdriver
@@ -26,7 +33,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
-
+'''
 
 # Create your tests here.
 class DashBoard_test_case(StaticLiveServerTestCase):
@@ -301,27 +308,15 @@ class DashBoard2TestCase(BaseTestCase):
 
         response = self.client.get('/dashboard')
         self.assertEqual(response.status_code, 301)
+'''
 
-
-class Dashboard_votTestCase(BaseTestCase):
+class Dashboard_TestCase(BaseTestCase):
 
     def setUp(self):
+        super().setUp()
 
-        self.base = BaseTestCase()
-        self.base.setUp()
-        User = get_user_model()
-        user = User.objects.get(username="admin")
-        user.is_staff = True
-        user.is_admin = True
-        user.is_superuser = True
-        user.save()
-
-        options = webdriver.ChromeOptions()
-        options.headless = True
-        path = Path.cwd()
-        prefs = {"download.default_directory": str(path)}
-        options.add_experimental_option("prefs", prefs)
-        self.driver = webdriver.Chrome(options=options)
+    def tearDown(self):
+        super().tearDown()
 
     def test_positive_model_data_normal_no_start(self):
 
@@ -419,35 +414,123 @@ class Dashboard_votTestCase(BaseTestCase):
         self.assertEqual(rq.context.get('mayor'),'')
         self.assertEqual(rq.context.get('menor'),'')
 
+    
+    def encrypt_msg(self, msg, v, bits=settings.KEYBITS):
+        pk = v.pub_key
+        p, g, y = (pk.p, pk.g, pk.y)
+        k = MixCrypt(bits=bits)
+        k.k = ElGamal.construct((p, g, y))
+        return k.encrypt(msg)
 
+    def create_voting(self):
+        q = Question()
+        q.save()
+        for i in range(5):
+            opt = QuestionOption(question=q, option='option {}'.format(i+1))
+            opt.save()
+        v = Voting(name='test voting', question=q)
+        v.save()
 
-        """
-        user1 = User(username = "usuario1")
-        user1.set_password('Constraseñaa11')
-        user1.save()
-        user2 = User(username = "usuario2")
-        user2.set_password('Constraseñaa22')
-        user2.save()
-        user3 = User(username = "usuario3")
-        user3.set_password('Constraseñaa33')
-        user3.save()
+        a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
+                                          defaults={'me': True, 'name': 'test auth'})
+        a.save()
+        v.auths.add(a)
 
-        us = User.objects.filter(username="usuario2")
-        self.assertEqual(user2,us[0])
+        return v
 
-        census1 = Census(voting_id = v.id, voter_id=user1.id)
-        census2 = Census(voting_id = v.id, voter_id=user2.id)
-        census3 = Census(voting_id = v.id, voter_id=user3.id)
-        census1.save()
-        census2.save()
-        census3.save()
+    
+    def create_voters(self, v):
+        for i in range(100):
+            u, _ = User.objects.get_or_create(username='testvoter{}'.format(i))
+            u.is_active = True
+            u.save()
+            c = Census(voter_id=u.id, voting_id=v.id)
+            c.save()
 
-        cens = Census.objects.filter(voting_id = v.id, voter_id = user2.id)
-        self.assertEqual(census2,cens[0])
+    def get_or_create_user(self, pk):
+        user, _ = User.objects.get_or_create(pk=pk)
+        user.username = 'user{}'.format(pk)
+        user.set_password('qwerty')
+        user.save()
+        return user
+
+    def store_votes(self, v):
+        voters = list(Census.objects.filter(voting_id=v.id))
+        voter = voters.pop()
+
+        clear = {}
+        for opt in v.question.options.all():
+            clear[opt.number] = 0
+            for i in range(random.randint(0, 5)):
+                a, b = self.encrypt_msg(opt.number, v)
+                data = {
+                    'voting': v.id,
+                    'voter': voter.voter_id,
+                    'vote': { 'a': a, 'b': b },
+                }
+                clear[opt.number] += 1
+                user = self.get_or_create_user(voter.voter_id)
+                self.login(user=user.username)
+                voter = voters.pop()
+                mods.post('store', json=data)
+        return clear
+
+    def test_complete_voting(self):
+        v = self.create_voting()
+        self.create_voters(v)
+
+        v.create_pubkey()
+        v.start_date = timezone.now()
+        v.save()
+
+        clear = self.store_votes(v)
+
+        self.login()  # set token
+        v.tally_votes(self.token)
+
+        tally = v.tally
+        tally.sort()
+        tally = {k: len(list(x)) for k, x in itertools.groupby(tally)}
+
+        for q in v.question.options.all():
+            self.assertEqual(tally.get(q.number, 0), clear.get(q.number, 0))
+
+        for q in v.postproc:
+            self.assertEqual(tally.get(q["number"], 0), q["votes"])
+        
+        
+
+        v.end_date = timezone.now()
+      
+        v.do_postproc()
+        v.tally_votes()
+        v.save()
+        time = v.end_date-v.start_date
+        duracion = str(time - datetime.timedelta(microseconds=time.microseconds))
+
+        rq = self.client.get("/dashboard/"+str(v.id)+"/")
+        self.assertEqual(rq.status_code,200)
+
+        self.assertEqual(rq.context.get('time'),duracion)
+        self.assertEqual(rq.context.get('description'),"No hay una descripción asociada a esta votación ni a esta pregunta")
+        '''
+        self.assertEqual(rq.context.get('questionType'),q.questionType)
+        self.assertEqual(rq.context.get('numberOfVotes'),0)
+        self.assertEqual(rq.context.get('labels'),[qo1.option,qo2.option])
+        self.assertEqual(rq.context.get('values'),[0,0])
+        self.assertEqual(rq.context.get('labels2'),["Votaron","No votaron"])
+        self.assertEqual(rq.context.get('values2'),[0,0])
+        self.assertEqual(rq.context.get('parity'),True)
+        self.assertEqual(list(rq.context.get('labels3')),['Hombre','Mujer','Otros'])
+        self.assertEqual(rq.context.get('values3'),[0,0,0])
+        self.assertEqual(rq.context.get('mayor'),'')
+        self.assertEqual(rq.context.get('menor'),'')
+        self.assertEqual(response.context.get(''))
+        '''
+
 
         
-        vote = self.client.post("/store/",request ={'voting' : v, 'voter' : user1, 'vote' : {'a' : 1, 'b' : 2}})
-        self.assertEqual(vote.status_code,200)
-        voteAux = Vote.objects.filter(voting_id = v.id, voter_id = user1.id)
-        print(voteAux)
-        """
+
+
+
+
