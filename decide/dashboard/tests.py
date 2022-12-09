@@ -720,6 +720,7 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         self.assertTrue(chart != None)
         self.assertTrue(chart2 != None)
         self.assertTrue(chart3 != None)
+   
 
     def test_voting_normal_more_man(self):
 
