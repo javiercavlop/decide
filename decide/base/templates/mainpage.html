@@ -12,35 +12,37 @@
     <div id="header" class="container text-center my-4">
         <!-- TRADUCCION -->
         <h1>Bienvenido a Decide</h1>
+        <hr class="border-3 border-top border-dark">
     </div>
 
     <div id="content" class="container">
         <div class="row">
 
-            <div class="col-lg-6 text-center my-3 mx-auto">
+            <div class="{% if is_staff %}col-lg-6{% else %}col-lg-12{% endif %} text-center my-3 mx-auto">
+                <div class="row">
+                    <div id="id-voting-panel" class="{% if is_staff %}col-lg-12{%else%}col-lg-6{%endif%}">
+                        <!-- TRADUCCION -->
+                        <h2>Si vienes a votar...</h2>
+                        <b-card header="Busca tu votación">
+                            <b-list-group class="voting-list my-3">
+                                {% for voting in voting_votings %}
+                                    <b-list-group-item href="/booth/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
+                                {% endfor %}
+                            </b-list-group>
+                        </b-card>
+                    </div>
 
-                <div id="id-voting-panel" class="row">
-                    <!-- TRADUCCION -->
-                    <h2>Si vienes a votar...</h2>
-                    <b-card header="Busca tu votación">
-                        <b-list-group class="voting-list my-3">
-                            {% for voting in voting_votings %}
-                                <b-list-group-item href="/booth/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
-                            {% endfor %}
-                        </b-list-group>
-                    </b-card>
-                </div>
-
-                <div id="id-visualizer-panel" class="row my-3">
-                    <!-- TRADUCCION -->
-                    <h2>Si vienes a ver resultados...</h2>
-                    <b-card header="Busca tu votación">
-                        <b-list-group class="voting-list my-3">
-                            {% for voting in visualize_votings %}
-                                <b-list-group-item href="/visualizer/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
-                            {% endfor %}
-                        </b-list-group>
-                    </b-card>
+                    <div id="id-visualizer-panel" class="{% if is_staff %}col-lg-12 my-3{%else%}col-lg-6 my-lg-0 my-3{%endif%}">
+                        <!-- TRADUCCION -->
+                        <h2>Si vienes a ver resultados...</h2>
+                        <b-card header="Busca tu votación">
+                            <b-list-group class="voting-list my-3">
+                                {% for voting in visualize_votings %}
+                                    <b-list-group-item href="/visualizer/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
+                                {% endfor %}
+                            </b-list-group>
+                        </b-card>
+                    </div>
                 </div>
             </div>
 

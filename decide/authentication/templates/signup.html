@@ -18,14 +18,35 @@
 <div class="container py-5">
 	<!--Traducir--> 
 	<h1>Register</h1>
-	<form method="POST">
+	<form method="POST" class="form row">
 		{% csrf_token %}
-		{{ register_form.as_p }}
-		<!--Traducir-->                    
-		<button class="btn btn-primary" type="submit">Register</button>
+		{% for field in register_form %}
+		<div class="col-lg-6 mb-2">
+			{{ field.errors }}
+			<div class="fw-bold">
+				{{ field.label_tag }}
+			</div>
+			{{ field }}
+			<div class="text-secondary">
+				{{ field.help_text }}
+			</div>
+		</div>
+		{% endfor %}
+		<!--Traducir-->
+		<div class="col-12">
+			<div class="col-lg-4 mx-auto my-3 d-grid">
+				<button class="btn btn-primary" type="submit">Register</button>
+			</div>
+		</div>                    
 	</form>
 	<!--Traducir--> 
-	<p>Already have an account? <a href="{% url 'signin' %}">Log in</a></p>
+	<div class="row">
+		<div class="col-lg-6 mx-auto">
+			<div class="row mx-2 mx-lg-0 my-4 py-2 border border-primary rounded">
+				<p class="my-0">Already have an account? <a class="link-primary" href="{% url 'signin' %}">Log in</a></p>
+			</div>
+		</div>
+	</div>
 </div>
 
 </div>

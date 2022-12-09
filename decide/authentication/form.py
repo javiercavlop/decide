@@ -1,22 +1,15 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
-
 from django import forms    
 
 from django.contrib.auth.forms import AuthenticationForm, UsernameField
 
-
-
 class CustomAuthenticationForm(AuthenticationForm):
 
     username = UsernameField(
-
         label='Username or Email',
-
         widget=forms.TextInput(attrs={'autofocus': True})
-
     )
 
 class LoginUserForm(AuthenticationForm):
@@ -36,11 +29,11 @@ class LoginUserForm(AuthenticationForm):
     )
 	
 class NewUserForm(UserCreationForm):
-	first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-	last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-	email = forms.EmailField(required=True)
-	password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-	password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+	first_name = forms.CharField(max_length=30, required=False, help_text='Optional.', widget=forms.TextInput(attrs={'class':'form-control'}))
+	last_name = forms.CharField(max_length=30, required=False, help_text='Optional.', widget=forms.TextInput(attrs={'class':'form-control'}))
+	email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class':'form-control'}))
+	password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class':'form-control'}))
+	password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput(attrs={'class':'form-control'}))
 
 	class Meta:
 		model = User
@@ -48,11 +41,6 @@ class NewUserForm(UserCreationForm):
 
 		widgets = {
 			'username': forms.TextInput(attrs={'class':'form-control'}),
-			'first_name': forms.TextInput(attrs={'class':'form-control'}),
-			'last_name': forms.TextInput(attrs={'class':'form-control'}),
-			'email': forms.EmailInput(attrs={'class':'form-control'}),
-			'password1': forms.TextInput(attrs={'class':'form-control'}),
-			'password2': forms.TextInput(attrs={'class':'form-control'}),
 		}
 
 	def save(self, commit=True):
