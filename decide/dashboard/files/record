@@ -26,10 +26,10 @@ tr:nth-child(even){
    </tr>
     <tr>
     <tr>
-    <td>noadmin</td>
+    <td>ana</td>
     </tr>
     <tr>
-    <td>admin</td>
+    <td>jaiborcon</td>
     </tr>
 </table>
 <h2>Porcentage del censo</h2>
@@ -41,6 +41,110 @@ tr:nth-child(even){
     <th>Porcentage del censo</th>
    </tr>
     <tr>
+    <tr>
+    <td>1</td>
+    <td>100.0%</td>
+    </tr>
+    <tr>
+    <td>2</td>
+    <td>100.0%</td>
+    </tr>
+    <tr>
+    <td>3</td>
+    <td>300.0%</td>
+    </tr>
+    <tr>
+    <td>4</td>
+    <td>600.0%</td>
+    </tr>
+    <tr>
+    <td>5</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>6</td>
+    <td>300.0%</td>
+    </tr>
+    <tr>
+    <td>7</td>
+    <td>300.0%</td>
+    </tr>
+    <tr>
+    <td>8</td>
+    <td>50.0%</td>
+    </tr>
+    <tr>
+    <td>9</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>10</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>11</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>12</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>13</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>14</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>15</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>16</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>17</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>18</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>19</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>20</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>21</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>22</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>23</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>24</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>25</td>
+    <td>0.0%</td>
+    </tr>
+    <tr>
+    <td>26</td>
+    <td>0.0%</td>
+    </tr>
 </table>
 <h2>Encuestas votadas</h2>
 <p>También se han recogido datos sobre las encuestas contestadas por usuario, cabe recalcar que este datos se toma a partir de la implementaciónde este módulo en el sistema, la sencuestas votads previas a la misma n estaŕan reflejadas en las estaísticas.
@@ -50,6 +154,14 @@ tr:nth-child(even){
     <th>Encuestas</th>
    </tr>
     <tr>
+    <tr>
+    <td>jaiborcon</td>
+    <td>7</td>
+    </tr>
+    <tr>
+    <td>ana</td>
+    <td>1</td>
+    </tr>
 </table>
 </body>
 </html>

@@ -1,13 +1,22 @@
-{% load i18n %}
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
-    <style>
-        p {font-size: 18px;}
+{% extends 'base.html' %}
+{% load i18n static %}
 
-    </style>
-</head>
-<body>
+{% block extrahead %}
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.css" />
+   
+{% endblock %}
+
+
+{% block content %}
+    <b-navbar toggleable="lg" type="dark" variant="dark">
+        <!-- TRADUCCION -->
+        <b-navbar-brand href="/">Decide</b-navbar-brand>
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+    </b-navbar>
+
 
     <div id = "pivot-table-container">
         <!-- TRADUCCION -->
@@ -87,9 +96,10 @@
     <div>
         <canvas id = "my3Chart" width = "100" height = "100 " ></canvas>
     </div>
-    
+    {% endif %}
+    {% endblock %}
 
-
+    {% block extrabody %}
     <script src ="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- TRADUCCION -->
@@ -159,8 +169,6 @@
             }
         });
     </script>
-    {% endif %}
-</body>
-
-
+    {% endblock %}
+   
 

@@ -18,6 +18,10 @@ from wsgiref.util import FileWrapper
 from voting.models import Voting
 from census.models import Census
 
+from voting import models as voting_models
+from census import models as census_models
+
+
 def vista(request,voting_id):
     data = get_object_or_404(Voting,id=voting_id)
 
@@ -206,7 +210,7 @@ class DashBoardFile(generics.ListCreateAPIView):
 
             file.write('</table>\n')
 
-            file.write(("<h2>Porcentage del censo</h2>\n"))
+            file.write(("<h2>Porcentaje del censo</h2>\n"))
 
             file.write("<p>Se tomaron estadísticas para el porcentaje de personas que habían votado del total del censo disponible, no sólo se cuenta con con"
                        "los datos recogidos de encuestas ya cerradas si no tambíen con aquellas que siguen abiertas. Es por esto que el grado de sensibilidad de estos datos es alto y "
@@ -217,7 +221,7 @@ class DashBoardFile(generics.ListCreateAPIView):
             file.write('<table>\n')
             file.write('    <tr>\n')
             file.write('    <th>Id de Votación</th>\n')
-            file.write('    <th>Porcentage del censo</th>\n')
+            file.write('    <th>Porcentaje del censo</th>\n')
             file.write(('   </tr>\n'))
             file.write('    <tr>\n')
             percen=list(Percentages.objects.all().values())
@@ -277,3 +281,20 @@ class DashBoardFile(generics.ListCreateAPIView):
 
             return response
 
+def main_page(request):
+    is_anonymous = request.user.is_anonymous
+    is_staff = request.user.is_staff
+    allowed_votings = census_models.Census.objects.filter(voter_id=request.user.pk).values('voting_id')
+
+    voting_votings = voting_models.Voting.objects.filter(end_date__isnull=True,start_date__isnull=False,pk__in=allowed_votings)
+    visualize_votings = voting_models.Voting.objects.filter(end_date__isnull=False,tally__isnull=False,pk__in=allowed_votings)
+
+    if is_anonymous:
+        return render(request,'register.html')
+    else:
+        return render(request,'dashboard/mainpage_dashboard.html',{
+                                                'voting_votings':voting_votings,
+                                                'visualize_votings':visualize_votings,
+                                                'is_anonymous':is_anonymous,
+                                                'is_staff':is_staff
+                                                })
