@@ -11,6 +11,39 @@
 
     <div id = "pivot-table-container">
         <!-- TRADUCCION -->
+        {% if not voting.start_date  %}
+
+        <H1>{{time}} la votación {{voting.id}}</H1>
+
+        {% elif not voting.end_date %}
+
+        <H1> {{time}} la votación {{voting.id}}</H1> 
+
+        <H1>Nombre de la votación</H1>
+        <p>{{voting.name}}</p>
+        <H1>Descripción de la votación</H1>
+        <p>{{description}}</p>
+        <H1>Tipo de pregunta</H1>
+        <p>{{questionType}}</p>
+        <H1>Número de personas en el censo</H1>
+        <p>{{people}}</p>
+
+        {% elif not voting.tally %}
+
+        <H1>Aún no se ha hecho el recuento de la votación {{voting.id}}</H1>
+
+        <H1>Nombre de la votación</H1>
+        <p>{{voting.name}}</p>
+        <H1>Descripción de la votación</H1>
+        <p>{{description}}</p>
+        <H1>Tipo de pregunta</H1>
+        <p>{{questionType}}</p>
+        <H1>Número de personas en el censo</H1>
+        <p>{{people}}</p>
+
+        
+        {% else %}
+
         <H1>Nombre de la votación</H1>
         <p>{{voting.name}}</p>
         <H1>Descripción de la votación</H1>
@@ -126,7 +159,7 @@
             }
         });
     </script>
-
+    {% endif %}
 </body>
 
 
