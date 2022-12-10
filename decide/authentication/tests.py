@@ -2,15 +2,12 @@ from base import mods
 from base.tests import BaseTestCase
 from django.contrib.auth.models import User
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.test import TestCase
+
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient, APITestCase
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-
-from time import sleep
-
 
 class AuthTestCase(APITestCase):
 
@@ -244,7 +241,7 @@ class AuthenticationViewsTestCase(StaticLiveServerTestCase):
     def test_register(self):
         self.driver.set_window_size(1920,1080)
         self.driver.get('{}/'.format(self.live_server_url))
-        
+
         self.driver.find_element(By.NAME,'username').send_keys('testuser')
         self.driver.find_element(By.NAME,'first_name').send_keys('Test')
         self.driver.find_element(By.NAME,'last_name').send_keys('User')

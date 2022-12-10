@@ -67,18 +67,14 @@ class MainPageTestCase(StaticLiveServerTestCase):
         self.driver.get(f'{self.live_server_url}/admin/')
         self.driver.find_element(By.ID,'id_username').send_keys("admin")
         self.driver.find_element(By.ID,'id_password').send_keys("qwerty",Keys.ENTER)
-
         self.driver.get(f'{self.live_server_url}/')
         self.assertTrue(len(self.driver.find_elements(By.ID,'id-admin-panel')) == 1)
 
     def test_access_mainpage_as_no_staff(self):
         self.driver.set_window_size(1920,1080)
         self.driver.get(f'{self.live_server_url}/authentication/signin')
-        
         self.driver.find_element(By.NAME,'username').send_keys('noadmin')
         self.driver.find_element(By.NAME,'password').send_keys('qwerty')
-
         self.driver.find_element(By.ID,'id-signin-btn').click()
-
         self.driver.get(f'{self.live_server_url}/')
         self.assertTrue(len(self.driver.find_elements(By.ID,'id-admin-panel')) == 0)
