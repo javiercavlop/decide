@@ -235,8 +235,8 @@ class DashBoardFile(generics.ListCreateAPIView):
 
 
             file.write(("<h2>Encuestas votadas</h2>\n"))
-            file.write("<p>También se han recogido datos sobre las encuestas contestadas por usuario, cabe recalcar que este datos se toma a partir de la implementación"
-                       "de este módulo en el sistema, la sencuestas votads previas a la misma n estaŕan reflejadas en las estaísticas.\n<p>")
+            file.write("<p>También se han recogido datos sobre las encuestas contestadas por usuario. Cabe recalcar que este datos se toma a partir de la implementación"
+                       " de este módulo en el sistema, las encuestas votadas previas a la misma estaŕan reflejadas en las estadísticas.\n<p>")
 
             file.write('<table>\n')
             file.write('    <tr>\n')
