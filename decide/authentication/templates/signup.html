@@ -16,7 +16,7 @@
 		{% endfor %}
 	{% endif %}
 <div class="container py-5">
-	<!--Traducir--> 
+	<!--TRADUCCION-->
 	<h1>Register</h1>
 	<form method="POST" class="form row">
 		{% csrf_token %}
@@ -24,25 +24,29 @@
 		<div class="col-lg-6 mb-2">
 			{{ field.errors }}
 			<div class="fw-bold">
+				<!--TRADUCCION-->
 				{{ field.label_tag }}
 			</div>
 			{{ field }}
 			<div class="text-secondary">
+				<!--TRADUCCION-->
 				{{ field.help_text }}
 			</div>
 		</div>
 		{% endfor %}
-		<!--Traducir-->
+		
 		<div class="col-12">
 			<div class="col-lg-4 mx-auto my-3 d-grid">
-				<button class="btn btn-primary" type="submit">Register</button>
+				<!--TRADUCCION-->
+				<button id="id-signup-btn" class="btn btn-primary" type="submit">Register</button>
 			</div>
 		</div>                    
 	</form>
-	<!--Traducir--> 
+	
 	<div class="row">
 		<div class="col-lg-6 mx-auto">
 			<div class="row mx-2 mx-lg-0 my-4 py-2 border border-primary rounded">
+				<!--TRADUCCION-->
 				<p class="my-0">Already have an account? <a class="link-primary" href="{% url 'signin' %}">Log in</a></p>
 			</div>
 		</div>
