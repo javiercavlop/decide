@@ -27,6 +27,9 @@ from .serializers import UserSerializer, RegisterSerializer
 
 from django.conf import settings
 
+from postproc.models import UserProfile
+
+
 class GetUserView(APIView):
     def post(self, request):
         key = request.data.get('token', '')
@@ -62,6 +65,9 @@ class RegisterView(APIView):
             user = User(username=username)
             user.set_password(pwd)
             user.save()
+
+            UserProfile.objects.create(user=user)
+
             token, _ = Token.objects.get_or_create(user=user)
         except IntegrityError:
             return Response({}, status=HTTP_400_BAD_REQUEST)
@@ -134,6 +140,7 @@ class SignUpView(APIView):
                     })
             else:
                 user = form.save()
+                UserProfile.objects.create(user=user)
                 Token.objects.create(user=user)
                 login(request, user)
                 return redirect("hello")
@@ -281,6 +288,7 @@ class RegisterAPI(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        UserProfile.objects.create(user=user)
         return Response({
         "user": UserSerializer(user, context=self.get_serializer_context()).data,
         "token": Token.objects.create(user=user).key
