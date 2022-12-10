@@ -11,7 +11,6 @@ urlpatterns = [
 
     path('download/', views.DashBoardFile.write_doc, name="download"),
 
-    path('dashboard/<int:voting_id>/', views.vista, name = "VotingDashboard")
 
 
     ]

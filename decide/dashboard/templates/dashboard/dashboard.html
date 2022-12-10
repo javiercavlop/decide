@@ -7,13 +7,13 @@
     <link type="text/css" rel="stylesheet"
     href="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
-    <link type="text/css" rel="stylesheet" href="{% static "dashboard/style.css" %}" />
+    
    
 {% endblock %}
 
 {% block content %}
     <div id="app-dashboard">
-
+        
         <b-navbar toggleable="lg" type="dark" variant="dark">
             <!-- TRADUCCION -->
             <b-navbar-brand href="/">Decide</b-navbar-brand>
@@ -84,9 +84,9 @@
                         <th v-bind:id="[[por.voting]]" >[[por.voting]]</th>
                         <th>
                             <div>
-                                <b-progress v-if="por.percen*100>50" :value="por.percen *100" :max="100" variant="success" show-progress animated></b-progress>
+                                <b-progress v-if="por.percen*100>50" :value="por.percen *100" :max="100" variant="success" show-progress ></b-progress>
                                 
-                                <b-progress v-else :value="por.percen *100" :max="100" variant="danger" show-progress animated></b-progress> 
+                                <b-progress v-else :value="por.percen *100" :max="100" variant="danger" show-progress ></b-progress> 
 
                             </div>  
                         </th>

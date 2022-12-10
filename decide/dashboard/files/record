@@ -32,13 +32,13 @@ tr:nth-child(even){
     <td>jaiborcon</td>
     </tr>
 </table>
-<h2>Porcentage del censo</h2>
+<h2>Porcentaje del censo</h2>
 <p>Se tomaron estadísticas para el porcentaje de personas que habían votado del total del censo disponible, no sólo se cuenta con conlos datos recogidos de encuestas ya cerradas si no tambíen con aquellas que siguen abiertas. Es por esto que el grado de sensibilidad de estos datos es alto y no deberán ser tranferidos a nadie.
 <p><p> En la tabla adjuntada a continuación se visualizan en la primera columna los identificadores de las votaciones y en otra el porcentaje total del censo que ha votado.
 <p><table>
     <tr>
     <th>Id de Votación</th>
-    <th>Porcentage del censo</th>
+    <th>Porcentaje del censo</th>
    </tr>
     <tr>
     <tr>
@@ -75,7 +75,7 @@ tr:nth-child(even){
     </tr>
     <tr>
     <td>9</td>
-    <td>0.0%</td>
+    <td>66.66666666666666%</td>
     </tr>
     <tr>
     <td>10</td>
@@ -156,11 +156,11 @@ tr:nth-child(even){
     <tr>
     <tr>
     <td>jaiborcon</td>
-    <td>7</td>
+    <td>8</td>
     </tr>
     <tr>
     <td>ana</td>
-    <td>1</td>
+    <td>2</td>
     </tr>
 </table>
 </body>

@@ -1,5 +1,5 @@
-.voting-list {
-  max-height: 60vh;
-  overflow-y: scroll;
+.card{
+
+  border-radius: 12px;
 }
 
