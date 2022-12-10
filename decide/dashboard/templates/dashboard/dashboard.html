@@ -12,6 +12,30 @@
 {% endblock %}
 
 {% block content %}
+    <style>
+        .my-custom-scrollbar {
+            position: relative;
+            height: 500px;
+            overflow: auto;
+        }
+        .table-wrapper-scroll-y {
+            display: block;
+        }
+        .my-custom-scrollbar-perf {
+            position: relative;
+            height: 200px;
+            overflow: auto;
+        }
+        .table-wrapper-scroll-y-perf {
+            display: block;
+        }
+        .descargar{
+            border-radius: 12px;
+        }
+
+    </style>
+
+
     <div id="app-dashboard">
         
         <b-navbar toggleable="lg" type="dark" variant="dark">
@@ -30,7 +54,7 @@
                 <div class="col-6"><h3 class="heading">Número de encuestas votadas en tiempo real</h3></div>
             </div>
             <div class="row"> 
-                <div class="col-5">
+                <div class="col-5 table-wrapper-scroll-y-perf my-custom-scrollbar-perf">
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
@@ -47,7 +71,7 @@
                 </div>
                     <!-- TRADUCCION -->
                 <div class="col-1"></div>
-                <div class="col-6">
+                <div class="col-6 table-wrapper-scroll-y-perf my-custom-scrollbar-perf">
                     <table id="vot-real" class="table table-bordered table-striped">
                         <thead>
                             <tr>
@@ -69,7 +93,7 @@
             </div>
 
             <h3>Porcentajes de votaciones según censo</h3>
-
+        <div class="table-wrapper-scroll-y my-custom-scrollbar">
             <table id= "vot-census" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -82,25 +106,31 @@
                 <tbody>
                     <tr v-for="por in percentages">
                         <th v-bind:id="[[por.voting]]" >[[por.voting]]</th>
-                        <th>
-                            <div>
-                                <b-progress v-if="por.percen*100>50" :value="por.percen *100" :max="100" variant="success" show-progress ></b-progress>
-                                
-                                <b-progress v-else :value="por.percen *100" :max="100" variant="danger" show-progress ></b-progress> 
+                        <th class="">
+                            <div class="row">
+                                <div class="col-10">
+                                    <b-progress  v-if="por.percen*100>75" :value="por.percen *100" :max="100" variant="success" show-progress ></b-progress>
+                                    <b-progress  v-else-if="por.percen*100>50" :value="por.percen *100" :max="100" variant="warning" show-progress ></b-progress>
+                                    <b-progress v-else :value="por.percen *100" :max="100" variant="danger" show-progress ></b-progress>
 
-                            </div>  
+                                </div>  
+                                <div class="col-2">
+                                    [[(por.percen*100).toFixed(2)]]%
+                                </div>
+                            </div>
                         </th>
                      </tr>
                 </tbody>
             </table>
+        </div>
                     <!-- TRADUCCION -->
             <div class="row justify-content-center mt-5">
                 <div class="col-md-3">
-                <div class="card">
+                <div class="card border-danger descargar">
                     <article class="card-body">
             
                     <h4 class="card-title mb-4 mt-1 text-align-center text-center">Descargar Estadísticas</h4>
-                    <div class="row d-flex justify-content-center align-items-center">
+                    <div class="row d-flex justify-content-center align-items-center mx-2">
                         <input type="button"  class="btn btn-danger mx-auto align-self-center" value="Descargar" onclick="window.open('download')">
                     </div>
                     </article>
