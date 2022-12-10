@@ -4,7 +4,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from authentication.form import NewUserForm, UserEditForm
 import re
 from allauth.socialaccount.models import SocialAccount
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.status import (
         HTTP_201_CREATED,
@@ -276,6 +276,27 @@ class RegisterAPI(generics.GenericAPIView):
     serializer_class = RegisterSerializer
 
     def post(self, request, *args, **kwargs):
+
+        errors = []
+
+        if request.POST['email'] == "":
+            no_email = "You must enter an email"
+            errors.append(no_email)
+        if request.POST['username'] == "":
+            no_username = "You must enter a username"
+            errors.append(no_username)
+        if request.POST['first_name'] != "":
+            if request.POST['first_name'][0].isupper() == False:
+                name_not_capitalized = "Name must be capitalized"
+                errors.append(name_not_capitalized)
+        if request.POST['last_name'] != "":
+            if request.POST['last_name'][0].isupper() == False:
+                surname_not_capitalized = "Surname must be capitalized"
+                errors.append(surname_not_capitalized)
+
+        if len(errors) > 0:
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
