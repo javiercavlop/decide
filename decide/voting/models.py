@@ -35,7 +35,10 @@ class Question(BaseQuestion):
     pass
 
 class DHondtQuestion(BaseQuestion):
-    pass
+    def save(self):
+        self.questionType = "dhondt"
+        print(self.questionType)
+        return super().save()
 
 class QuestionOption(models.Model):
     question = models.ForeignKey(BaseQuestion, related_name='options', on_delete=models.CASCADE)
@@ -193,11 +196,11 @@ class Voting(models.Model):
         
         if(self.question.questionType == "borda"):
             data = { 'type': 'IDENTITY', 'options': opts , "extra": tally, "questionType": "borda"}
-        elif(self.question.questionType == "normal"):
-            data = { 'type': 'IDENTITY', 'options': opts, "questionType": "normal"}
-        else:
+        elif(self.question.questionType == "dhondt"):
             seats = self.question.seats
             data = data = { 'type': 'IDENTITY', 'options': opts , "extra": tally, "questionType": "dhondt", "seats": seats}
+        else:
+            data = { 'type': 'IDENTITY', 'options': opts, "questionType": "normal"}
             
         postp = mods.post('postproc', json=data)
 
