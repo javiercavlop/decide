@@ -41,7 +41,8 @@ class QuestionAdmin(admin.ModelAdmin):
 class VotingAdmin(admin.ModelAdmin):
     list_display = ('name', 'start_date', 'end_date')
     readonly_fields = ('start_date', 'end_date', 'pub_key',
-                       'tally', 'postproc', 'num_votes_M', 'num_votes_W', 'num_votes_O')
+                       'tally', 'postproc', 'num_votes_M', 'num_votes_W',
+                        'num_votes_O', 'paridad')
     date_hierarchy = 'start_date'
     list_filter = (StartedFilter,)
     search_fields = ('name', )

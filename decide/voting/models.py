@@ -57,6 +57,8 @@ class Voting(models.Model):
     num_votes_W = models.PositiveIntegerField(default=0)
     num_votes_O = models.PositiveIntegerField(default=0)
 
+    paridad = models.CharField(max_length=200, default='')
+
     def create_pubkey(self):
         if self.pub_key or not self.auths.count():
             return
@@ -120,9 +122,18 @@ class Voting(models.Model):
         #Calculamos el numero de votos por genero
         genre = self.get_paridad(userid)
         #Y lo devolvemos a la votación
+
         self.num_votes_M = genre[0]
         self.num_votes_W = genre[1]
         self.num_votes_O = genre[2]
+
+        paridad = 'No cumple paridad'
+
+        #Comprobamos si existe paridad en la votación
+        if (self.num_votes_M == self.num_votes_W):
+            paridad = 'Cumple paridad'
+
+        self.paridad = paridad
 
         auth = self.auths.first()
         shuffle_url = "/shuffle/{}/".format(self.id)
@@ -150,6 +161,9 @@ class Voting(models.Model):
         self.save()
 
         self.do_postproc()
+
+        print(paridad)
+        return[paridad]
 
     def do_postproc(self):
         tally = self.tally
