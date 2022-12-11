@@ -26,7 +26,20 @@
 	<h1>Register</h1>
 	<form method="POST">
 		{% csrf_token %}
-		{{ register_form.as_p }} 
+		{{ register_form.as_p }}
+        <br>
+        <!--Traducir-->
+        Choose your genre:
+        <select name="select">
+            <!--Traducir-->
+          <option value="M">Male</option>
+            <!--Traducir-->
+          <option value="W" selected>Women</option>
+            <!--Traducir-->
+          <option value="O">Other</option>
+        </select>
+        <br>
+        <br>
 		<!--Traducir-->                    
 		<button class="btn btn-primary" type="submit">Register</button>
 	</form>
