@@ -2,7 +2,6 @@ import os
 from base.tests import BaseTestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from django.utils import timezone
 from voting.models import Voting, Question, QuestionOption
@@ -13,7 +12,6 @@ from django.contrib.auth.models import User
 from mixnet.models import Auth
 from django.contrib.auth import get_user_model
 from selenium.webdriver.common.action_chains import ActionChains
-from voting.models import Voting
 from pathlib import Path
 from django.conf import settings
 import time
@@ -25,14 +23,10 @@ from mixnet.mixcrypt import MixCrypt
 import itertools
 from base import mods
 
-import time
-from selenium import webdriver
-from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support import expected_conditions
+
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+
 
 
 import logging
@@ -200,7 +194,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
             lambda d: d.find_element(by=By.ID, value="noadmin"))
         self.assertEqual(percentages_selector.text, "noadmin")
 
-    def test_vote_dashboard_user_negative(self):
+    def test_vote_dashboard_user_negative_2(self):
         q = Question(desc='test questcccion')
         q.save()
         v = Voting(name='test voting', question=q)
@@ -213,7 +207,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
             lambda d: d.find_element(by=By.ID, value="noadmin"))
         self.assertNotEqual(percentages_selector.text, "adminadmin")
 
-    def test_vote_dashboard_census_negative(self):
+    def test_vote_dashboard_census_negative_2(self):
         q = Question(desc='test questionnn')
         q.save()
 
@@ -609,7 +603,7 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         rq = self.client.get("/dashboard/dashboard/" + str(v.id) + "/")
         self.assertEqual(rq.status_code, 200)
 
-        "Check that the data assigned to the model is correct"
+        #"Check that the data assigned to the model is correct"
         self.assertEqual(rq.context.get('time'), duracion)
         self.assertEqual(rq.context.get('description'),"No hay una descripción asociada a esta votación ni a esta pregunta")
         self.assertEqual(rq.context.get('questionType'),'normal')
@@ -619,7 +613,7 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         values = []
         numberOfVotes = 0
         numberOfPeople = len(Census.objects.filter(voting_id = v.id))
-        'Como se generan de forma aleatoria hay que calcularlo aquí'
+        #'Como se generan de forma aleatoria hay que calcularlo aquí'
         for vote in postpro:
             values.append(vote['votes'])
             numberOfVotes = numberOfVotes + vote['votes']
@@ -633,7 +627,7 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         self.assertEqual(rq.context.get('values2'),[numberOfVotes,numberOfPeople-numberOfVotes])
         self.assertEqual(rq.context.get('parity'),True)
 
-        "Get the HTML elements to check if the data from the model is processed correctly"
+        #"Get the HTML elements to check if the data from the model is processed correctly"
         self.driver.get(f'{self.live_server_url}/dashboard/dashboard/{v.id}/')
         numeroVotos = self.driver.find_element(By.CLASS_NAME, "numervotes").text
         tipoPregunta = self.driver.find_element(By.CLASS_NAME, "questionType").text
@@ -647,7 +641,7 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         self.assertEqual(desc_nav,"No hay una descripción asociada a esta votación ni a esta pregunta")
         self.assertEqual(numeroVotos,str(numberOfVotes))
         self.assertEqual(parity,'Se ha cumplido la paridad para esta votación')
-        "Check that the charts are displayed"
+        #"Check that the charts are displayed"
         self.assertTrue(chart != None)
         self.assertTrue(chart2 != None)
         self.assertTrue(chart3 != None)
