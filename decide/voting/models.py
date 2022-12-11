@@ -162,7 +162,6 @@ class Voting(models.Model):
 
         self.do_postproc()
 
-        print(paridad)
         return[paridad]
 
     def do_postproc(self):
