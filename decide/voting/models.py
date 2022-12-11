@@ -109,7 +109,6 @@ class Voting(models.Model):
 
         return [num_votes_M, num_votes_W, num_votes_O]
         
-    
 
     def tally_votes(self, token=''):
         '''
