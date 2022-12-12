@@ -25,10 +25,46 @@
                 <h1>Your profile</h1>
                 <form method="POST">
                     {% csrf_token %}
-                    {{ register_form.as_p }}  
-                    <!--Traducir-->                   
+                    {{ register_form.as_p }}
+                    {% if genre == 'O' %}
+                    <!--Traducir-->
+                    Current genre:
+                    <select name="select">
+                        <!--Traducir-->
+                      <option value="M">Male</option>
+                        <!--Traducir-->
+                      <option value="W" >Women</option>
+                        <!--Traducir-->
+                      <option value="O" selected>Other</option>
+                    </select>
+                    {% elif genre == 'W' %}
+                    <!--Traducir-->
+                    Current genre:
+                    <select name="select">
+                        <!--Traducir-->
+                      <option value="M">Male</option>
+                        <!--Traducir-->
+                      <option value="W" selected>Women</option>
+                        <!--Traducir-->
+                      <option value="O" >Other</option>
+                    </select>
+                    {% else %}
+                    Current genre:
+                    <select name="select">
+                        <!--Traducir-->
+                      <option value="M" selected>Male</option>
+                        <!--Traducir-->
+                      <option value="W" >Women</option>
+                        <!--Traducir-->
+                      <option value="O" >Other</option>
+                    </select>
+                     {% endif %}
+                    <!--Traducir-->
+                    <br>
+                    <br>
                     <button class="btn btn-primary" type="submit">Update</button>
                 </form>
+
             </div>
             <div>
                 <!--Traducir--> 

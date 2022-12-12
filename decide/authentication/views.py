@@ -139,8 +139,15 @@ class SignUpView(APIView):
                     'are_errors': are_errors
                     })
             else:
+                if request.POST['select'] == 'O':
+                    genre_type = UserProfile.OTHER
+                elif request.POST['select'] == 'M':
+                    genre_type = UserProfile.MALE
+                else:
+                    genre_type = UserProfile.WOMEN
                 user = form.save()
-                UserProfile.objects.create(user=user)
+                genre = UserProfile(genre=genre_type, user=user)
+                genre.save()
                 Token.objects.create(user=user)
                 login(request, user)
                 return redirect("hello")
@@ -261,6 +268,14 @@ class EditUserView(APIView):
                 user.email = request.POST['email']
                 user.username = request.POST['username']
                 user.save()
+                userprofile = UserProfile.objects.filter(user_id=request.user.id)[0]
+                if request.POST['select'] == UserProfile.MALE:
+                    userprofile.genre = UserProfile.MALE
+                elif request.POST['select'] == UserProfile.WOMEN:
+                    userprofile.genre = UserProfile.WOMEN
+                else:
+                    userprofile.genre = UserProfile.OTHER
+                userprofile.save()
                 return redirect('hello')
         else:
 
@@ -268,8 +283,12 @@ class EditUserView(APIView):
                                             'last_name': request.user.last_name, 
                                             'email': request.user.email, 
                                             'username': request.user.username})
+            userProfile = UserProfile.objects.filter(user_id=request.user.id)[0]
+
             return render (request, "profile.html", {
-                "register_form":form})
+                "register_form":form,
+                "genre": userProfile.genre,
+            })
 
 class DeleteUserView(APIView):
 
