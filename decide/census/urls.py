@@ -14,5 +14,6 @@ urlpatterns = [
     path('censusgroups/<int:pk>/',views.CensusGroupDetail.as_view(), name='census_group_detail'),
     path('reuse',views.censusReuse, name="census_reuse"),
     path('census_grouping/',views.census_grouping, name="census_grouping"),
+    path('census_details/',views.census_details, name="census_details"),
 ]
 
