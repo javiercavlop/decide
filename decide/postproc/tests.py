@@ -132,7 +132,7 @@ class PostProcTestCase(APITestCase):
 
 class PostProcUnitTestCase(TestCase):
 
-    def test_dhondt_unit(self):
+    def test_unit_positive_dhondt(self):
         seats = 15
         tally = [0,1,1,1,2,1,1,0,1,0,2,2,1]
         opts = [
@@ -145,3 +145,19 @@ class PostProcUnitTestCase(TestCase):
         self.assertEqual(result[0], 3)
         self.assertEqual(result[1], 9)
         self.assertEqual(result[2], 3)
+
+    def test_unit_negative_dhondt(self):
+        seats_negative = -2
+        seats_zero = 0
+        tally = [0,1,1,1,2,1,1,0,1,0,2,2,1]
+        opts = [
+            { 'option': 'Respuesta 1', 'number': 0, 'votes': 3 },
+            { 'option': 'Respuesta 3', 'number': 1, 'votes': 7 },
+            { 'option': 'Respuesta 2', 'number': 2, 'votes': 3 }, 
+        ]
+
+        with self.assertRaises(ValueError):
+            d_hondt(tally, seats_negative, opts)
+        
+        with self.assertRaises(ValueError):
+            d_hondt(tally, seats_zero, opts)

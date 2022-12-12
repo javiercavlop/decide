@@ -21,6 +21,13 @@ def __d_hondt_vote_count(tally, options):
     return result
 
 def d_hondt(tally, given_seats, options):
+
+    #Comprobación para evitar bucles infinitos
+    if(given_seats <= 0):
+        raise ValueError(
+            "Invalid number of seats was given. Must be above 0"
+        )
+
     #Diccionario con una clave por opción, con el número de escaños asignados en los valores
     result = {}
     for option in options:
