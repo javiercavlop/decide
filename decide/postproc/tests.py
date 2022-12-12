@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 from rest_framework.response import Response
+from .views import d_hondt
 
 from base import mods
 
@@ -129,3 +130,18 @@ class PostProcTestCase(APITestCase):
         response = self.client.post('/postproc/', data, format='json')
         self.assertEqual(response.data, Response([]).data)
 
+class PostProcUnitTestCase(TestCase):
+
+    def test_dhondt_unit(self):
+        seats = 15
+        tally = [0,1,1,1,2,1,1,0,1,0,2,2,1]
+        opts = [
+            { 'option': 'Respuesta 1', 'number': 0, 'votes': 3 },
+            { 'option': 'Respuesta 3', 'number': 1, 'votes': 7 },
+            { 'option': 'Respuesta 2', 'number': 2, 'votes': 3 }, 
+        ]
+        result = d_hondt(tally, seats, opts)
+
+        self.assertEqual(result[0], 3)
+        self.assertEqual(result[1], 9)
+        self.assertEqual(result[2], 3)
