@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 import numpy
 
-GIVEN_SEATS = 4
+#GIVEN_SEATS = 4
 
 def d_hondt_ratio(votes, seats_taken):
     #Cociente de D'Hondt a ser calculado para cada opción, para cada escaño
@@ -73,7 +73,7 @@ class PostProcView(APIView):
                 });
         elif(request != False and request.data.get("questionType") == "dhondt"):
 
-            votes_dict = d_hondt(aux, GIVEN_SEATS, options)
+            votes_dict = d_hondt(aux, request.data.get("seats"), options)
 
             for opt in options:
                 out.append({
