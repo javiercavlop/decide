@@ -19,23 +19,21 @@
     </b-navbar>
 </div>
 
-
-    <form action="/census/census_details/" method="post">
-        {% csrf_token %}
-
-        <div class="container-fluid">
-        <div class="row justify-content-center mt-5">
-        <div class="col-md-8">
-                                                                        <!--TRADUCCION-->
-            <h4 class="mb-4 mt-1 text-align-center text-center">Detalles de censos</h4>
-
+    <div class="container-fluid">
+    <div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+                                                            <!--TRADUCCION-->
+        <h4 class="mb-4 mt-1 text-align-center text-center">Detalles de censos</h4> 
+        <form action="/census/census_details/" method="post">
+                {% csrf_token %}
             <div class="mb-3 row">
                 <table class="table table-bordered table-striped mt-2">
                     <thead  class="text-center">
                         <tr>
                             <!-- TRADUCCION -->
-                            <th>Votación</th>
-                            <th>Votante</th>
+                            <th>Censo Id</th>
+                            <th>Votación Id</th>
+                            <th>Votante (Id)</th>
                             <th>Grupo</th>
                             <th>Eliminar censo</th>
                         </tr>
@@ -43,20 +41,30 @@
                     <tbody class="text-center">
                         {% for censo in censos %}
                         <tr>
+                            <td>{{censo.id}}</td>
                             <td>{{censo.voting_id}}</td>
-                            <td>{{censo.voter}}</td>
+                            <td>{{censo.voter}} ({{censo.voter.id}})</td>
                             <td>{{censo.group}}</td>
-                            <td><button type="submit" name="delete" class="btn btn-danger btn-block" value="{{censo.id}}">Borrar</button></td>
+                            <td><button type="submit" name="delete" class="btn btn-outline-danger btn-block" value="{{censo.id}}">Eliminar</button></td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>                                                      
-        </div>
-        </div>
+        </form>
+        
+        <div class="mb-3 row">
+            <div class="d-grid gap-2 col-5 mx-auto">
+                <a class="btn btn-outline-primary" href="/census/reuse" role="button">Reutilizar Censos</a>
+            </div>
+            <div class="d-grid gap-2 col-5 mx-auto">
+                <a class="btn btn-outline-primary" href="/census/census_grouping" role="button">Agrupar Censos</a>
+            </div>
         </div>
 
-    </form>
+    </div>
+    </div>
+    </div>
 
 </div>
 </div>
