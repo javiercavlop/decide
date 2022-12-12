@@ -13,7 +13,7 @@ from census.models import Census
 from mixnet.mixcrypt import ElGamal
 from mixnet.mixcrypt import MixCrypt
 from mixnet.models import Auth
-from voting.models import Voting, Question, QuestionOption
+from voting.models import Voting, Question, QuestionOption, DHondtQuestion
 
 
 class VotingTestCase(BaseTestCase):
@@ -54,6 +54,22 @@ class VotingTestCase(BaseTestCase):
             opt = QuestionOption(question=q, option='option {}'.format(i+1))
             opt.save()
         v = Voting(name='test voting', question=q)
+        v.save()
+
+        a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
+                                          defaults={'me': True, 'name': 'test auth'})
+        a.save()
+        v.auths.add(a)
+
+        return v
+
+    def create_voting_dhondt(self):
+        q = DHondtQuestion(desc='test question')
+        q.save()
+        for i in range(5):
+            opt = QuestionOption(question=q, option='option {}'.format(i+1))
+            opt.save()
+        v = Voting(name='test dhondt voting', question=q)
         v.save()
 
         a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
@@ -227,7 +243,30 @@ class VotingTestCase(BaseTestCase):
 
 
     def test_complete_voting_borda(self):
-        v = self.create_voting()
+        v = self.create_voting_borda()
+        self.create_voters(v)
+
+        v.create_pubkey()
+        v.start_date = timezone.now()
+        v.save()
+
+        clear = self.store_votes(v)
+
+        self.login()  # set token
+        v.tally_votes(self.token)
+
+        tally = v.tally
+        tally.sort()
+        tally = {k: len(list(x)) for k, x in itertools.groupby(tally)}
+
+        for q in v.question.options.all():
+            self.assertEqual(tally.get(q.number, 0), clear.get(q.number, 0))
+
+        for q in v.postproc:
+            self.assertEqual(tally.get(q["number"], 0), q["votes"])
+
+    def test_complete_voting_dhondt(self):
+        v = self.create_voting_dhondt()
         self.create_voters(v)
 
         v.create_pubkey()
@@ -263,12 +302,30 @@ class VotingModelTestCase(BaseTestCase):
 
         self.v = Voting(name='Votacion', question=q)
         self.v.save()
+
+        q2 = DHondtQuestion(desc = "test question")
+        q2.save()
+
+        opt3 = QuestionOption(question=q2, option='opcion 1')
+        opt3.save()
+        opt4 = QuestionOption(question=q2, option='opcion 2')
+        opt4.save()
+
+        self.v2 = Voting(name = "Votacion2", question = q2)
+        self.v2.save()
+
         super().setUp()
 
     def tearDown(self):
         super().tearDown()
         self.v = None
+        self.v2 = None
 
     def testExist(self):
         v=Voting.objects.get(name='Votacion')
-        self.assertEquals(v.question.options.all()[0].option, "opcion 1")
+        self.assertEqual(v.question.options.all()[0].option, "opcion 1")
+
+    def test_correct_dhondt_questiontype(self):
+        #Para comprobar que el override del método save en DhondtQuestion es correcto
+        v = Voting.objects.get(name = "Votacion2")
+        self.assertEqual(v.question.questionType, "dhondt")
