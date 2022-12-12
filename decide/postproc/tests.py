@@ -130,6 +130,77 @@ class PostProcTestCase(APITestCase):
         response = self.client.post('/postproc/', data, format='json')
         self.assertEqual(response.data, Response([]).data)
 
+
+
+    #DHONDT API TESTS
+    def test_positive_dhondt(self):
+        data = {
+            'type': 'IDENTITY',
+            'seats': 15, 
+            'options': [
+                { 'option': 'Respuesta 1', 'number': 1, 'votes': 3 },
+                { 'option': 'Respuesta 2', 'number': 2, 'votes': 7 },
+                { 'option': 'Respuesta 3', 'number': 3, 'votes': 3 }, 
+            ],
+            'extra': [3,1,1,1,2,1,1,3,1,3,2,2,1], 
+            'questionType': 'dhondt'}
+
+        expected_result = [
+            { 'option': 'Respuesta 1', 'number': 1, 'votes': 3, 'postproc': 9 },
+            { 'option': 'Respuesta 2', 'number': 2, 'votes': 7, 'postproc': 3 },
+            { 'option': 'Respuesta 3', 'number': 3, 'votes': 3, 'postproc': 3 },
+            
+        ]
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        values = response.json()
+        self.assertEqual(values, expected_result)
+
+    def test_negative_dhondt_wrong_seats_valute(self):
+        data_negative = {
+            'type': 'IDENTITY',
+            'seats': -7, 
+            'options': [
+                { 'option': 'Respuesta 1', 'number': 1, 'votes': 3 },
+                { 'option': 'Respuesta 2', 'number': 2, 'votes': 7 },
+                { 'option': 'Respuesta 3', 'number': 3, 'votes': 3 }, 
+            ],
+            'extra': [3,1,1,1,2,1,1,3,1,3,2,2,1], 
+            'questionType': 'dhondt'}
+
+        data_zero = {
+            'type': 'IDENTITY',
+            'seats': 0, 
+            'options': [
+                { 'option': 'Respuesta 1', 'number': 1, 'votes': 3 },
+                { 'option': 'Respuesta 2', 'number': 2, 'votes': 7 },
+                { 'option': 'Respuesta 3', 'number': 3, 'votes': 3 }, 
+            ],
+            'extra': [3,1,1,1,2,1,1,3,1,3,2,2,1], 
+            'questionType': 'dhondt'}
+
+        data_no_seats = {
+            'type': 'IDENTITY',
+            'options': [
+                { 'option': 'Respuesta 1', 'number': 1, 'votes': 3 },
+                { 'option': 'Respuesta 2', 'number': 2, 'votes': 7 },
+                { 'option': 'Respuesta 3', 'number': 3, 'votes': 3 }, 
+            ],
+            'extra': [3,1,1,1,2,1,1,3,1,3,2,2,1], 
+            'questionType': 'dhondt'}
+
+        with self.assertRaises(ValueError):
+            self.client.post('/postproc/', data_negative, format='json')
+
+        with self.assertRaises(ValueError):
+            self.client.post('/postproc/', data_zero, format='json')
+
+        with self.assertRaises(TypeError):
+            self.client.post('/postproc/', data_no_seats, format='json')
+
+
 class PostProcUnitTestCase(TestCase):
 
     def test_unit_positive_dhondt(self):
