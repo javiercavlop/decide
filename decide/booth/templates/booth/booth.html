@@ -13,23 +13,16 @@
 {% block content %}
     <div id="app-booth">
         <!-- Navbar -->
-<<<<<<< HEAD
-        <b-navbar type="dark" variant="dark" class="px-5">
-            <b-navbar-brand left tag="h1">Decide</b-navbar-brand>
-                <b-navbar-nav right class="ml-auto d-block w-100 text-right" v-if="!signup">
-                    <b-nav-item right href="#" v-on:click="decideLogout">
-=======
-        <b-navbar type="dark" variant="secondary">
+        <nav class="navbar px-5 navbar-dark bg-dark">
             <!-- TRADUCCION -->
             <b-navbar-brand tag="h1">Decide</b-navbar-brand>
                 <b-navbar-nav class="ml-auto" v-if="!signup">
-                    <b-nav-item href="#" v-on:click="decideLogout">
-                        <!-- TRADUCCION -->
->>>>>>> 168c2215a25c622c56daf19e0631327ae3fd1e30
+                        <b-nav-item right href="#" v-on:click="decideLogout">
+                            <!-- TRADUCCION -->
                         {% trans "logout" %}
-                    </b-nav-item>
+                        </b-nav-item>
                 </b-navbar-nav>
-        </b-navbar>
+            </nav>
 
         <b-alert :variant="alertLvl" dismissible v-model="alertShow">
             <!-- TRADUCCION -->
@@ -37,13 +30,8 @@
         </b-alert>
 
         <div class="voting">
-<<<<<<< HEAD
             
 
-=======
-            <!-- TRADUCCION -->
-            <h1>[[ voting.id ]] - [[ voting.name ]]</h1>
->>>>>>> 168c2215a25c622c56daf19e0631327ae3fd1e30
 
             <!-- Register -->
             <b-form @submit="onSubmitLogin" class="w-50" v-if="signup">
@@ -69,9 +57,25 @@
 
             <!-- Voting -->
             <div v-if="!signup">
-<<<<<<< HEAD
+
+
+
+
+
+
+
+                
+                
+                {% if auxBorda%}
+                <div class="alert w-35 alert-warning alert-dismissible fade show" role="alert">
+                    <!-- TRADUCCION -->
+                    <span>This votation has been configured as an ordenation, so you have to vote for each one of the options.</span>
+                </div>
+                {% endif %}
+                
+                <!-- TRADUCCION -->
                 <h1>Votación [[voting.id]]</h1>
-                <div class="container bg-gray w-35 p-4 mt-4 rounded m-0">
+                <div class="container bg-gray w-35 p-4 my-4 rounded m-0">
                 <h2>[[ voting.name ]]</h2>
                 <h4>[[ voting.question.desc ]]</h4>
                 <b-form-group v-for="opt in voting.question.options" :key="opt.number">
@@ -84,38 +88,21 @@
                 </b-form-group>
                 <b-button type="button" variant="primary" class="w-100 mt-4 h4" v-on:click="decideSend">
                     {% trans "Vote" %}
-=======
-                <h2>[[ voting.question.desc ]]</h2>
-                
-                <div id="warning"></div>
-                {% if auxBorda%}
-                    <br>
-                    <!-- TRADUCCION -->
-                    <p style="color: rgb(155, 85, 85);">This votation has been configured as an ordenation, so you have to vote for each one of the options.</p>
-                {% endif %}
-                
-                <b-form-group v-for="opt in voting.question.options" :key="opt.number">
-                        <b-form-radio v-model="selected"
-                                    :id="'q' + opt.number"
-                                    name="question"
-                                    :value="opt.number">
-                            [[ opt.option ]]
-                        </b-form-radio>
-
-                </b-form-group>
-                <b-button type="button" variant="primary" v-on:click="decideSend" id="send">
-                    <!-- TRADUCCION -->
-                    {% trans "Vote" %}  
->>>>>>> 168c2215a25c622c56daf19e0631327ae3fd1e30
                 </b-button>
+                </b-form-group>
+
+                
+
+
+                
             </div>
         </div>
         {% if auxBorda%}
-            <br>
+            <div class="container bg-gray w-35 p-4 my-4 rounded m-0">
             <!-- TRADUCCION -->
-            <h5 style="padding-left: 2%;">Order: </h5>
+            <h5>Order: </h5>
             <div id="answers">
-
+            </div>
             </div>
         {% endif %}
         
@@ -140,17 +127,12 @@
     <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
     <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
 
-<<<<<<< HEAD
-    <script type="application/javascript">
-        var voting = {{voting|safe}};
-=======
     <script>
 
         var voting = {{ voting|safe }};
         var questionType = {{ questionType|safe }};
         var options = []
 
->>>>>>> 168c2215a25c622c56daf19e0631327ae3fd1e30
         var app = new Vue({
             delimiters: ['[[', ']]'],
             el: '#app-booth',

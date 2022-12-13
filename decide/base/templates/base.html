@@ -13,9 +13,9 @@
         {% block extrabody %}{% endblock %}
     </body>
     <footer>
-        <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+        <form class="w-35" action="{% url 'set_language' %}" method="post">{% csrf_token %}
             <input name="next" type="hidden" value="{{ redirect_to }}" />
-            <select name="language">
+            <select class="form-control w-50 float-left" name="language">
                 {% get_current_language as LANGUAGE_CODE %}
                 {% get_available_languages as LANGUAGES %}
                 {% get_language_info_list for LANGUAGES as languages %}
@@ -25,7 +25,7 @@
                     </option>
                 {% endfor %}
             </select>
-            <input type="submit" value="Go" id="change-language-button"/>
+            <input class="float-left btn-primary ml-2 btn" type="submit" value="Go" id="change-language-button"/>
           </form>
     </footer>
 </html>
