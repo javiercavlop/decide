@@ -373,6 +373,18 @@ def census_grouping(request):
         census = census_list(censos)
     return render(request,'census/census_grouping.html',{'form':form, 'censos': census})
 
+@api_view(['GET','POST'])
+def census_details(request):
+
+    censos = Census.objects.all().values()
+
+    if request.method == 'POST':
+        censo = Census.objects.filter(id = request.data.get('delete'))
+        censo.delete()
+
+    census = census_list(censos)
+    return render(request,'census/census_details.html',{'censos': census})
+
 def census_list(censos):
     res = []
     for censo in censos:
