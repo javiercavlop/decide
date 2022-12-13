@@ -143,14 +143,6 @@ class Voting(models.Model):
         self.num_votes_W = genre[1]
         self.num_votes_O = genre[2]
 
-        paridad = 'No cumple paridad'
-
-        #Comprobamos si existe paridad en la votación
-        if (self.num_votes_M == self.num_votes_W):
-            paridad = 'Cumple paridad'
-
-        self.paridad = paridad
-
         auth = self.auths.first()
         shuffle_url = "/shuffle/{}/".format(self.id)
         decrypt_url = "/decrypt/{}/".format(self.id)
@@ -178,11 +170,17 @@ class Voting(models.Model):
 
         self.do_postproc()
 
-        return[paridad]
-
     def do_postproc(self):
         tally = self.tally
         options = self.question.options.all()
+
+        paridad = 'No cumple paridad'
+
+        #Comprobamos si existe paridad en la votación
+        if (self.num_votes_M == self.num_votes_W):
+            paridad = 'Cumple paridad'
+
+        self.paridad = paridad
 
         #Debido a que el tally viene de forma ["123",["312"]], hay que separarlos ordenados, ahora quedan todos metidos en una lista
         if(self.question.questionType == "borda"):
@@ -219,7 +217,7 @@ class Voting(models.Model):
         self.postproc = postp
         self.save()
 
-        
+        return[paridad]
 
     def __str__(self):
         return self.name

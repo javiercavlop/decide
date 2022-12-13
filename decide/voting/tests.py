@@ -47,6 +47,38 @@ class VotingTestCase(BaseTestCase):
 
         return v
 
+    def create_voting_with_parity(self):
+        q = Question(desc='test question')
+        q.save()
+        for i in range(5):
+            opt = QuestionOption(question=q, option='option {}'.format(i+1))
+            opt.save()
+        v = Voting(name='test voting', question=q, num_votes_M=10, num_votes_W=10, num_votes_O = 20)
+        v.save()
+
+        a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
+                                          defaults={'me': True, 'name': 'test auth'})
+        a.save()
+        v.auths.add(a)
+
+        return v
+
+    def create_voting_without_parity(self):
+        q = Question(desc='test question')
+        q.save()
+        for i in range(5):
+            opt = QuestionOption(question=q, option='option {}'.format(i+1))
+            opt.save()
+        v = Voting(name='test voting', question=q, num_votes_M=100, num_votes_W=0, num_votes_O = 20)
+        v.save()
+
+        a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
+                                          defaults={'me': True, 'name': 'test auth'})
+        a.save()
+        v.auths.add(a)
+
+        return v
+
     def create_voting_borda(self):
         q = Question(desc='test question', questionType="borda")
         q.save()
@@ -62,7 +94,7 @@ class VotingTestCase(BaseTestCase):
         v.auths.add(a)
 
         return v
-
+    
     def create_voting_dhondt(self):
         q = DHondtQuestion(desc='test question')
         q.save()
@@ -78,7 +110,7 @@ class VotingTestCase(BaseTestCase):
         v.auths.add(a)
 
         return v
-
+    
     def create_voters(self, v):
         for i in range(100):
             u, _ = User.objects.get_or_create(username='testvoter{}'.format(i))
@@ -264,7 +296,33 @@ class VotingTestCase(BaseTestCase):
 
         for q in v.postproc:
             self.assertEqual(tally.get(q["number"], 0), q["votes"])
+    
+    def test_complete_voting_with_parity(self):
+        v = self.create_voting_with_parity()
+        self.create_voters(v)
 
+        v.create_pubkey()
+        v.start_date = timezone.now()
+        v.save()
+
+        self.login()  # set token
+        v.do_postproc()
+
+        self.assertEqual(v.paridad, "Cumple paridad")
+
+    def test_complete_voting_without_parity(self):
+        v = self.create_voting_without_parity()
+        self.create_voters(v)
+
+        v.create_pubkey()
+        v.start_date = timezone.now()
+        v.save()
+
+        self.login()  # set token
+        v.do_postproc()
+
+        self.assertEqual(v.paridad, "No cumple paridad")
+    
     def test_complete_voting_dhondt(self):
         v = self.create_voting_dhondt()
         self.create_voters(v)
@@ -288,7 +346,6 @@ class VotingTestCase(BaseTestCase):
         for q in v.postproc:
             self.assertEqual(tally.get(q["number"], 0), q["votes"])
 
-
 class VotingModelTestCase(BaseTestCase):
     def setUp(self):
         
@@ -300,7 +357,8 @@ class VotingModelTestCase(BaseTestCase):
         opt1 = QuestionOption(question=q, option='opcion 2')
         opt1.save()
 
-        self.v = Voting(name='Votacion', question=q)
+        #Añado a la votacion 1 valores para el numero de votos de cada genero para testear que se verifica correctamente la paridad
+        self.v = Voting(name='Votacion1', question=q, num_votes_M = 10, num_votes_W = 10, num_votes_O = 0)
         self.v.save()
 
         q2 = DHondtQuestion(desc = "test question")
@@ -314,18 +372,42 @@ class VotingModelTestCase(BaseTestCase):
         self.v2 = Voting(name = "Votacion2", question = q2)
         self.v2.save()
 
+        self.v3 = Voting(name='Votacion3', question=q, num_votes_M = 100, num_votes_W = 0, num_votes_O = 50)
+        self.v3.save()
+
+        self.v4 = Voting(name='Votacion4', question=q, num_votes_M = 50, num_votes_W = 50, num_votes_O = 50)
+        self.v4.save()
+
         super().setUp()
 
     def tearDown(self):
         super().tearDown()
-        self.v = None
+        self.v1 = None
         self.v2 = None
+        self.v3 = None
+        self.v4 = None
 
     def testExist(self):
-        v=Voting.objects.get(name='Votacion')
-        self.assertEqual(v.question.options.all()[0].option, "opcion 1")
+        v1=Voting.objects.get(name='Votacion1')
+        self.assertEqual(v1.question.options.all()[0].option, "opcion 1")
 
     def test_correct_dhondt_questiontype(self):
         #Para comprobar que el override del método save en DhondtQuestion es correcto
-        v = Voting.objects.get(name = "Votacion2")
-        self.assertEqual(v.question.questionType, "dhondt")
+        v2 = Voting.objects.get(name = "Votacion2")
+        self.assertEqual(v2.question.questionType, "dhondt")
+
+    def test_correct_parity(self):
+        #Para verificar en que votaciones se cumple paridad dependiendo de diferentes valores en los votos por genero
+        v1 = Voting.objects.get(name = "Votacion1")
+        v1.do_postproc()
+        self.assertEqual(v1.paridad, "Cumple paridad")
+
+        v3 = Voting.objects.get(name = "Votacion3")
+        v3.do_postproc()
+        self.assertEqual(v3.paridad, "No cumple paridad")
+
+        v4 = Voting.objects.get(name = "Votacion4")
+        v4.do_postproc()
+        self.assertEqual(v4.paridad, "Cumple paridad")
+
+
