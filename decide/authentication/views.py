@@ -1,4 +1,5 @@
 from django.utils import timezone
+from django.utils.datastructures import MultiValueDictKeyError
 from rest_framework.authtoken.views import ObtainAuthToken
 
 from authentication.form import NewUserForm, UserEditForm
@@ -271,8 +272,7 @@ class DeleteUserView(APIView):
         return redirect('signin')
 
 
-# Register API
-
+# API USER
 
 class RegisterAPI(generics.GenericAPIView):
     serializer_class = RegisterSerializer
@@ -280,6 +280,17 @@ class RegisterAPI(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
 
         errors = []
+
+        if 'email' not in request.POST:
+            return Response('Debes de ingresar un email', status=status.HTTP_400_BAD_REQUEST)
+        if 'username' not in request.POST:
+            return Response('Debes de ingresar un username', status=status.HTTP_400_BAD_REQUEST)
+        if 'password' not in request.POST:
+            return Response('Debes de ingresar un password', status=status.HTTP_400_BAD_REQUEST)
+        if 'first_name' not in request.POST:
+            return Response('Debes de ingresar un nombre', status=status.HTTP_400_BAD_REQUEST)
+        if 'last_name' not in request.POST:
+            return Response('Debes de ingresar un apellido', status=status.HTTP_400_BAD_REQUEST)
 
         if request.POST['email'] == "":
             no_email = "You must enter an email"
@@ -311,54 +322,87 @@ class RegisterAPI(generics.GenericAPIView):
 
 class EditUserApi(APIView):
 
-
     @staticmethod
-    def post( request):
+    def put(request):
 
-        user = request.POST['username']
-        token = request.POST['token']
+        try:
+            user = request.POST['username']
+            token = request.POST['token']
+        except MultiValueDictKeyError:
+            return Response("You must enter a username and a token", status=status.HTTP_400_BAD_REQUEST)
 
-        user = User.objects.get(username=user)
+        user = User.objects.filter(username=user).first()
 
         if user is None:
             return Response("User not found", status=status.HTTP_404_NOT_FOUND)
 
         token_user = Token.objects.get(user=user)
 
-        if not token_user.key == token:
+        if token_user.key != token:
             return Response("You can't update this user.", status=status.HTTP_403_FORBIDDEN)
 
 
-        new_first_name = request.POST['first_name']
-        new_last_name = request.POST['last_name']
+        new_first_name = request.POST['first_name'] if 'first_name' in request.POST else ""
+        new_last_name = request.POST['last_name'] if 'last_name' in request.POST else ""
 
         errors = []
 
-        if new_first_name != "" :
-            if new_first_name[0].isupper() == False:
+        if  new_first_name != "" :
+            if not new_first_name[0].isupper():
                 name_not_capitalized = "Name must be capitalized"
                 errors.append(name_not_capitalized)
             else:
                 user.first_name = new_first_name
 
         if new_last_name != "":
-            if new_last_name[0].isupper() == False:
+            if not new_last_name[0].isupper():
                 surname_not_capitalized = "Surname must be capitalized"
                 errors.append(surname_not_capitalized)
             else:
                 user.last_name = new_last_name
 
+        if len(errors) > 0:
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
 
         user.save()
 
         return Response({
-        "user": UserSerializer(user),
-        "token": Token.objects.create(user=user).key
+        "user": {
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "email": user.email,
+            "username": user.username
+        },
+        "token": token_user.key,
+
         })
 
+class DeleteUserApi(APIView):
+
+    @staticmethod
+    def delete(request, username=None):
+
+        try:
+            token = request.POST['token']
+        except MultiValueDictKeyError:
+            return Response("You must enter a token", status=status.HTTP_400_BAD_REQUEST)
+
+        user = User.objects.get(username=username)
+
+        if user is None:
+            return Response("User not found", status=status.HTTP_404_NOT_FOUND)
+
+        token_user = Token.objects.get(user=user)
+
+        if token_user.key != token:
+            return Response("You can't update this user.", status=status.HTTP_403_FORBIDDEN)
+
+        user.delete()
+
+        return Response("User deleted", status=status.HTTP_200_OK)
 
 
-# Login API
 class LoginApi(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
