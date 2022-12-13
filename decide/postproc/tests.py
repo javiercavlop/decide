@@ -124,6 +124,52 @@ class PostProcTestCase(APITestCase):
         values = response.json()
         self.assertNotEquals(values, expected_result)
 
+    def test_wrong_postproc_borda(self):
+        data = {
+            'type': 'IDENTITY', 
+            'options': [{'option': 'Respuesta 1', 'number': 1, 'votes': 3}, {'option': 'Respuesta 2', 'number': 2, 'votes': 3}, {'option': 'Respuesta 3', 'number': 3, 'votes': 3}], 
+            'extra': [1, 3, 2, 3, 2, 1, 1, 3, 2], 
+            'questionType': 'borda'}
+
+        expected_result = [
+            { 'option': 'Respuesta 1', 'number': 1, 'votes': 3, 'postproc': 6 },
+            { 'option': 'Respuesta 3', 'number': 3, 'votes': 3, 'postproc': 56388 },
+            { 'option': 'Respuesta 2', 'number': 2, 'votes': 3, 'postproc': 6 },
+            
+        ]
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        values = response.json()
+        self.assertNotEquals(values, expected_result)
+
+    def test_wrong_votes_borda(self):
+        data = {
+            'type': 'IDENTITY', 
+            'options': [{'option': 'Respuesta 1', 'number': 1, 'votes': 3}, {'option': 'Respuesta 2', 'number': 2, 'votes': 3}, {'option': 'Respuesta 3', 'number': 3, 'votes': 3}], 
+            'extra': [1, 3, 2, 3, 2, 1, 1, 3, 2], 
+            'questionType': 'borda'}
+
+        expected_result = [
+            { 'option': 'Respuesta 1', 'number': 1, 'votes': 3, 'postproc': 6 },
+            { 'option': 'Respuesta 3', 'number': 3, 'votes': 1000, 'postproc': 6 },
+            { 'option': 'Respuesta 2', 'number': 2, 'votes': 3, 'postproc': 6 },
+            
+        ]
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        values = response.json()
+        self.assertNotEquals(values, expected_result)
+
+    def test_no_data_borda(self):
+        data = {}
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.data, Response([]).data)
+
     def test_no_data_borda(self):
         data = {}
 

@@ -53,7 +53,8 @@ class VotingTestCase(BaseTestCase):
         for i in range(5):
             opt = QuestionOption(question=q, option='option {}'.format(i+1))
             opt.save()
-        v = Voting(name='test voting', question=q, num_votes_M=10, num_votes_W=10, num_votes_O = 20)
+        v = Voting(name='test voting', question=q, 
+            num_votes_M=10, num_votes_W=10, num_votes_O = 20)
         v.save()
 
         a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
@@ -69,15 +70,20 @@ class VotingTestCase(BaseTestCase):
         for i in range(5):
             opt = QuestionOption(question=q, option='option {}'.format(i+1))
             opt.save()
-        v = Voting(name='test voting', question=q, num_votes_M=100, num_votes_W=0, num_votes_O = 20)
-        v.save()
+        v1 = Voting(name='test voting1', question=q, 
+            num_votes_M=100, num_votes_W=0, num_votes_O = 20)
+        v1.save()
+        v2 = Voting(name='test voting2', question=q, 
+            num_votes_M=0, num_votes_W=0, num_votes_O = 20)
+        v2.save()
 
         a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
                                           defaults={'me': True, 'name': 'test auth'})
         a.save()
-        v.auths.add(a)
+        v1.auths.add(a)
+        v2.auths.add(a)
 
-        return v
+        return [v1,v2]
 
     def create_voting_borda(self):
         q = Question(desc='test question', questionType="borda")
@@ -311,17 +317,29 @@ class VotingTestCase(BaseTestCase):
         self.assertEqual(v.paridad, "Cumple paridad")
 
     def test_complete_voting_without_parity(self):
-        v = self.create_voting_without_parity()
-        self.create_voters(v)
+        v1 = self.create_voting_without_parity()[0]
+        self.create_voters(v1)
 
-        v.create_pubkey()
-        v.start_date = timezone.now()
-        v.save()
+        v1.create_pubkey()
+        v1.start_date = timezone.now()
+        v1.save()
 
         self.login()  # set token
-        v.do_postproc()
+        v1.do_postproc()
 
-        self.assertEqual(v.paridad, "No cumple paridad")
+        v2 = self.create_voting_without_parity()[1]
+        self.create_voters(v2)
+
+        v2.create_pubkey()
+        v2.start_date = timezone.now()
+        v2.save()
+
+        self.login()  # set token
+        v2.do_postproc()
+
+        self.assertEqual(v1.paridad, "No cumple paridad")
+
+        self.assertEqual(v2.paridad, "No existen votos de genero masculino ni femenino")
     
     def test_complete_voting_dhondt(self):
         v = self.create_voting_dhondt()
@@ -358,7 +376,8 @@ class VotingModelTestCase(BaseTestCase):
         opt1.save()
 
         #Añado a la votacion 1 valores para el numero de votos de cada genero para testear que se verifica correctamente la paridad
-        self.v = Voting(name='Votacion1', question=q, num_votes_M = 10, num_votes_W = 10, num_votes_O = 0)
+        self.v = Voting(name='Votacion1', question=q, 
+            num_votes_M = 10, num_votes_W = 10, num_votes_O = 0)
         self.v.save()
 
         q2 = DHondtQuestion(desc = "test question")
@@ -372,10 +391,12 @@ class VotingModelTestCase(BaseTestCase):
         self.v2 = Voting(name = "Votacion2", question = q2)
         self.v2.save()
 
-        self.v3 = Voting(name='Votacion3', question=q, num_votes_M = 100, num_votes_W = 0, num_votes_O = 50)
+        self.v3 = Voting(name='Votacion3', question=q, 
+            num_votes_M = 100, num_votes_W = 0, num_votes_O = 50)
         self.v3.save()
 
-        self.v4 = Voting(name='Votacion4', question=q, num_votes_M = 50, num_votes_W = 50, num_votes_O = 50)
+        self.v4 = Voting(name='Votacion4', question=q, 
+            num_votes_M = 0, num_votes_W = 0, num_votes_O = 50)
         self.v4.save()
 
         super().setUp()
@@ -408,6 +429,6 @@ class VotingModelTestCase(BaseTestCase):
 
         v4 = Voting.objects.get(name = "Votacion4")
         v4.do_postproc()
-        self.assertEqual(v4.paridad, "Cumple paridad")
+        self.assertEqual(v4.paridad, "No existen votos de genero masculino ni femenino")
 
 

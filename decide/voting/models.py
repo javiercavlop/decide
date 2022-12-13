@@ -179,6 +179,9 @@ class Voting(models.Model):
         #Comprobamos si existe paridad en la votación
         if (self.num_votes_M == self.num_votes_W):
             paridad = 'Cumple paridad'
+            if (self.num_votes_M == 0) and (self.num_votes_W == 0):
+                paridad = 'No existen votos de genero masculino ni femenino'
+            
 
         self.paridad = paridad
 
