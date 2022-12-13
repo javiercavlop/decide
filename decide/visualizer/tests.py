@@ -26,7 +26,7 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         user.save()
 
         options = webdriver.ChromeOptions()
-        options.headless = False
+        options.headless = True
         path = Path.cwd()
         prefs = {"download.default_directory": str(path)}
         options.add_experimental_option("prefs", prefs)
@@ -39,3 +39,12 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         self.driver.quit()
 
         self.base.tearDown()
+        
+    def test_NoStartedVotingVisualizer(self):        
+        q = Question(desc='test question')
+        q.save()
+        v = Voting(name='test voting', question=q)
+        v.save()
+        response =self.driver.get(f'{self.live_server_url}/visualizer/{v.pk}/')
+        vState= self.driver.find_element(By.TAG_NAME,"h2").text
+        self.assertTrue(vState, "Votación no comenzada")
