@@ -298,7 +298,7 @@ def censusReuse(request):
 @api_view(['GET','POST'])
 def censusCreation(request):
     if request.method == 'POST':
-            form=CensusForm(request.POST)
+        form=CensusForm(request.POST)
             print(form)
             if form.is_valid():
                 cd = form.cleaned_data
@@ -314,7 +314,7 @@ def censusCreation(request):
                     pass
                 return HttpResponseRedirect('/census')
             else:
-                return Response('Error try to create census', status=ST_404)
+                return Response('Error try to create census', status=ST_400)
     else:
         form = CensusForm()
     return render(request,'census/census_create.html',{'form':form})
