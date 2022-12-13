@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
+from django.core.exceptions import ValidationError
 
 from base import mods
 from base.tests import BaseTestCase
@@ -13,7 +14,7 @@ from census.models import Census
 from mixnet.mixcrypt import ElGamal
 from mixnet.mixcrypt import MixCrypt
 from mixnet.models import Auth
-from voting.models import Voting, Question, QuestionOption, DHondtQuestion
+from voting.models import Voting, Question, QuestionOption, DHondtQuestion, BaseQuestion
 
 
 class VotingTestCase(BaseTestCase):
@@ -432,3 +433,11 @@ class VotingModelTestCase(BaseTestCase):
         self.assertEqual(v4.paridad, "No existen votos de genero masculino ni femenino")
 
 
+    def test_unit_zero_seats_in_question(self):
+        baseq = BaseQuestion(desc = 'prueba escaños a 0', seats = 0)
+        q = DHondtQuestion(baseq)
+        self.assertRaises(ValidationError)
+        
+    def test_str_basequestion(self):
+        baseq = BaseQuestion(desc = 'prueba str', seats = 0)
+        self.assertEqual(str(baseq), "prueba str")
