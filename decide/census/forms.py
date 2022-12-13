@@ -14,6 +14,7 @@ class CensusGroupingForm(forms.Form):
     widget  = forms.CheckboxSelectMultiple,
     )
 
+
 votings= list((x.id, x.id) for x in Voting.objects.all())
 voters= list((x.id, x.username) for x in User.objects.all())
 
