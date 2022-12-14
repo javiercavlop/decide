@@ -1,4 +1,3 @@
-
 from urllib import response
 from base import mods
 from base.tests import BaseTestCase
@@ -11,6 +10,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
+
 
 class AuthTestCase(APITestCase):
 
@@ -133,6 +133,7 @@ class AuthTestCase(APITestCase):
             ['token', 'user_pk']
         )
 
+
 class AuthTestUnitaries(APIClient):
 
     def setUp(self):
@@ -141,7 +142,6 @@ class AuthTestUnitaries(APIClient):
         u = User(username='voter1')
         u.set_password('123')
         u.save()
-
 
     def tearDown(self):
         self.client = None
@@ -152,12 +152,10 @@ class AuthTestUnitaries(APIClient):
         self.assertEqual(response.status_code, 200)
 
 
-
 class AuthTestSelenium(StaticLiveServerTestCase):
 
-
     def setUp(self):
-        #Load base test functionality for decide
+        # Load base test functionality for decide
         self.base = BaseTestCase()
         self.base.setUp()
         self.client = APIClient()
@@ -170,61 +168,57 @@ class AuthTestSelenium(StaticLiveServerTestCase):
         options.headless = True
         self.driver = webdriver.Chrome(options=options)
 
-        super().setUp() 
-        
-    def tearDown(self):           
+        super().setUp()
+
+    def tearDown(self):
         super().tearDown()
         self.driver.quit()
 
         self.base.tearDown()
 
     def test_login_by_username(self):
-        self.driver.get("http://127.0.0.1:8000/authentication/signin/")
+        self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys("leslie")
         self.driver.find_element_by_id("id_password").send_keys("contraseña1")
         self.driver.find_element_by_id("submit").click()
-        self.assertEqual(self.driver.current_url, "http://127.0.0.1:8000/authentication/hello/")
+        self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/hello/")
 
     def test_login_by_email(self):
-        self.driver.get("http://127.0.0.1:8000/authentication/signin/")
+        self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys("leslie@us.es")
         self.driver.find_element_by_id("id_password").send_keys("contraseña1")
         self.driver.find_element_by_id("submit").click()
-        self.assertEqual(self.driver.current_url, "http://127.0.0.1:8000/authentication/hello/")
+        self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/hello/")
 
     def test_fail_password_login_by_username(self):
-        self.driver.get("http://127.0.0.1:8000/authentication/signin/")
+        self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys("leslie")
         self.driver.find_element_by_id("id_password").send_keys("no es mi contraseña")
         self.driver.find_element_by_id("submit").click()
-        #self.assertEqual(response.status_code, 200)
         error = self.driver.find_element_by_id("error")
         self.assertEqual(error.text, "Username or password is incorrect")
 
     def test_fail_password_login_by_email(self):
-        self.driver.get("http://127.0.0.1:8000/authentication/signin/")
+        self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys("leslie@us.es")
         self.driver.find_element_by_id("id_password").send_keys("no es mi contraseña")
         self.driver.find_element_by_id("submit").click()
-        #self.assertEqual(response.status_code, 200)
         error = self.driver.find_element_by_id("error")
         self.assertEqual(error.text, "Username or password is incorrect")
 
     def test_fail_username_login_by_username(self):
-        self.driver.get("http://127.0.0.1:8000/authentication/signin/")
+        self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys("niidea")
         self.driver.find_element_by_id("id_password").send_keys("contraseña1")
         self.driver.find_element_by_id("submit").click()
-        #self.assertEqual(response.status_code, 200)
         error = self.driver.find_element_by_id("error")
         self.assertEqual(error.text, "Username or password is incorrect")
 
     def test_fail_email_login_by_email(self):
-        self.driver.get("http://127.0.0.1:8000/authentication/signin/")
+        self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys("nosequieneres@us.es")
         self.driver.find_element_by_id("id_password").send_keys("contraseña1")
         self.driver.find_element_by_id("submit").click()
-        #self.assertEqual(response.status_code, 200)
         error = self.driver.find_element_by_id("error")
         self.assertEqual(error.text, "Username or password is incorrect")
 
