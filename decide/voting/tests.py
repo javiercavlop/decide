@@ -14,7 +14,7 @@ from census.models import Census
 from mixnet.mixcrypt import ElGamal
 from mixnet.mixcrypt import MixCrypt
 from mixnet.models import Auth
-from voting.models import Voting, Question, QuestionOption, DHondtQuestion, BaseQuestion
+from voting.models import Voting, Question, QuestionOption, DHondtQuestion
 
 
 class VotingTestCase(BaseTestCase):
@@ -434,10 +434,10 @@ class VotingModelTestCase(BaseTestCase):
 
 
     def test_unit_zero_seats_in_question(self):
-        baseq = BaseQuestion(desc = 'prueba escaños a 0', seats = 0)
+        baseq = Question(desc = 'prueba escaños a 0', seats = 0)
         q = DHondtQuestion(baseq)
         self.assertRaises(ValidationError)
         
-    def test_str_basequestion(self):
-        baseq = BaseQuestion(desc = 'prueba str', seats = 0)
+    def test_str_question(self):
+        baseq = Question(desc = 'prueba str', seats = 0)
         self.assertEqual(str(baseq), "prueba str")

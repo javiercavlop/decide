@@ -23,7 +23,7 @@ def validate_nonzero(value):
             params={'value': value},
         )
 
-class BaseQuestion(models.Model):
+class Question(models.Model):
     desc = models.TextField()
     questionType = models.CharField(max_length=50, choices=QUESTION_TYPES, default='normal')
     seats = models.PositiveSmallIntegerField(default=4, validators=[validate_nonzero])
@@ -31,17 +31,14 @@ class BaseQuestion(models.Model):
     def __str__(self):
         return self.desc
 
-class Question(BaseQuestion):
-    pass
-
-class DHondtQuestion(BaseQuestion):
+class DHondtQuestion(Question):
     def save(self):
         self.questionType = "dhondt"
         print(self.questionType)
         return super().save()
 
 class QuestionOption(models.Model):
-    question = models.ForeignKey(BaseQuestion, related_name='options', on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, related_name='options', on_delete=models.CASCADE)
     number = models.PositiveIntegerField(blank=True, null=True)
     option = models.TextField()
 
@@ -57,7 +54,7 @@ class QuestionOption(models.Model):
 class Voting(models.Model):
     name = models.CharField(max_length=200)
     desc = models.TextField(blank=True, null=True)
-    question = models.ForeignKey(BaseQuestion, related_name='voting', on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, related_name='voting', on_delete=models.CASCADE)
 
     start_date = models.DateTimeField(blank=True, null=True)
     end_date = models.DateTimeField(blank=True, null=True)
