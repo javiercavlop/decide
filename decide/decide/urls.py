@@ -24,7 +24,7 @@ from base import views as base_views
 schema_view = get_swagger_view(title='Decide API')
 
 urlpatterns = [
-    path('',base_views.main_page),
+    path('',base_views.main_page, name="main"),
     path('admin/', admin.site.urls),
     path('doc/', schema_view),
     path('gateway/', include('gateway.urls')),
