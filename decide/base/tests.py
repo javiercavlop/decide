@@ -37,7 +37,6 @@ class BaseTestCase(APITestCase):
         response = mods.post('authentication/login', json=data, response=True)
         self.assertEqual(response.status_code, 200)
         self.token = response.json().get('token')
-        print(self.token)
         self.assertTrue(self.token)
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
 

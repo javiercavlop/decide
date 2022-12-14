@@ -29,8 +29,10 @@
                     <!-- TRADUCCION -->
             
             <div class="row my-3">
+                 <!-- TRADUCCION -->
                 <div class="col-5"><h3 class="heading">Usuarios</h3></div>
                 <div class="col-1"></div>
+                 <!-- TRADUCCION -->
                 <div class="col-6"><h3 class="heading">Número de encuestas votadas en tiempo real</h3></div>
             </div>
             <div class="row"> 
@@ -63,6 +65,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="f in new_votes">
+                                 <!-- TRADUCCION -->
                                 <th v-bind:id="[[f.voter]]"><i class="bi bi-person mx-2"></i>[[f.voter]]</th>
                                 <th>[[f.number]] </th>
                             </tr>
@@ -71,7 +74,7 @@
                     </table>
                 </div>
             </div>
-
+ <!-- TRADUCCION -->
             <h3>Porcentajes de votaciones según censo</h3>
         <div class="table-wrapper-scroll-y my-custom-scrollbar">
             <table id= "vot-census" class="table table-bordered table-striped">
@@ -108,7 +111,7 @@
                 <div class="col-md-3">
                 <div class="card border-danger descargar">
                     <article class="card-body">
-            
+             <!-- TRADUCCION -->
                     <h4 class="card-title mb-4 mt-1 text-align-center text-center">Descargar Estadísticas</h4>
                     <div class="row d-flex justify-content-center align-items-center mx-2">
                         <input type="button" id="descargar" class="btn btn-danger mx-auto align-self-center" value="Descargar" onclick="window.open('download')">
