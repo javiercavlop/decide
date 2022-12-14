@@ -169,7 +169,9 @@ class AuthTestSelenium(StaticLiveServerTestCase):
         u.set_password('contraseña1')
         u.save()
         super().setUp()
-
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
     def tearDown(self):
     
         super().tearDown()
