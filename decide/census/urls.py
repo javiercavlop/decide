@@ -13,6 +13,7 @@ urlpatterns = [
     path('export/', views.export_excel,name="export_excel"),
     path('censusgroups/<int:pk>/',views.CensusGroupDetail.as_view(), name='census_group_detail'),
     path('reuse',views.censusReuse, name="census_reuse"),
+    path('new/',views.censusCreation, name="census_creation"),
     path('census_grouping/',views.census_grouping, name="census_grouping"),
     path('census_details/',views.census_details, name="census_details"),
 ]
