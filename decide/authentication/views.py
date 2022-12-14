@@ -1,6 +1,5 @@
 from django.utils import timezone
 from rest_framework.authtoken.views import ObtainAuthToken
-
 from authentication.form import NewUserForm, UserEditForm
 import re
 from allauth.socialaccount.models import SocialAccount
@@ -26,6 +25,7 @@ from django.db.models import Q
 
 from .serializers import UserSerializer, RegisterSerializer
 
+from django.conf import settings
 
 class GetUserView(APIView):
     def post(self, request):
@@ -134,6 +134,7 @@ class SignUpView(APIView):
                     })
             else:
                 user = form.save()
+                Token.objects.create(user=user)
                 login(request, user)
                 return redirect("hello")
             
@@ -143,8 +144,7 @@ class SignUpView(APIView):
 
 
 class SignInView(APIView):
-
-    
+ 
     @staticmethod     
     def sing_in(request):
 
@@ -152,6 +152,7 @@ class SignInView(APIView):
             return redirect('hello')
 
         if request.method == 'GET':
+            
             return render(request, 'signin.html', {
                 'form' : AuthenticationForm
             })
@@ -166,6 +167,7 @@ class SignInView(APIView):
                     'error': 'Username or password is incorrect'
                 })
             else:
+                Token.objects.update_or_create(user=user)
                 login(request, user)
                 return redirect('hello')
 
