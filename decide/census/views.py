@@ -299,22 +299,22 @@ def censusReuse(request):
 def censusCreation(request):
     if request.method == 'POST':
         form=CensusForm(request.POST)
-            print(form)
-            if form.is_valid():
-                cd = form.cleaned_data
-                voting_id=cd['voting_id']
-                voter_id=cd['voter_id']
-                group=cd['group_id']
-                group_search=CensusGroup.objects.get_or_create(name=str(group))
-                group_result=get_object_or_404(CensusGroup,name=str(group_search[0]))
-                try:
-                    census=Census(voting_id=voting_id,voter_id=voter_id,group_id=group_result.id)
-                    census.save()
-                except:
-                    pass
-                return HttpResponseRedirect('/census')
-            else:
-                return Response('Error try to create census', status=ST_400)
+        
+        if form.is_valid():
+            cd = form.cleaned_data
+            voting_id=cd['voting_id']
+            voter_id=cd['voter_id']
+            group=cd['group_id']
+            group_search=CensusGroup.objects.get_or_create(name=str(group))
+            group_result=get_object_or_404(CensusGroup,name=str(group_search[0]))
+            try:
+                census=Census(voting_id=voting_id,voter_id=voter_id,group_id=group_result.id)
+                census.save()
+            except:
+                pass
+            return HttpResponseRedirect('/census')
+        else:
+            return Response('Error try to create census', status=ST_400)
     else:
         form = CensusForm()
     return render(request,'census/census_create.html',{'form':form})
