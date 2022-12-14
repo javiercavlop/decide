@@ -18,10 +18,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: authentication/templates/signin.html:11
-msgid "Sign In"
-msgstr ""
+#: census/templates/census/export.html:13
+msgid "Exportación de Fichero Excel"
+msgstr "Export excel file"
 
-#: authentication/templates/signin.html:36
-msgid "Submit"
-msgstr ""
+#: census/templates/census/export.html:25
+msgid "Exportar"
+msgstr "Export"
+
+#: census/templates/census/import.html:17
+msgid "Importación Fichero Excel"
+msgstr "Import excel file"
+
+#: census/templates/census/import.html:20
+msgid "Introduzca un fichero con el formato .xlsx para importarlo:"
+msgstr "Enter a file in the .xlsx format to import it:"
+
+#: census/templates/census/import.html:31
+msgid "Subir"
+msgstr "Upload"
+
+#: census/templates/census/import.html:32
+msgid "Volver"
+msgstr "Return"
