@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -17,7 +17,7 @@ from rest_framework.status import (
 from rest_framework.permissions import IsAdminUser,IsAuthenticated
 from base.perms import UserIsStaff
 from .models import Census,CensusGroup
-from .forms import CensusReuseForm
+from .forms import CensusReuseForm, CensusGroupingForm, CensusForm
 from .serializers import CensusGroupSerializer,CensusSerializer
 from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes 
@@ -276,7 +276,6 @@ class CensusGroupCreate(generics.ListCreateAPIView):
 def censusReuse(request):
     if request.method == 'POST':
             form = CensusReuseForm(request.POST)
-            print(form)
             if form.is_valid():
                 cd = form.cleaned_data
                 voting_id = cd['voting_id']
@@ -295,6 +294,38 @@ def censusReuse(request):
     else:
         form = CensusReuseForm()
     return render(request,'census/census_reuse_form.html',{'form':form})
+
+@api_view(['GET','POST'])
+def censusCreation(request):
+    if request.method == 'POST':
+        form=CensusForm(request.POST)
+        
+        if form.is_valid():
+            cd = form.cleaned_data
+            voting_id=cd['voting_id']
+            voter_id=cd['voter_name']
+            group=cd['group_name']
+            if str(group).strip() == "" :
+                try:
+                    census=Census(voting_id=voting_id,voter_id=voter_id)
+                    census.save()
+                except:
+                    pass
+                return HttpResponseRedirect('/census')
+            else:
+                group_search=CensusGroup.objects.get_or_create(name=str(group))
+                group_result=get_object_or_404(CensusGroup,name=str(group_search[0]))
+                try:
+                    census=Census(voting_id=voting_id,voter_id=voter_id,group_id=group_result.id)
+                    census.save()
+                except:
+                    pass
+                return HttpResponseRedirect('/census')
+        else:
+            return Response('Error try to create census', status=ST_400)
+    else:
+        form = CensusForm()
+    return render(request,'census/census_create.html',{'form':form})
 
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
@@ -338,3 +369,65 @@ class CensusGroupDetail(generics.RetrieveDestroyAPIView):
         except ObjectDoesNotExist:
             return Response('Non-existent group', status=ST_401)
         return Response('Valid group')
+
+@api_view(['GET','POST'])
+def census_grouping(request):
+
+    censos = Census.objects.all().values()
+
+    if request.method == 'POST':
+        form = CensusGroupingForm(request.POST)
+       
+        if form.is_valid():
+            formData = form.cleaned_data
+            group_name = formData['group']
+            choices = formData['choices']
+            
+            censosForm = choices.values()
+
+            for censo in censosForm:
+                try:
+                    if group_name.strip()=="":
+                        census = Census(id=censo['id'], voting_id=censo['voting_id'], voter_id=censo['voter_id'])
+                        census.save()
+                    else:
+                        group = CensusGroup.objects.get(name=group_name)
+                        census = Census(id=censo['id'], voting_id=censo['voting_id'], voter_id=censo['voter_id'], group=group)
+                        census.save()
+                except:
+                    return Response('The group of census does not exist', status=ST_400)
+            return HttpResponseRedirect('/census')
+        else:
+            return Response('You must select one census at least', status=ST_400)
+    else:
+        form = CensusGroupingForm()
+        census = census_list(censos)
+    return render(request,'census/census_grouping.html',{'form':form, 'censos': census})
+
+@api_view(['GET','POST'])
+def census_details(request):
+
+    censos = Census.objects.all().values()
+
+    if request.method == 'POST':
+        censo = Census.objects.filter(id = request.data.get('delete'))
+        censo.delete()
+
+    census = census_list(censos)
+    return render(request,'census/census_details.html',{'censos': census})
+
+def census_list(censos):
+    res = []
+    for censo in censos:
+        try:
+            votante = User.objects.get(pk=censo['voter_id'])
+        except:
+            #       TRADUCCION
+            votante = "El votante todavía no ha sido añadido"
+        try:
+            grupo = CensusGroup.objects.get(id=censo['group_id'])
+        except:
+            #       TRADUCCION
+            grupo = "No tiene grupo asignado"
+        res.append({'id': censo['id'],'voting_id':censo['voting_id'],'voter':votante,'group':grupo})
+    return res
