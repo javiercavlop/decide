@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load socialaccount %}
+{% load i18n %}
+
+{% block extrahead %}
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+{% endblock %}
+
+{% block content %}
+<div class="container-md">
+  <h1>{% trans "Sign In" %}</h1>
+  <br>
+
+  {{ error }}
+ 
+  <form  method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+  </form>
+
+  <br>
+  <!--Traducir--> 
+  <p>Don't have an account? <a href="{% url 'signup' %}">Register now</a></p>
+  <!--Traducir--> 
+  <p>You can also sign in with: <a href="{% provider_login_url 'google' %}">Google</a>, <a href="{% provider_login_url 'github' %}">GitHub</a>
+  , <a href="{% provider_login_url 'discord' %}">Discord</a>, <a href="{% provider_login_url 'linkedin_oauth2' %}">LinkedIn</a>
+  , <a href="{% provider_login_url 'auth0' %}">Auth0</a>, <a href="{% provider_login_url 'facebook' %}">Facebook</a></p>
+
+</div>
+
+
+
+  {% endblock %}
