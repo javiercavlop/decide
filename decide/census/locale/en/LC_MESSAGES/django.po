@@ -1,0 +1,70 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-14 16:50+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: census/templates/census/census.html:26
+msgid "Lista de censos"
+msgstr "List of censuses"
+
+#: census/templates/census/census.html:27
+msgid "Escribe para buscar"
+msgstr "Type to search"
+
+#: census/templates/census/census.html:37
+msgid "Votación"
+msgstr "Voting"
+
+#: census/templates/census/census.html:38
+msgid "Votante"
+msgstr "Voter"
+
+#: census/templates/census/census.html:39
+msgid "Grupo"
+msgstr "Cluster"
+
+#: census/templates/census/census.html:62
+msgid "Crear Censo"
+msgstr "Create census"
+
+#: census/templates/census/census.html:72
+msgid "Detalles de Censos"
+msgstr "Census details"
+
+#: census/templates/census/census.html:82
+msgid "Agrupar Censos"
+msgstr "Group census"
+
+#: census/templates/census/census.html:92
+msgid "Reutilizar Censos"
+msgstr "Reuse censuses"
+
+#: census/templates/census/census.html:102
+msgid "Importar Csv"
+msgstr "Import CSV"
+
+#: census/templates/census/census.html:110
+msgid "Importar JSON"
+msgstr "Import JSON"
+
+#: census/templates/census/census.html:120
+msgid "Importar Excel"
+msgstr "Import EXCEL"
+
+#: census/templates/census/census.html:128
+msgid "Exportar Excel"
+msgstr "Export EXCEL"
