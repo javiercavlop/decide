@@ -16,7 +16,7 @@ RUN pip install ipython
 WORKDIR /app
 
 RUN git clone https://github.com/egc-decide-trebujena/decide.git .
-RUN git checkout feature/230
+RUN git checkout develop
 RUN git pull
 RUN echo "$(<requirements.txt)"s
 RUN pip install -U pip
