@@ -263,4 +263,150 @@ class AuthenticationViewsTestCase(StaticLiveServerTestCase):
         self.driver.find_element(By.ID,'id-signin-btn').click()
         self.assertEqual(self.driver.current_url,'{}/'.format(self.live_server_url))
 
+class RegisterPageTranslationCase(StaticLiveServerTestCase):
     
+    def setUp(self):
+        #Load base test functionality for decide
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+        super().setUp()
+        
+    def tearDown(self):           
+        super().tearDown()
+        self.driver.quit()
+
+        self.base.tearDown()
+    
+    def test_french_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/authentication/signup/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(4)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > div > form > div:nth-child(3) > div.fw-bold > label"))
+        self.assertEqual(header_text.text, "Prénom :")
+        
+    def test_german_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/authentication/signup/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(3)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > div > form > div:nth-child(3) > div.fw-bold > label"))
+        self.assertEqual(header_text.text, "Vorname:")
+        
+    def test_spanish_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/authentication/signup/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(2)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > div > form > div:nth-child(3) > div.fw-bold > label"))
+        self.assertEqual(header_text.text, "Nombre:")
+
+    def test_english_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/authentication/signup/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(1)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > div > form > div:nth-child(3) > div.fw-bold > label"))
+        self.assertEqual(header_text.text, "First name:")
+        
+class LoginPageTranslationCase(StaticLiveServerTestCase):
+    
+    def setUp(self):
+        #Load base test functionality for decide
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+        super().setUp()
+        
+    def tearDown(self):           
+        super().tearDown()
+        self.driver.quit()
+
+        self.base.tearDown()
+    
+    def test_french_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/authentication/signin/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(4)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > form > div.row.mb-3 > div:nth-child(1) > label"))
+        self.assertEqual(header_text.text, "Nom d'utilisateur:")
+        
+    def test_german_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/authentication/signin/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(3)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > form > div.row.mb-3 > div:nth-child(1) > label"))
+        self.assertEqual(header_text.text, "Nutzername:")
+        
+    def test_spanish_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/authentication/signin/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(2)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > form > div.row.mb-3 > div:nth-child(1) > label"))
+        self.assertEqual(header_text.text, "Nombre de usuario:")
+
+    def test_english_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/authentication/signin/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(1)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > form > div.row.mb-3 > div:nth-child(1) > label"))
+        self.assertEqual(header_text.text, "Username:")
