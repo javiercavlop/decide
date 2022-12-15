@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-14 18:12+0000\n"
+"POT-Creation-Date: 2022-12-15 09:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,3 +41,62 @@ msgstr "Upload"
 #: census/templates/census/import.html:32
 msgid "Volver"
 msgstr "Return"
+#: census/templates/census/census_details.html:24
+msgid "Detalles de censos"
+msgstr "Census details"
+
+#: census/templates/census/census_details.html:32
+msgid "Censo Id"
+msgstr "Census ID"
+
+#: census/templates/census/census_details.html:33
+msgid "Votación Id"
+msgstr "Voting ID"
+
+#: census/templates/census/census_details.html:34
+msgid "Votante (Id)"
+msgstr "Voter ID"
+
+#: census/templates/census/census_details.html:35
+msgid "Grupo"
+msgstr "Group"
+
+#: census/templates/census/census_details.html:36
+msgid "Eliminar censo"
+msgstr "Remove census"
+
+#: census/templates/census/census_details.html:46
+msgid "Eliminar"
+msgstr "Remove"
+
+#: census/templates/census/census_details.html:56
+msgid "Reutilizar Censos"
+msgstr "Reuse census"
+
+#: census/templates/census/census_details.html:59
+msgid "Agrupar Censos"
+msgstr "Group census"
+
+#: census/templates/census/census_reuse_form.html:26
+msgid "Reutilizar Censo"
+msgstr "Reuse Census"
+
+#: census/templates/census/census_reuse_form.html:31
+msgid "Votación origen:"
+msgstr "Origin voting:"
+
+#: census/templates/census/census_reuse_form.html:33
+msgid "Id de la votación a copiar"
+msgstr "Voting to copy's id"
+
+#: census/templates/census/census_reuse_form.html:37
+msgid "Votación destino:"
+msgstr "Voting of destination:"
+
+#: census/templates/census/census_reuse_form.html:39
+msgid "Id de la votación deseada"
+msgstr "Wished voting's id"
+
+#: census/templates/census/census_reuse_form.html:43
+msgid "Aceptar"
+msgstr "Accept"
