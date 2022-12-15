@@ -42,14 +42,8 @@ class VisualizerTestCase(StaticLiveServerTestCase):
 
         self.base.tearDown()
         
+
     def test_StopedVotingVisualizer(self):        
-        q = Question(desc='test question')
-        q.save()
-        v = Voting(name='test voting', question=q)
-        v.save()
-        data = {'action': 'start'}
-        response1 = self.client.put('/voting/{}/'.format(v.pk), data, format='json')
-        self.assertEqual(response1.status_code, 401)
         data = {'action': 'stop'}
         response1 = self.client.put('/voting/{}/'.format(v.pk), data, format='json')
         self.assertEqual(response1.status_code, 401)
@@ -57,3 +51,16 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         vState = self.driver.find_element(By.TAG_NAME,"h2").text
         self.assertTrue(vState, "Resultados:")
     
+
+    def test_StartedVotingVisualizer(self):        
+        q = Question(desc='test question')
+        q.save()
+        v = Voting(name='test voting', question=q)
+        v.save()
+        data = {'action': 'start'}
+        response1 = self.client.put('/voting/{}/'.format(v.pk), data, format='json')
+        self.assertEqual(response1.status_code, 401)
+        response =self.driver.get(f'{self.live_server_url}/visualizer/{v.pk}/')
+        vState= self.driver.find_element(By.TAG_NAME,"h2").text
+        self.assertTrue(vState, "Votación en curso")
+
