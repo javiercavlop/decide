@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: census/templates/census/census_details.html:24
 msgid "Detalles de censos"
 msgstr "Einzelheiten zur Volkszählung"
@@ -52,3 +53,27 @@ msgstr "Volkszählungen wiederverwenden"
 #: census/templates/census/census_details.html:59
 msgid "Agrupar Censos"
 msgstr "Gruppenzählungen"
+
+#: census/templates/census/census_reuse_form.html:26
+msgid "Reutilizar Censo"
+msgstr "Volkszählung wiederverwenden"
+
+#: census/templates/census/census_reuse_form.html:31
+msgid "Votación origen:"
+msgstr "Herkunftsabstimmung:"
+
+#: census/templates/census/census_reuse_form.html:33
+msgid "Id de la votación a copiar"
+msgstr "ID der zu kopierenden abstimmung"
+
+#: census/templates/census/census_reuse_form.html:37
+msgid "Votación destino:"
+msgstr "Abstimmung ziel:"
+
+#: census/templates/census/census_reuse_form.html:39
+msgid "Id de la votación deseada"
+msgstr "ID der gewünschten abstimmung"
+
+#: census/templates/census/census_reuse_form.html:43
+msgid "Aceptar"
+msgstr "Akzeptieren"
