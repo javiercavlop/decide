@@ -627,7 +627,7 @@ class CensusExportTestCase(BaseTestCase):
 
 class CensusDetailsTranslationCase(StaticLiveServerTestCase):
 
-  def setUp(self):
+    def setUp(self):
         #Load base test functionality for decide
         self.base = BaseTestCase()
         self.base.setUp()
