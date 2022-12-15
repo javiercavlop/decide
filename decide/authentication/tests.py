@@ -9,6 +9,14 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
+REGISTER_URL = '/authentication/api/register/'
+
+LOGIN_URL = '/authentication/api/login/'
+
+EDIT_URL = '/authentication/api/edit-user/'
+
+DELETE_URL = '/authentication/api/delete-user/'
+
 
 class AuthTestCase(APITestCase):
 
@@ -217,3 +225,138 @@ class TranslationCase(StaticLiveServerTestCase):
         change_language_button.click()
         username_label = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > form > p:nth-child(2) > label"))
         self.assertEqual(username_label.text, "Username:")
+
+
+username_user = 'usuario'
+email_user = 'perro@email.com'
+first_name_user = 'Usuario'
+last_name_user = 'Prueba'
+username_admin = 'admin1'
+password = 'password'
+
+class ApiUserTestCase(APITestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        mods.mock_query(self.client)
+        u = User(username=username_user)
+        u.set_password(password)
+        u.save()
+
+        u2 = User(username=username_admin)
+        u2.set_password(password)
+        u2.is_superuser = True
+        u2.save()
+
+    def tearDown(self):
+        self.client = None
+
+    def test_login_positive(self):
+        data = {'username': username_user, 'password': password}
+        response = self.client.post(LOGIN_URL, data,
+                                    format='json')
+        self.assertEqual(response.status_code, 200)
+
+        token = response.json()
+        self.assertTrue(token.get('token'))
+
+    def test_login_negative(self):
+        data = {'username': username_user + '_bad', 'password': password}
+        response = self.client.post(LOGIN_URL, data,
+                                    format='json')
+        self.assertEqual(response.status_code, 400)
+
+    def test_register_positive(self):
+        ## Register
+        data_register = {'username': username_user + '_new',
+                         'password': password,
+                         'email': email_user,
+                         'first_name': first_name_user,
+                         'last_name': last_name_user}
+        response_register = self.client.post(REGISTER_URL,
+                                             data_register)
+
+        self.assertEqual(response_register.status_code, 200)
+
+        user = response_register.json().get('user')
+
+        self.assertTrue(user.get('username') == data_register.get('username'))
+        self.assertTrue(user.get('email') == data_register.get('email'))
+        self.assertTrue(user.get('first_name') == data_register.get('first_name'))
+
+        token = response_register.json().get('token')
+
+        ## Login
+
+        data_login = {'username': username_user + '_new',
+                      'password': password}
+        response = self.client.post(LOGIN_URL, data_login,
+                                    format='json')
+        self.assertEqual(response.status_code, 200)
+
+        token_login = response.json()
+
+        self.assertEqual(token_login.get('token'), token)
+
+    def test_register_negative(self):
+        data = {'username': username_user, 'password': password}
+        response = self.client.post(REGISTER_URL, data)
+        self.assertEqual(response.status_code, 400)
+
+        data = {'username': username_user + '_new', 'password': password,
+                'email': email_user, 'first_name': 'first_name_user',
+                'last_name': 'last_name_user'}
+        response = self.client.post(REGISTER_URL, data)
+        self.assertEqual(response.status_code, 400)
+
+    def test_edit_user_positive(self):
+
+        data = {'username': username_user, 'password': password}
+
+        response = self.client.post(LOGIN_URL, data)
+
+        token = response.json().get('token')
+
+        data = {'username': username_user, 'first_name': first_name_user,
+                'token': token}
+        response = self.client.put(EDIT_URL, data)
+        self.assertEqual(response.status_code, 200)
+
+        user = User.objects.get(username=username_user)
+
+        self.assertTrue(user.first_name == first_name_user)
+
+    def test_edit_user_negative(self):
+        data = {'username': username_user + '_bad', 'last_name': last_name_user}
+        response = self.client.put(EDIT_URL, data)
+        self.assertEqual(response.status_code, 400)
+
+        data = {'username': username_user, 'password': password}
+        self.client.post(LOGIN_URL, data)
+
+        token = 'abcd'
+
+        data = {'username': username_user, 'last_name': last_name_user, 'token': token}
+        response = self.client.put(EDIT_URL, data)
+        self.assertEqual(response.status_code, 403)
+
+    def test_delete_user_positive(self):
+        data = {'username': 'prueba', 'password': password, 'email':'p@p.com',
+                'first_name': 'Prueba', 'last_name': 'Prueba'}
+
+        response = self.client.post(REGISTER_URL, data)
+
+        self.assertEqual(response.status_code, 200)
+
+        token = response.json().get('token')
+
+        response = self.client.delete(f'{DELETE_URL}prueba', {'token': token})
+
+        self.assertEqual(response.status_code, 200)
+
+        user = User.objects.filter(username='prueba')
+        self.assertFalse(user)
+
+    def test_delete_user_negative(self):
+        response = self.client.delete(f'{DELETE_URL}usuario')
+        self.assertEqual(response.status_code, 400)
