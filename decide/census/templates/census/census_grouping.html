@@ -6,14 +6,13 @@
     href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
     <link type="text/css" rel="stylesheet"
     href="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.css" />
-    <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'booth/style.css' %}" />
 {% endblock %}
 
 {% block content %}
 <div id="app-census-grouping">
     <!-- Navbar -->
     <b-navbar toggleable="lg" type="dark" variant="dark">
-        <!-- TRADUCCION -->
         <b-navbar-brand href="#">Decide</b-navbar-brand>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     </b-navbar>
@@ -28,18 +27,16 @@
         <div class="col-md-8">
         <div class="card">
             <article class="card-body">
-                                                                        <!--TRADUCCION-->
-            <h4 class="card-title mb-4 mt-1 text-align-center text-center">Agrupar Censo</h4>
+            <h4 class="card-title mb-4 mt-1 text-align-center text-center">{% trans 'Agrupar Censo' %}</h4>
 
             <div class="mb-3 row">
                 <table class="table table-bordered table-striped mt-2">
                     <thead  class="text-center">
                         <tr>
-                            <!-- TRADUCCION -->
-                            <th>Votación</th>
-                            <th>Votante</th>
-                            <th>Grupo</th>
-                            <th>Selección</th>
+                            <th>{% trans 'Votación' %}</th>
+                            <th>{% trans 'Votante' %}</th>
+                            <th>{% trans 'Grupo' %}</th>
+                            <th>{% trans 'Selección' %}</th>
                         </tr>
                     </thead>
                     <tbody class="text-center">
@@ -59,14 +56,14 @@
                 
             <div class="mb-3 row">
 
-                <div class="mb-3 row">                              <!--TRADUCCION-->
-                    <label for="group" class="col-sm-3 col-form-label">Grupo de censos: </label>
-                    <div class="col-sm-5">                                                 <!--TRADUCCION-->
-                        <input class="form-control" id="group" name="group" placeholder="En blanco para quitar censo del grupo">
+                <div class="mb-3 row">
+                    <label for="group" class="col-sm-3 col-form-label">{% trans 'Grupo de censos:' %}</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" id="group" name="group" placeholder="{% trans 'En blanco para quitar censo del grupo' %}">
                     </div>
 
-                    <div class="form-group text-center col-sm-4">                     <!--TRADUCCION-->
-                        <button type="submit" class="btn btn-primary btn-block" value="OK"> Aceptar </button>
+                    <div class="form-group text-center col-sm-4">
+                        <button type="submit" class="btn btn-primary btn-block" value="OK">{% trans 'Aceptar' %}</button>
                     </div>
                 </div>
             

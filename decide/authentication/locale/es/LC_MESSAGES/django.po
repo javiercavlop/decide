@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-14 18:35+0000\n"
+"POT-Creation-Date: 2022-12-15 09:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,10 +18,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: authentication/form.py:33
+msgid "First name"
+msgstr "Nombre"
+
+#: authentication/form.py:34
+msgid "Last name"
+msgstr "Apellidos"
+
+#: authentication/form.py:36
+msgid "Password"
+msgstr "Contraseña"
+
+#: authentication/form.py:37
+msgid "Password confirmation"
+msgstr "Repita la contraseña"
+
 #: authentication/templates/signin.html:11
 msgid "Sign In"
-msgstr ""
+msgstr "Inicia sesión"
 
-#: authentication/templates/signin.html:36
+#: authentication/templates/signin.html:24
+msgid "Nombre de usuario"
+msgstr "Nombre de usuario"
+
+#: authentication/templates/signin.html:28
+msgid "Contraseña"
+msgstr "Contraseña"
+
+#: authentication/templates/signin.html:34
 msgid "Submit"
-msgstr ""
+msgstr "Iniciar sesión"
+
+#: authentication/templates/signin.html:42
+msgid "¿No tienes cuenta?"
+msgstr "¿No tienes cuenta?"
+
+#: authentication/templates/signin.html:42
+msgid "Regístrate ahora"
+msgstr "Regístrate ahora"
+
+#: authentication/templates/signin.html:44
+msgid "También puedes iniciar sesión con"
+msgstr "También puedes iniciar sesión con"
+
+#: authentication/templates/signup.html:19
+#: authentication/templates/signup.html:37
+msgid "Register"
+msgstr "Regítrate"
+
+#: authentication/templates/signup.html:45
+msgid "Already have an account?"
+msgstr "¿Ya tienes una cuenta?"
+
+#: authentication/templates/signup.html:45
+msgid "Log in"
+msgstr "Inicia sesión"
