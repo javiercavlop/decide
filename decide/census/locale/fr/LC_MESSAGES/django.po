@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-14 15:45+0000\n"
+"POT-Creation-Date: 2022-12-15 09:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,42 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: census/templates/census/census_details.html:24
+msgid "Detalles de censos"
+msgstr "Détails du recensement"
+
+#: census/templates/census/census_details.html:32
+msgid "Censo Id"
+msgstr "ID de recensement"
+
+#: census/templates/census/census_details.html:33
+msgid "Votación Id"
+msgstr "ID de vote"
+
+#: census/templates/census/census_details.html:34
+msgid "Votante (Id)"
+msgstr "ID d'électeur"
+
+#: census/templates/census/census_details.html:35
+msgid "Grupo"
+msgstr "Groupe"
+
+#: census/templates/census/census_details.html:36
+msgid "Eliminar censo"
+msgstr "Supprimer le recensement"
+
+#: census/templates/census/census_details.html:46
+msgid "Eliminar"
+msgstr "Retirer"
+
+#: census/templates/census/census_details.html:56
+msgid "Reutilizar Censos"
+msgstr "Réutiliser des Recesements"
+
+#: census/templates/census/census_details.html:59
+msgid "Agrupar Censos"
+msgstr "Recensements de groupe"
 
 #: census/templates/census/census_reuse_form.html:26
 msgid "Reutilizar Censo"
