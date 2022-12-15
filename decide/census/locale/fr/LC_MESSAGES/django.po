@@ -17,20 +17,65 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-#: census/templates/census/census_grouping.html:30
-msgid "Agrupar Censo"
-msgstr "Recensement de groupe"
 
+#: census/templates/census/census.html:26
+msgid "Lista de censos"
+msgstr "Liste de recensements"
+
+#: census/templates/census/census.html:27
+msgid "Escribe para buscar"
+msgstr "Écrivez pour chercher"
+
+#: census/templates/census/census.html:37
 #: census/templates/census/census_grouping.html:36
 msgid "Votación"
-msgstr "Voter"
+msgstr "Votement"
 
+#: census/templates/census/census.html:38
 #: census/templates/census/census_grouping.html:37
 msgid "Votante"
 msgstr "Électeur"
 
+#: census/templates/census/census.html:62
+msgid "Crear Censo"
+msgstr "Créer un recensement"
+
+#: census/templates/census/census.html:72
+msgid "Detalles de Censos"
+msgstr "Détails des recensements"
+
+#: census/templates/census/census.html:82
+#: census/templates/census/census_details.html:59
+msgid "Agrupar Censos"
+msgstr "Recensements de groupe"
+
+#: census/templates/census/census.html:92
+#: census/templates/census/census_details.html:56
+msgid "Reutilizar Censos"
+msgstr "Réutiliser les recensements"
+
+#: census/templates/census/census.html:102
+msgid "Importar Csv"
+msgstr "Importer CSV"
+
+#: census/templates/census/census.html:110
+msgid "Importar JSON"
+msgstr "Importer JSON"
+
+#: census/templates/census/census.html:120
+msgid "Importar Excel"
+msgstr "Importer EXCEL"
+
+#: census/templates/census/census.html:128
+msgid "Exportar Excel"
+msgstr "Exporter EXCEL"
+#: census/templates/census/census_grouping.html:30
+msgid "Agrupar Censo"
+msgstr "Recensement de groupe"
+
 #: census/templates/census/census_grouping.html:38
 #: census/templates/census/census_details.html:35
+#: census/templates/census/census.html:39
 msgid "Grupo"
 msgstr "Groupe"
 
@@ -94,14 +139,6 @@ msgstr "Supprimer le recensement"
 #: census/templates/census/census_details.html:46
 msgid "Eliminar"
 msgstr "Retirer"
-
-#: census/templates/census/census_details.html:56
-msgid "Reutilizar Censos"
-msgstr "Réutiliser des Recesements"
-
-#: census/templates/census/census_details.html:59
-msgid "Agrupar Censos"
-msgstr "Recensements de groupe"
 
 #: census/templates/census/census_reuse_form.html:26
 msgid "Reutilizar Censo"

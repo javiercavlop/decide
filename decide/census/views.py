@@ -297,7 +297,6 @@ def censusReuse(request):
     return render(request,'census/census_reuse_form.html',{'form':form})
 
 @api_view(['GET'])
-@permission_classes([IsAdminUser])
 def censusList(request):
     censos = Census.objects.all().values()
     res = []
@@ -315,7 +314,6 @@ def censusList(request):
             if(grupo not in options):
                 options.append(grupo.name)
         except:
-            ###    <!-- TRADUCCIÓN -->
             grupo = "No tiene grupo asignado"
             if(grupo not in options):
                 options.append(grupo)
