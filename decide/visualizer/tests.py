@@ -42,6 +42,10 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         
 
     def test_StopedVotingVisualizer(self):        
+        q = Question(desc='test question')
+        q.save()
+        v = Voting(name='test voting', question=q)
+        v.save()
         data = {'action': 'stop'}
         response1 = self.client.put('/voting/{}/'.format(v.pk), data, format='json')
         self.assertEqual(response1.status_code, 401)
