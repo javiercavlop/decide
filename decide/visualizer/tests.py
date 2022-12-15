@@ -1,6 +1,4 @@
 from django.test import TestCase
-
-from django.test import TestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.contrib.auth import get_user_model
 from pathlib import Path
@@ -51,6 +49,16 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         vState = self.driver.find_element(By.TAG_NAME,"h2").text
         self.assertTrue(vState, "Resultados:")
     
+
+    def test_NoStartedVotingVisualizer(self): 
+        q = Question(desc='test question')
+        q.save()
+        v = Voting(name='test voting', question=q)
+        v.save()
+        response =self.driver.get(f'{self.live_server_url}/visualizer/{v.pk}/')
+        vState= self.driver.find_element(By.TAG_NAME,"h2").text
+        self.assertTrue(vState, "Votación no comenzada")
+
 
     def test_StartedVotingVisualizer(self):        
         q = Question(desc='test question')
