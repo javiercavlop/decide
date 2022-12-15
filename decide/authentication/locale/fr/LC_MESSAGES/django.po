@@ -18,10 +18,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#: authentication/form.py:33
+msgid "First name"
+msgstr "Prénom"
+
+#: authentication/form.py:34
+msgid "Last name"
+msgstr "Nom"
+
+#: authentication/form.py:36
+msgid "Password"
+msgstr "Mot de passe"
+
+#: authentication/form.py:37
+msgid "Password confirmation"
+msgstr "Confirmation mot de passe"
+
 #: authentication/templates/signin.html:11
 msgid "Sign In"
-msgstr ""
+msgstr "Commencer la session"
 
-#: authentication/templates/signin.html:36
+#: authentication/templates/signin.html:24
+msgid "Nombre de usuario"
+msgstr "Nom d'utilisateur"
+
+#: authentication/templates/signin.html:28
+msgid "Contraseña"
+msgstr "Mot de passe"
+
+#: authentication/templates/signin.html:34
 msgid "Submit"
-msgstr ""
+msgstr "Soumettre"
+
+#: authentication/templates/signin.html:42
+msgid "¿No tienes cuenta?"
+msgstr "Vous n'avez pas de compte ?"
+
+#: authentication/templates/signin.html:42
+msgid "Regístrate ahora"
+msgstr "S'inscrire maintenant"
+
+#: authentication/templates/signin.html:44
+msgid "También puedes iniciar sesión con"
+msgstr "Vous pouvez également vous connecter avec"
+
+#: authentication/templates/signup.html:19
+#: authentication/templates/signup.html:37
+msgid "Register"
+msgstr "Enregistrement"
+
+#: authentication/templates/signup.html:45
+msgid "Already have an account?"
+msgstr "Avez-vous déjà un compte?"
+
+#: authentication/templates/signup.html:45
+msgid "Log in"
+msgstr "Commencer la session"

@@ -13,8 +13,6 @@ import csv
 import json
 import xlsxwriter
 
-from selenium.webdriver.support.wait import WebDriverWait
-
 class CensusTestCase(BaseTestCase):
 
     def setUp(self):
