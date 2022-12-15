@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - develop
-      - module/configuraciones-tecnicas
+
   workflow_call:
     secrets:
       CODACY_PROJECT_TOKEN:
