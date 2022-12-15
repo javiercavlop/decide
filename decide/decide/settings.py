@@ -195,12 +195,13 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
 
-LANGUAGES =[ ('en', _('English')),
+LANGUAGES =[ 
             ('es', _('Spanish')),
+            ('en', _('English')),
             ('de', _('German')),
             ('fr', _('French')),]
 
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'UTC'
 
