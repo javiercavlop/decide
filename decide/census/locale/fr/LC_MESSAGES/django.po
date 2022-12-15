@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 09:27+0000\n"
+"POT-Creation-Date: 2022-12-15 18:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,6 +35,12 @@ msgstr "Votement"
 #: census/templates/census/census_grouping.html:37
 msgid "Votante"
 msgstr "Électeur"
+
+#: census/templates/census/census.html:39
+#: census/templates/census/census_details.html:35
+#: census/templates/census/census_grouping.html:38
+msgid "Grupo"
+msgstr "Groupe"
 
 #: census/templates/census/census.html:62
 msgid "Crear Censo"
@@ -69,53 +75,7 @@ msgstr "Importer EXCEL"
 #: census/templates/census/census.html:128
 msgid "Exportar Excel"
 msgstr "Exporter EXCEL"
-#: census/templates/census/census_grouping.html:30
-msgid "Agrupar Censo"
-msgstr "Recensement de groupe"
 
-#: census/templates/census/census_grouping.html:38
-#: census/templates/census/census_details.html:35
-#: census/templates/census/census.html:39
-msgid "Grupo"
-msgstr "Groupe"
-
-#: census/templates/census/census_grouping.html:39
-msgid "Selección"
-msgstr "Sélection"
-
-#: census/templates/census/census_grouping.html:60
-msgid "Grupo de censos:"
-msgstr "Groupe de recensement"
-
-#: census/templates/census/census_grouping.html:62
-msgid "En blanco para quitar censo del grupo"
-msgstr "Vide pour supprimer le recensement du groupe"
-
-#: census/templates/census/census_grouping.html:66
-
-#: census/templates/census/export.html:13
-msgid "Exportación de Fichero Excel"
-msgstr "Exporter un fichier excel"
-
-#: census/templates/census/export.html:25
-msgid "Exportar"
-msgstr "Exporter"
-
-#: census/templates/census/import.html:17
-msgid "Importación Fichero Excel"
-msgstr "Importer un fichier excel"
-
-#: census/templates/census/import.html:20
-msgid "Introduzca un fichero con el formato .xlsx para importarlo:"
-msgstr "Entrez un fichier au format .xlsx pour l'importer:"
-
-#: census/templates/census/import.html:31
-msgid "Subir"
-msgstr "Télécharger"
-
-#: census/templates/census/import.html:32
-msgid "Volver"
-msgstr "Revenir"
 #: census/templates/census/census_details.html:24
 msgid "Detalles de censos"
 msgstr "Détails du recensement"
@@ -140,6 +100,27 @@ msgstr "Supprimer le recensement"
 msgid "Eliminar"
 msgstr "Retirer"
 
+#: census/templates/census/census_grouping.html:30
+msgid "Agrupar Censo"
+msgstr "Recensement de groupe"
+
+#: census/templates/census/census_grouping.html:39
+msgid "Selección"
+msgstr "Sélection"
+
+#: census/templates/census/census_grouping.html:60
+msgid "Grupo de censos:"
+msgstr "Groupe de recensement"
+
+#: census/templates/census/census_grouping.html:62
+msgid "En blanco para quitar censo del grupo"
+msgstr "Vide pour supprimer le recensement du groupe"
+
+#: census/templates/census/census_grouping.html:66
+#: census/templates/census/census_reuse_form.html:43
+msgid "Aceptar"
+msgstr "Accepter"
+
 #: census/templates/census/census_reuse_form.html:26
 msgid "Reutilizar Censo"
 msgstr "Réutiliser le Recesement"
@@ -160,6 +141,26 @@ msgstr "Vote de destination:"
 msgid "Id de la votación deseada"
 msgstr "ID du vote désiré"
 
-#: census/templates/census/census_reuse_form.html:43
-msgid "Aceptar"
-msgstr "Accepter"
+#: census/templates/census/export.html:13
+msgid "Exportación de Fichero Excel"
+msgstr "Exporter un fichier excel"
+
+#: census/templates/census/export.html:25
+msgid "Exportar"
+msgstr "Exporter"
+
+#: census/templates/census/import.html:17
+msgid "Importación Fichero Excel"
+msgstr "Importer un fichier excel"
+
+#: census/templates/census/import.html:20
+msgid "Introduzca un fichero con el formato .xlsx para importarlo:"
+msgstr "Entrez un fichier au format .xlsx pour l'importer:"
+
+#: census/templates/census/import.html:31
+msgid "Subir"
+msgstr "Télécharger"
+
+#: census/templates/census/import.html:32
+msgid "Volver"
+msgstr "Revenir"
