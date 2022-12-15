@@ -17,6 +17,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: census/templates/census/census_grouping.html:30
+msgid "Agrupar Censo"
+msgstr "Gruppenzählung"
+
+#: census/templates/census/census_grouping.html:36
+msgid "Votación"
+msgstr "Abstimmung"
+
+#: census/templates/census/census_grouping.html:37
+msgid "Votante"
+msgstr "Wähler"
+
+#: census/templates/census/census_grouping.html:38
+#: census/templates/census/census_details.html:35
+msgid "Grupo"
+msgstr "Cluster"
+
+#: census/templates/census/census_grouping.html:39
+msgid "Selección"
+msgstr "Auswahl"
+
+#: census/templates/census/census_grouping.html:60
+msgid "Grupo de censos:"
+msgstr "Volkszählungsgruppe"
+
+#: census/templates/census/census_grouping.html:62
+msgid "En blanco para quitar censo del grupo"
+msgstr "leer, um die Volkszählung aus der Gruppe zu entfernen"
+
+#: census/templates/census/census_grouping.html:66
 
 #: census/templates/census/export.html:13
 msgid "Exportación de Fichero Excel"
@@ -56,10 +86,6 @@ msgstr "Abstimmungs-ID"
 #: census/templates/census/census_details.html:34
 msgid "Votante (Id)"
 msgstr "Wähler-ID"
-
-#: census/templates/census/census_details.html:35
-msgid "Grupo"
-msgstr "Cluster"
 
 #: census/templates/census/census_details.html:36
 msgid "Eliminar censo"
