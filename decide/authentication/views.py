@@ -175,6 +175,9 @@ class SignInView(APIView):
 
     @staticmethod
     def hello(request):
+
+        Token.objects.get_or_create(user=request.user)
+
         return render(request, 'hello.html', {
                 'username' : request.user
             })
