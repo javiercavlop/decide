@@ -1,8 +1,10 @@
+from urllib.request import HTTPBasicAuthHandler
 from base import mods
 from base.tests import BaseTestCase
 from django.contrib.auth.models import User
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import TestCase
+from postproc.models import UserProfile
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient, APITestCase
 from selenium import webdriver
@@ -146,7 +148,7 @@ class AuthTestCase(APITestCase):
 
     #     token = response.json()
     #     self.assertTrue(token.get('token'))
-
+'''
 class TranslationCase(StaticLiveServerTestCase):
     
     def setUp(self):
@@ -216,4 +218,40 @@ class TranslationCase(StaticLiveServerTestCase):
         change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
         change_language_button.click()
         username_label = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > form > p:nth-child(2) > label"))
-        self.assertEqual(username_label.text, "Username:")
+        self.assertEqual(username_label.text, "Username:") '''
+
+class GenreCase(BaseTestCase):
+    def setUp(self):
+        self.client = APIClient()
+        mods.mock_query(self.client)
+        u = User(username='voter1')
+        u.set_password('123')
+        u.save()
+
+        up = UserProfile(user=u,genre="W")
+        up.save()
+
+        u2 = User(username='admin',email="d@gmail.com", is_staff=True)
+        u2.set_password('qwerty')
+        u2.is_superuser = True
+        u2.save()
+
+        up = UserProfile(user=u2,genre="W")
+        up.save()
+
+    def tearDown(self):
+        self.client = None
+
+    def test_signup(self):
+        data = {'username': 'user2', 'password1': '1234','password2': '1234', 'first_name':'Nombre','last_name':'Apellido','email':'correo@gmail.com','genre':'M'}
+        response = self.client.post('/authentication/signup/', data=data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_edit(self):
+        self.login()
+
+        user = User.objects.get(username="admin")
+
+        data = {'user':user,'genre':'W','email':'','first_name':'','last_name':'','username':'admin'}
+        response = self.client.post('/authentication/profile/',data=data, follow=True)
+        self.assertEqual(response.status_code, 200)

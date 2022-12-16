@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from postproc.models import UserProfile
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase

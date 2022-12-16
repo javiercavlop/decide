@@ -67,6 +67,18 @@
                                         <b-form-input id="email" name="email" value="{{ user.email }}"></b-form-input>
                                     </b-col>
                                 </b-row>
+
+                                <b-row class="mt-4">
+                                    <b-col cols="12" md="3">
+                                        <label for="genre">Genero:</label>
+                                    </b-col>
+                                    <b-col cols="12" md="9">
+                                        <select class="form-select" id="genre" name="genre" aria-label="Default select example">
+                                            <option value="M" {% if genero == "M"%} selected {% endif %}>Male</option>
+                                            <option value="W" {% if genero == "W"%} selected {% endif %}>Female</option>
+                                          </select>
+                                    </b-col>
+                                </b-row>
                                 <!--Traducir-->                   
                                 <button class="btn btn-primary mt-4" type="submit" value="OK">Update</button>
                             </form>    
