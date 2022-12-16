@@ -266,7 +266,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
 
     def test_fail_register_email(self):
         self.driver.get(f"{self.live_server_url}/authentication/signup/")
-        self.driver.find_element_by_id("id_username").send_keys("leslie")
+        self.driver.find_element_by_id("id_username").send_keys("new_leslie")
         self.driver.find_element_by_id("id_first_name").send_keys("Leslie")
         self.driver.find_element_by_id("id_last_name").send_keys("Acme")
         self.driver.find_element_by_id("id_email").send_keys("test@test.com")
@@ -278,7 +278,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
 
     def test_fail_register_password(self):
         self.driver.get(f"{self.live_server_url}/authentication/signup/")
-        self.driver.find_element_by_id("id_username").send_keys("leslie")
+        self.driver.find_element_by_id("id_username").send_keys("new_leslie")
         self.driver.find_element_by_id("id_first_name").send_keys("Leslie")
         self.driver.find_element_by_id("id_last_name").send_keys("Acme")
         self.driver.find_element_by_id("id_email").send_keys("leslie@acme.com")
@@ -290,7 +290,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
 
     def test_fail_register_min_password(self):
         self.driver.get(f"{self.live_server_url}/authentication/signup/")
-        self.driver.find_element_by_id("id_username").send_keys("leslie")
+        self.driver.find_element_by_id("id_username").send_keys("new_leslie")
         self.driver.find_element_by_id("id_first_name").send_keys("Leslie")
         self.driver.find_element_by_id("id_last_name").send_keys("Acme")
         self.driver.find_element_by_id("id_email").send_keys("leslie@acme.com")
@@ -302,7 +302,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
 
     def test_fail_register_num_password(self):
         self.driver.get(f"{self.live_server_url}/authentication/signup/")
-        self.driver.find_element_by_id("id_username").send_keys("leslie")
+        self.driver.find_element_by_id("id_username").send_keys("new_leslie")
         self.driver.find_element_by_id("id_first_name").send_keys("Leslie")
         self.driver.find_element_by_id("id_last_name").send_keys("Acme")
         self.driver.find_element_by_id("id_email").send_keys("leslie@acme.com")
@@ -314,7 +314,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
         
     def test_fail_register_let_password(self):
         self.driver.get(f"{self.live_server_url}/authentication/signup/")
-        self.driver.find_element_by_id("id_username").send_keys("leslie")
+        self.driver.find_element_by_id("id_username").send_keys("new_leslie")
         self.driver.find_element_by_id("id_first_name").send_keys("Leslie")
         self.driver.find_element_by_id("id_last_name").send_keys("Acme")
         self.driver.find_element_by_id("id_email").send_keys("leslie@acme.com")
@@ -326,7 +326,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
     
     def test_fail_register_first_name(self):
         self.driver.get(f"{self.live_server_url}/authentication/signup/")
-        self.driver.find_element_by_id("id_username").send_keys("leslie")
+        self.driver.find_element_by_id("id_username").send_keys("new_leslie")
         self.driver.find_element_by_id("id_first_name").send_keys("leslie")
         self.driver.find_element_by_id("id_last_name").send_keys("Acme")
         self.driver.find_element_by_id("id_email").send_keys("leslie@acme.com")
@@ -338,7 +338,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
     
     def test_fail_register_last_name(self):
         self.driver.get(f"{self.live_server_url}/authentication/signup/")
-        self.driver.find_element_by_id("id_username").send_keys("leslie")
+        self.driver.find_element_by_id("id_username").send_keys("new_leslie")
         self.driver.find_element_by_id("id_first_name").send_keys("Leslie")
         self.driver.find_element_by_id("id_last_name").send_keys("acme")
         self.driver.find_element_by_id("id_email").send_keys("leslie@acme.com")
@@ -350,7 +350,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
         
     def test_register(self):
         self.driver.get(f"{self.live_server_url}/authentication/signup/")
-        self.driver.find_element_by_id("id_username").send_keys("leslie")
+        self.driver.find_element_by_id("id_username").send_keys("new_leslie")
         self.driver.find_element_by_id("id_first_name").send_keys("Leslie")
         self.driver.find_element_by_id("id_last_name").send_keys("Acme")
         self.driver.find_element_by_id("id_email").send_keys("leslie@acme.com")
