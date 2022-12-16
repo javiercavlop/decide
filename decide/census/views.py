@@ -4,6 +4,9 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 from rest_framework import generics
 from rest_framework.response import Response
@@ -331,7 +334,6 @@ def censusCreation(request):
     return render(request,'census/census_create.html',{'form':form})
 
 @api_view(['GET'])
-@permission_classes([IsAdminUser])
 def censusList(request):
     censos = Census.objects.all().values()
     res = []
