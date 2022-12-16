@@ -62,6 +62,7 @@ class CensusCreate(generics.ListCreateAPIView):
         return Response({'voters': voters})
 
 @transaction.atomic
+@login_required(login_url='/authentication/signin/?next=/census/import_json')
 def import_json(request):
     cont=2
     try: 
