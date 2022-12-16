@@ -3,6 +3,8 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.response import Response
@@ -297,7 +299,6 @@ def censusReuse(request):
     return render(request,'census/census_reuse_form.html',{'form':form})
 
 @api_view(['GET'])
-@permission_classes([IsAdminUser])
 def censusList(request):
     censos = Census.objects.all().values()
     res = []

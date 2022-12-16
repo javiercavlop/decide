@@ -32,7 +32,7 @@
                 {% endfor %}
             </datalist>
 
-            <table class="table table-bordered table-striped mt-2">
+            <table class="table table-bordered table-striped mt-2" id="tabla-votacion">
                 <thead>
                     <tr>
                         <!-- TRADUCCION -->
@@ -43,7 +43,7 @@
                 </thead>
                 <tbody>
                     {% for censo in censos %}
-                    <tr>
+                    <tr id="{{censo.voting_id}}-{{censo.voter}}">
                         <th>{{censo.voting_id}}</th>
                         <th>{{censo.voter}}</th>
                         <th>{{censo.group}}<b-icon icon="x-square" class="ms-3" variant="danger"></b-icon></th>
