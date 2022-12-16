@@ -354,8 +354,8 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
         self.driver.find_element_by_id("id_first_name").send_keys("Leslie")
         self.driver.find_element_by_id("id_last_name").send_keys("Acme")
         self.driver.find_element_by_id("id_email").send_keys("leslie@acme.com")
-        self.driver.find_element_by_id("id_password1").send_keys("iamleslie1")
-        self.driver.find_element_by_id("id_password2").send_keys("iamleslie1")
+        self.driver.find_element_by_id("id_password1").send_keys("contraseña1")
+        self.driver.find_element_by_id("id_password2").send_keys("contraseña1")
         self.driver.find_element_by_class_name("btn").click()
         self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/hello/")
         
