@@ -2,22 +2,15 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from postproc.models import UserProfile
-
-
 from django import forms    
 
 from django.contrib.auth.forms import AuthenticationForm, UsernameField
 
-
-
 class CustomAuthenticationForm(AuthenticationForm):
 
     username = UsernameField(
-
         label='Username or Email',
-
         widget=forms.TextInput(attrs={'autofocus': True})
-
     )
 
 class LoginUserForm(AuthenticationForm):

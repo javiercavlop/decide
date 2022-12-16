@@ -26,43 +26,30 @@ tr:nth-child(even){
    </tr>
     <tr>
     <tr>
-    <td>jaiborcon</td>
+    <td>noadmin</td>
+    </tr>
+    <tr>
+    <td>admin</td>
     </tr>
 </table>
-<h2>Porcentage del censo</h2>
+<h2>Porcentaje del censo</h2>
 <p>Se tomaron estadísticas para el porcentaje de personas que habían votado del total del censo disponible, no sólo se cuenta con conlos datos recogidos de encuestas ya cerradas si no tambíen con aquellas que siguen abiertas. Es por esto que el grado de sensibilidad de estos datos es alto y no deberán ser tranferidos a nadie.
 <p><p> En la tabla adjuntada a continuación se visualizan en la primera columna los identificadores de las votaciones y en otra el porcentaje total del censo que ha votado.
 <p><table>
     <tr>
     <th>Id de Votación</th>
-    <th>Porcentage del censo</th>
+    <th>Porcentaje del censo</th>
    </tr>
     <tr>
-    <tr>
-    <td>1</td>
-    <td>100.0%</td>
-    </tr>
-    <tr>
-    <td>2</td>
-    <td>100.0%</td>
-    </tr>
-    <tr>
-    <td>3</td>
-    <td>100.0%</td>
-    </tr>
 </table>
 <h2>Encuestas votadas</h2>
-<p>También se han recogido datos sobre las encuestas contestadas por usuario, cabe recalcar que este datos se toma a partir de la implementaciónde este módulo en el sistema, la sencuestas votads previas a la misma n estaŕan reflejadas en las estaísticas.
+<p>También se han recogido datos sobre las encuestas contestadas por usuario. Cabe recalcar que este datos se toma a partir de la implementación de este módulo en el sistema, las encuestas votadas previas a la misma estaŕan reflejadas en las estadísticas.
 <p><table>
     <tr>
     <th>Votante</th>
     <th>Encuestas</th>
    </tr>
     <tr>
-    <tr>
-    <td>jaiborcon</td>
-    <td>3</td>
-    </tr>
 </table>
 </body>
 </html>

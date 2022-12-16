@@ -3,16 +3,16 @@ from postproc.models import UserProfile
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.test import Client
 
 from base import mods
 
+import logging
+from selenium.webdriver.remote.remote_connection import LOGGER
+from urllib3.connectionpool import log as urllibLogger
+
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
-import time
 
 class BaseTestCase(APITestCase):
 
@@ -28,6 +28,9 @@ class BaseTestCase(APITestCase):
         user_admin = User(username='admin', is_staff=True, is_superuser = True)
         user_admin.set_password('qwerty')
         user_admin.save()
+
+        LOGGER.setLevel(logging.WARNING)
+        urllibLogger.setLevel(logging.WARNING)
 
     def tearDown(self):
         self.client = None
@@ -65,6 +68,14 @@ class MainPageTestCase(StaticLiveServerTestCase):
         self.driver.get(f'{self.live_server_url}/admin/')
         self.driver.find_element(By.ID,'id_username').send_keys("admin")
         self.driver.find_element(By.ID,'id_password').send_keys("qwerty",Keys.ENTER)
-
         self.driver.get(f'{self.live_server_url}/')
         self.assertTrue(len(self.driver.find_elements(By.ID,'id-admin-panel')) == 1)
+
+    def test_access_mainpage_as_no_staff(self):
+        self.driver.set_window_size(1920,1080)
+        self.driver.get(f'{self.live_server_url}/authentication/signin')
+        self.driver.find_element(By.NAME,'username').send_keys('noadmin')
+        self.driver.find_element(By.NAME,'password').send_keys('qwerty')
+        self.driver.find_element(By.ID,'id-signin-btn').click()
+        self.driver.get(f'{self.live_server_url}/')
+        self.assertTrue(len(self.driver.find_elements(By.ID,'id-admin-panel')) == 0)

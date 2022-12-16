@@ -4,9 +4,6 @@ from rest_framework import generics
 from django.contrib.auth import get_user_model
 
 from django.http import HttpResponse, Http404, FileResponse
-
-
-# Create your views here.
 import datetime
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
@@ -20,6 +17,10 @@ import weasyprint
 from wsgiref.util import FileWrapper
 from voting.models import Voting
 from census.models import Census
+
+from voting import models as voting_models
+from census import models as census_models
+
 
 def vista(request,voting_id):
     data = get_object_or_404(Voting,id=voting_id)
@@ -36,6 +37,15 @@ def vista(request,voting_id):
         duracion = str(time - datetime.timedelta(microseconds=time.microseconds))
 
     data[0].do_postproc()
+
+    if data[0].desc != "" and data[0].desc is not None:
+        description = data[0].desc
+    elif data[0].question.desc != "" and data[0].question.desc is not None:
+        description = data[0].question.desc
+    else:
+        description = "No hay una descripción asociada a esta votación ni a esta pregunta"
+
+
     postpro = data[0].postproc
     numberOfVotesAux = 0
     numberOfVotes = 0
@@ -55,33 +65,69 @@ def vista(request,voting_id):
             options.append(vote['option'])
             values.append(vote['votes'])
             numberOfVotes = numberOfVotes+ vote['votes']
+
+    elif(questionType == 'dhondt'):
+        for vote in postpro:
+            options.append(vote['option'])
+            values.append(vote['postproc'])
+            numberOfVotes = numberOfVotes + vote['votes']
     
     
     labels2 = ["Votaron","No votaron"]
-    values2 = [numberOfVotes, numberOfPeople-numberOfVotes]
+    values2 = [int(numberOfVotes), int(numberOfPeople-numberOfVotes)]
+
+    aux = {}
+    aux['Hombre'] = data[0].num_votes_M
+    aux['Mujer'] = data[0].num_votes_W
+    aux['Otros'] = numberOfVotes - (aux['Hombre'] + aux['Mujer'])
+    labels3 = aux.keys()
+    values3 = []
+    for label in labels3:
+        values3.append(aux[label])
+    
+    parity = False
+    mayor = ''
+    menor = ''
+    numDif = abs(aux['Hombre'] - aux['Mujer'])
+    if(aux['Hombre'] == aux['Mujer']):
+        parity = True
+    elif(aux['Hombre'] > aux['Mujer']):
+        mayor = 'hombres'
+        menor = 'mujeres'
+    else:
+        mayor = 'mujeres'
+        menor = 'hombres'
+
+
     context = {
-        "voting": data[0],
-        "people": numberOfPeople,
-        "time": duracion,
-        "numberOfVotes": int(numberOfVotes),
-        #"prueba": postpro,
-        "questionType":questionType,
-        "labels": options,
-        "values": values,
-        "labels2": labels2,
-        "values2": values2,
+        "voting" : data[0],
+        "description" : description,
+        "parity" : parity,
+        "mayor" : mayor,
+        "menor" : menor,
+        "numDif" : numDif,
+        "people" : numberOfPeople,
+        "time" : duracion,
+        "numberOfVotes" : int(numberOfVotes),
+        "questionType" :questionType,
+        "labels" : options,
+        "values" : values,
+        "labels2" : labels2,
+        "values2" : values2,
+        "labels3" : labels3,
+        "values3" : values3,
     }
 
     return render(request,"dashboard_with_pv.html",context)
 
 
 class DashboardView(TemplateView):
-    template_name = 'dashboard/dashboard.html'
+    def as_view(request):
+        template_name = 'dashboard/dashboard.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
         percentages=list(Percentages.objects.all().values())
-        context['porcentages'] = json.dumps(percentages)
+        pools=[p['voting'] for p in percentages]
+
         User = get_user_model()
         users = User.objects.values()
         us = list(users.all())
@@ -92,13 +138,29 @@ class DashboardView(TemplateView):
         lista = []
         for i in us:
             lista.append(i['username'])
-        context['users'] = json.dumps(lista)
-        context['KEYBITS'] = settings.KEYBITS
+
         surveys=list(Surveys.objects.all().values())
-        context['new_votes'] = json.dumps(surveys)
+        votings=Voting.objects.all().values()
 
 
-        return context
+        for v in votings:
+            dict={}
+            if v['id'] not in pools:
+                dict['id'] = '-'
+                dict['voting']=v['id']
+                dict['percen']=  0.0
+                percentages.append(dict)
+                
+
+        context = {
+            "percentages": percentages,
+            "users": lista,
+            "new_votes": surveys,
+
+        }
+
+        return render(request,template_name,context)
+
 class DashBoardFile(generics.ListCreateAPIView):
     @api_view(['GET',])
     def write_doc(request):
@@ -148,7 +210,7 @@ class DashBoardFile(generics.ListCreateAPIView):
 
             file.write('</table>\n')
 
-            file.write(("<h2>Porcentage del censo</h2>\n"))
+            file.write(("<h2>Porcentaje del censo</h2>\n"))
 
             file.write("<p>Se tomaron estadísticas para el porcentaje de personas que habían votado del total del censo disponible, no sólo se cuenta con con"
                        "los datos recogidos de encuestas ya cerradas si no tambíen con aquellas que siguen abiertas. Es por esto que el grado de sensibilidad de estos datos es alto y "
@@ -159,7 +221,7 @@ class DashBoardFile(generics.ListCreateAPIView):
             file.write('<table>\n')
             file.write('    <tr>\n')
             file.write('    <th>Id de Votación</th>\n')
-            file.write('    <th>Porcentage del censo</th>\n')
+            file.write('    <th>Porcentaje del censo</th>\n')
             file.write(('   </tr>\n'))
             file.write('    <tr>\n')
             percen=list(Percentages.objects.all().values())
@@ -173,8 +235,8 @@ class DashBoardFile(generics.ListCreateAPIView):
 
 
             file.write(("<h2>Encuestas votadas</h2>\n"))
-            file.write("<p>También se han recogido datos sobre las encuestas contestadas por usuario, cabe recalcar que este datos se toma a partir de la implementación"
-                       "de este módulo en el sistema, la sencuestas votads previas a la misma n estaŕan reflejadas en las estaísticas.\n<p>")
+            file.write("<p>También se han recogido datos sobre las encuestas contestadas por usuario. Cabe recalcar que este datos se toma a partir de la implementación"
+                       " de este módulo en el sistema, las encuestas votadas previas a la misma estaŕan reflejadas en las estadísticas.\n<p>")
 
             file.write('<table>\n')
             file.write('    <tr>\n')
@@ -219,3 +281,20 @@ class DashBoardFile(generics.ListCreateAPIView):
 
             return response
 
+def main_page(request):
+    is_anonymous = request.user.is_anonymous
+    is_staff = request.user.is_staff
+    allowed_votings = census_models.Census.objects.filter(voter_id=request.user.pk).values('voting_id')
+
+    voting_votings = voting_models.Voting.objects.filter(end_date__isnull=True,start_date__isnull=False,pk__in=allowed_votings)
+    visualize_votings = voting_models.Voting.objects.filter(end_date__isnull=False,tally__isnull=False,pk__in=allowed_votings)
+
+    if is_anonymous:
+        return render(request,'register.html')
+    else:
+        return render(request,'dashboard/mainpage_dashboard.html',{
+                                                'voting_votings':voting_votings,
+                                                'visualize_votings':visualize_votings,
+                                                'is_anonymous':is_anonymous,
+                                                'is_staff':is_staff
+                                                })

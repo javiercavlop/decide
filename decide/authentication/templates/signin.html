@@ -21,17 +21,19 @@
     {% csrf_token %}
     <div class="row mb-3">
       <div class="col-md-6 form-group">
+        <!--TRADUCCION-->
         <label for="{{ form.username.id_for_label }}">Nombre de usuario:</label>
         {{ form.username }}
       </div>
       <div class="col-md-6 form-group">
+        <!--TRADUCCION-->
         <label for="{{ form.password.id_for_label }}">Contraseña:</label>
         {{ form.password }}
       </div>
     </div>
     <div class="row">
       <div class="col-sm-3 mx-auto d-grid">
-        <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+        <button id="id-signin-btn" type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
       </div>
     </div>
   </form>
@@ -39,8 +41,10 @@
   <div class="col-md-6 mx-auto">
     <div class="row mx-2 mx-lg-0 my-4 py-2 border border-primary rounded">
       <div class="col-12">
+        <!--TRADUCCION-->
         <p>¿No tienes cuenta?&nbsp;<a class="link-primary" href="{% url 'signup' %}">Regístrate ahora</a></div></p>
       <div class="col-12">
+        <!--TRADUCCION-->
         <p>También puedes iniciar sesión con:
           <ul class="list-group">
             <li class="list-group-item text-primary">
