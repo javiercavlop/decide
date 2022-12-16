@@ -276,6 +276,12 @@ class SeleniumImportJSONTestCase(StaticLiveServerTestCase):
         
         self.census_group = CensusGroup(name='Test Group 1')
         self.census_group.save() 
+
+        self.driver.get(f'{self.live_server_url}/authentication/signin')
+        self.driver.find_element(By.ID, "id_username").send_keys('superadmin')
+        self.driver.find_element(By.ID, "id_password").send_keys('qwerty')
+        self.driver.find_element(By.ID, "id-signin-btn").click()
+        
         super().setUp()
           
             
