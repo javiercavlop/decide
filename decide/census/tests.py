@@ -141,7 +141,7 @@ class SeleniumImportExcelTestCase(StaticLiveServerTestCase):
         self.driver.get(f'{self.live_server_url}/authentication/signin')
         self.driver.find_element(By.ID, "id_username").send_keys('superadmin')
         self.driver.find_element(By.ID, "id_password").send_keys('qwerty')
-        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.driver.find_element(By.ID, "id-signin-btn").click()
 
 
 
@@ -410,7 +410,7 @@ class SeleniumImportCSVTestCase(StaticLiveServerTestCase):
         self.driver.get(f'{self.live_server_url}/authentication/signin')
         self.driver.find_element(By.ID, "id_username").send_keys('superadmin')
         self.driver.find_element(By.ID, "id_password").send_keys('qwerty')
-        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.driver.find_element(By.ID, "id-signin-btn").click()
         
         super().setUp()
           
