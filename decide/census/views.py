@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpResponseRedirect
@@ -176,7 +177,9 @@ def import_csv(request):
         return render(request,"csv.html")
     return render(request,"csv.html")
 
+
 @transaction.atomic
+@login_required(login_url='/authentication/signin/?next=/census/import')
 def import_excel(request):
     cont=2
     try: 
@@ -218,7 +221,7 @@ def import_excel(request):
     return render(request,"census/import.html")
 
 
-
+@login_required(login_url='/authentication/signin/?next=/census/export')
 def export_excel(request):
     try:           
         if request.method == 'POST':

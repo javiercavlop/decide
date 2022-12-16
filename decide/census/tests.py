@@ -1,3 +1,4 @@
+from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from .models import Census,CensusGroup
 from base.tests import BaseTestCase
@@ -136,6 +137,13 @@ class SeleniumImportExcelTestCase(StaticLiveServerTestCase):
         superuser_admin = User(username='superadmin', is_staff=True, is_superuser=True)
         superuser_admin.set_password('qwerty')
         superuser_admin.save()
+
+        self.driver.get(f'{self.live_server_url}/authentication/signin')
+        self.driver.find_element(By.ID, "id_username").send_keys('superadmin')
+        self.driver.find_element(By.ID, "id_password").send_keys('qwerty')
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+
+
 
         super().setUp()            
             
@@ -395,6 +403,11 @@ class SeleniumImportCSVTestCase(StaticLiveServerTestCase):
         superuser_admin = User(username='superadmin', is_staff=True, is_superuser=True)
         superuser_admin.set_password('qwerty')
         superuser_admin.save()
+
+        # self.driver.get(f'{self.live_server_url}/authentication/signin')
+        # self.driver.find_element(By.ID, "id_username").send_keys('superadmin')
+        # self.driver.find_element(By.ID, "id_password").send_keys('qwerty')
+        # self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
         
         self.census_group = CensusGroup(name='Test Group 1')
         self.census_group.save() 
@@ -549,7 +562,7 @@ class CensusReuseTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 302)
         
 
-class CensusExportTestCase(BaseTestCase):
+class CensusExportTestCase(TestCase):
 
     def setUp(self):
         super().setUp()
@@ -558,6 +571,14 @@ class CensusExportTestCase(BaseTestCase):
         self.census_group.save()
         self.census = Census(voting_id=1, voter_id=1)
         self.census.save()
+
+
+        self.user = User.objects.create_user(username='admins', password='admins')
+
+        self.client = Client()
+
+        self.client.login(username='admins', password='admins')
+        
 
     def tearDown(self):
         super().tearDown()
@@ -593,7 +614,7 @@ class CensusExportTestCase(BaseTestCase):
         
     def test_export_census_data_with_groups(self):
 
-        self.census = Census(voting_id=2, voter_id=2,group=CensusGroup.objects.get(id=1))
+        self.census = Census(voting_id=2, voter_id=2,group=CensusGroup.objects.get(id=self.census_group.id))
         self.census.save()
         
 
