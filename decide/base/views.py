@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from voting import models as voting_models
 from census import models as census_models
+from authentication.views import SignUpView
 
 def main_page(request):
     is_anonymous = request.user.is_anonymous
@@ -11,7 +12,7 @@ def main_page(request):
     visualize_votings = voting_models.Voting.objects.filter(end_date__isnull=False,tally__isnull=False,pk__in=allowed_votings)
 
     if is_anonymous:
-        return render(request,'register.html')
+        return SignUpView.register(request)
     else:
         return render(request,'mainpage.html',{
                                                 'voting_votings':voting_votings,
