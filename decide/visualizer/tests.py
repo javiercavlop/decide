@@ -1,4 +1,3 @@
-from django.test import TestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.contrib.auth import get_user_model
 from pathlib import Path
@@ -36,17 +35,16 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         options.add_experimental_option("prefs", prefs)
         self.driver = webdriver.Chrome(options=options)
         self.driver.set_window_size(1920, 1080)
-
         super().setUp()
             
-    def tearDown(self):           
+    def tearDown(self):
         super().tearDown()
         self.driver.quit()
 
         self.base.tearDown()
         
 
-    def test_StopedVotingVisualizer(self):        
+    def test_StopedVotingVisualizer(self):
         q = Question(desc='test question')
         q.save()
         v = Voting(name='test voting', question=q)
@@ -59,7 +57,7 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         self.assertTrue(vState, "Resultados:")
     
 
-    def test_NoStartedVotingVisualizer(self): 
+    def test_NoStartedVotingVisualizer(self):
         q = Question(desc='test question')
         q.save()
         v = Voting(name='test voting', question=q)
@@ -69,7 +67,7 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         self.assertTrue(vState, "Votación no comenzada")
 
 
-    def test_StartedVotingVisualizer(self):        
+    def test_StartedVotingVisualizer(self):
         q = Question(desc='test question')
         q.save()
         v = Voting(name='test voting', question=q)
@@ -82,7 +80,6 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         self.assertTrue(vState, "Votación en curso")
 
     def test_DeletedVotingVisualizer(self):
-
         q = Question(desc='test question')
         q.save()
         v = Voting(name='test voting', question=q)

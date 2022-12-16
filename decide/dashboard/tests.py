@@ -10,7 +10,6 @@ from postproc.models import UserProfile
 from django.contrib.auth.models import User
 from mixnet.models import Auth
 from django.contrib.auth import get_user_model
-from selenium.webdriver.common.action_chains import ActionChains
 from pathlib import Path
 from django.conf import settings
 import time
@@ -23,10 +22,6 @@ from base import mods
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
-
-
-
-
 import logging
 from selenium.webdriver.remote.remote_connection import LOGGER
 from urllib3.connectionpool import log as urllibLogger
@@ -61,7 +56,6 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         self.driver.set_window_size(1920,1080)
 
         super().setUp()
-
     def tearDown(self):
         super().tearDown()
         self.driver.quit()
