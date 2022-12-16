@@ -6,7 +6,6 @@ from selenium.webdriver.common.by import By
 from django.utils import timezone
 from voting.models import Voting, Question, QuestionOption
 from census.models import Census
-
 from postproc.models import UserProfile
 from django.contrib.auth.models import User
 from mixnet.models import Auth
@@ -16,15 +15,12 @@ from pathlib import Path
 from django.conf import settings
 import time
 import datetime
-from rest_framework.authtoken.models import Token
 import random
 from mixnet.mixcrypt import ElGamal
 from mixnet.mixcrypt import MixCrypt
 import itertools
 from base import mods
-
 from selenium.webdriver.common.action_chains import ActionChains
-
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
 

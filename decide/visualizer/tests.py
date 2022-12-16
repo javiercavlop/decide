@@ -2,13 +2,10 @@ from django.test import TestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.contrib.auth import get_user_model
 from pathlib import Path
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support.ui import Select
-from time import sleep
 from selenium.webdriver.support.ui import Select
 
 
