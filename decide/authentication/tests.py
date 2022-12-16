@@ -233,6 +233,35 @@ class AuthTestSelenium(StaticLiveServerTestCase):
         error = self.driver.find_element_by_id("error")
         self.assertEqual(error.text, "Username or password is incorrect")
 
+    def test_empty_username_login(self):
+        self.driver.get(f"{self.live_server_url}/authentication/signin/")
+        self.driver.find_element_by_id("id_username").send_keys("")
+        self.driver.find_element_by_id("id_password").send_keys("contraseña1")
+        self.driver.find_element_by_id("submit").click()
+        self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/signin/")
+
+    def test_empty_password_login_by_username(self):
+        self.driver.get(f"{self.live_server_url}/authentication/signin/")
+        self.driver.find_element_by_id("id_username").send_keys("leslie")
+        self.driver.find_element_by_id("id_password").send_keys("")
+        self.driver.find_element_by_id("submit").click()
+        self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/signin/")
+
+    def test_empty_password_login_by_username(self):
+        self.driver.get(f"{self.live_server_url}/authentication/signin/")
+        self.driver.find_element_by_id("id_username").send_keys("leslie@us.es")
+        self.driver.find_element_by_id("id_password").send_keys("")
+        self.driver.find_element_by_id("submit").click()
+        self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/signin/")
+
+    def test_empty_username_and_password_login(self):
+
+        self.driver.get(f"{self.live_server_url}/authentication/signin/")
+        self.driver.find_element_by_id("id_username").send_keys("")
+        self.driver.find_element_by_id("id_password").send_keys("")
+        self.driver.find_element_by_id("submit").click()
+        self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/signin/")
+
 
 
 class TranslationCase(StaticLiveServerTestCase):
