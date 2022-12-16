@@ -569,6 +569,9 @@ class CensusReuseTestCase(BaseTestCase):
         data = {'voting_id':'x','new_voting':'y','staff':staff}
         response = self.client.post('/census/reuse',data=data)
         self.assertEqual(response.status_code, 400)
+    
+    def test_census_reuse(self):
+        self.login()
 
         self.logout()
     

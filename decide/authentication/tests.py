@@ -303,5 +303,4 @@ class AuthenticationViewsTestCase(StaticLiveServerTestCase):
         self.driver.find_element(By.ID,'id-signin-btn').click()
         self.assertEqual(self.driver.current_url,'{}/'.format(self.live_server_url))
 
-    
 
