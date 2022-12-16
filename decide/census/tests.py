@@ -141,7 +141,7 @@ class SeleniumImportExcelTestCase(StaticLiveServerTestCase):
         self.driver.get(f'{self.live_server_url}/authentication/signin')
         self.driver.find_element(By.ID, "id_username").send_keys('superadmin')
         self.driver.find_element(By.ID, "id_password").send_keys('qwerty')
-        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+        self.driver.find_element(By.ID, "id-signin-btn").click()
 
 
 
@@ -403,14 +403,15 @@ class SeleniumImportCSVTestCase(StaticLiveServerTestCase):
         superuser_admin = User(username='superadmin', is_staff=True, is_superuser=True)
         superuser_admin.set_password('qwerty')
         superuser_admin.save()
-
-        # self.driver.get(f'{self.live_server_url}/authentication/signin')
-        # self.driver.find_element(By.ID, "id_username").send_keys('superadmin')
-        # self.driver.find_element(By.ID, "id_password").send_keys('qwerty')
-        # self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
         
         self.census_group = CensusGroup(name='Test Group 1')
         self.census_group.save() 
+
+        self.driver.get(f'{self.live_server_url}/authentication/signin')
+        self.driver.find_element(By.ID, "id_username").send_keys('superadmin')
+        self.driver.find_element(By.ID, "id_password").send_keys('qwerty')
+        self.driver.find_element(By.ID, "id-signin-btn").click()
+        
         super().setUp()
           
             
