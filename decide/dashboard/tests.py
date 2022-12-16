@@ -72,7 +72,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         v.create_pubkey()
         v.start_date = timezone.now()
         v.save()
-        response = self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
         percentages_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.ID, value="noadmin"))
         self.assertEqual(percentages_selector.text,"noadmin")
@@ -87,7 +87,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         v.create_pubkey()
         v.start_date = timezone.now()
         v.save()
-        response = self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
         percentages_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.ID, value="noadmin"))
         self.assertNotEqual(percentages_selector.text,"adminadmin")
@@ -181,7 +181,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         v.create_pubkey()
         v.start_date = timezone.now()
         v.save()
-        response = self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
         percentages_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.ID, value="noadmin"))
         self.assertEqual(percentages_selector.text, "noadmin")
@@ -194,7 +194,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         v.create_pubkey()
         v.start_date = timezone.now()
         v.save()
-        response = self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
         percentages_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.ID, value="noadmin"))
         self.assertNotEqual(percentages_selector.text, "adminadmin")

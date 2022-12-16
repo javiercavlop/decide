@@ -62,7 +62,7 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         q.save()
         v = Voting(name='test voting', question=q)
         v.save()
-        response =self.driver.get(f'{self.live_server_url}/visualizer/{v.pk}/')
+        self.driver.get(f'{self.live_server_url}/visualizer/{v.pk}/')
         vState= self.driver.find_element(By.TAG_NAME,"h2").text
         self.assertTrue(vState, "Votación no comenzada")
 
@@ -75,7 +75,7 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         data = {'action': 'start'}
         response1 = self.client.put('/voting/{}/'.format(v.pk), data, format='json')
         self.assertEqual(response1.status_code, 401)
-        response =self.driver.get(f'{self.live_server_url}/visualizer/{v.pk}/')
+        self.driver.get(f'{self.live_server_url}/visualizer/{v.pk}/')
         vState= self.driver.find_element(By.TAG_NAME,"h2").text
         self.assertTrue(vState, "Votación en curso")
 
