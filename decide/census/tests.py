@@ -1,3 +1,4 @@
+from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from .models import Census,CensusGroup
 from base.tests import BaseTestCase
@@ -561,7 +562,7 @@ class CensusReuseTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 302)
         
 
-class CensusExportTestCase(BaseTestCase):
+class CensusExportTestCase(TestCase):
 
     def setUp(self):
         super().setUp()
@@ -571,7 +572,13 @@ class CensusExportTestCase(BaseTestCase):
         self.census = Census(voting_id=1, voter_id=1)
         self.census.save()
 
-        self.login()
+
+        self.user = User.objects.create_user(username='admins', password='admins')
+
+        self.client = Client()
+
+        self.client.login(username='admins', password='admins')
+        
 
     def tearDown(self):
         super().tearDown()
@@ -607,7 +614,7 @@ class CensusExportTestCase(BaseTestCase):
         
     def test_export_census_data_with_groups(self):
 
-        self.census = Census(voting_id=2, voter_id=2,group=CensusGroup.objects.get(id=1))
+        self.census = Census(voting_id=2, voter_id=2,group=CensusGroup.objects.get(id=self.census_group.id))
         self.census.save()
         
 
