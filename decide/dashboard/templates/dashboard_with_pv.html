@@ -1,101 +1,188 @@
-{% load i18n %}
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
-    <style>
-        p {font-size: 18px;}
+{% extends 'base.html' %}
+{% load i18n static %}
 
-    </style>
-</head>
-<body>
+{% block extrahead %}
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet"
+         href="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.css" />
+    <link rel="stylesheet" 
+         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <link type="text/css" rel="stylesheet" href="{% static "dashboard/style.css" %}" />
+   
+{% endblock %}
 
-    <div id = "pivot-table-container">
+
+{% block content %}
+<nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">
+      Decide
+    </a>
+    <div class="collapse" id="navbarToggleExternalContent">
+
+    </div>
+</nav>
+
+
+<div class="row justify-content-center mt-5 mx-5 mb-5">
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-11">
+                <div class="card border-danger card-texto">
+                    <article class="card-body">
         <!-- TRADUCCION -->
-        {% if not voting.start_date  %}
-
-        <H1>{{time}} la votación {{voting.id}}</H1>
-
-        {% elif not voting.end_date %}
-
-        <H1> {{time}} la votación {{voting.id}}</H1> 
-
-        <H1>Nombre de la votación</H1>
-        <p>{{voting.name}}</p>
-        <H1>Descripción de la votación</H1>
-        <p>{{description}}</p>
-        <H1>Tipo de pregunta</H1>
-        <p>{{questionType}}</p>
-        <H1>Número de personas en el censo</H1>
-        <p>{{people}}</p>
-
-        {% elif not voting.tally %}
-
-        <H1>Aún no se ha hecho el recuento de la votación {{voting.id}}</H1>
-
-        <H1>Nombre de la votación</H1>
-        <p>{{voting.name}}</p>
-        <H1>Descripción de la votación</H1>
-        <p>{{description}}</p>
-        <H1>Tipo de pregunta</H1>
-        <p>{{questionType}}</p>
-        <H1>Número de personas en el censo</H1>
-        <p>{{people}}</p>
-
+                    <h4 class="card-title mb-4 mt-1 text-align-center text-center">{{voting.name}}</h4>
+                    <div class="row">
+                        <!-- TRADUCCION -->
+                        <div class="text-center description">{{description}}</div>
+                    </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <!-- TRADUCCION -->
+        <div class="row mt-5">
+            {% if not voting.tally %}
+            <div class="col-md-11">
+                <div class="card border-danger card-texto">
+                    <article class="card-body">
+        <!-- TRADUCCION -->
+                    <h4 class="card-title mb-4 mt-1 text-align-center text-center">Sin Recuento</h4>
+                    </article>
+                </div>
+            </div>
+            {%else%}
+            <div class="col-md-11">
+                <div class="card border-danger">
+                    <article class="card-body row d-flex">
+        <!-- TRADUCCION -->
+                    <h4 class="card-title mb-4 mt-1 text-align-center text-center">Porcentaje de personas que votaron</h4>
+                    <div class="col-6 mx-auto">
+                        <canvas class="" id = "my2Chart" width = "100" height = "100 " ></canvas>
+                    </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-11">
+                <div class="card border-danger">
+                    <article class="card-body row d-flex">
+        <!-- TRADUCCION -->
+                    <h4 class="card-title mb-4 mt-1 text-align-center text-center">Gŕafica de paridad</h4>
+                    <div class="col-6 mx-auto">
+                        <canvas id = "my3Chart" width = "100" height = "100 " ></canvas>
+                    </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        {%endif%}
+    </div>
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-3 ">
+                <div class="card border-danger card-texto">
+                    <article class="card-body">
+        <!-- TRADUCCION -->
+                    <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-patch-question"></i> Tipo de Pregunta</h4>
+                    <div class="row">
+                        <div class="text-center questionType">{{questionType}}</div>
+                    </div>
+                    </article>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-danger card-texto">
+                    <article class="card-body">
+        <!-- TRADUCCION -->
+                    <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-clock"></i> Duración</h4>
+                    <div class="row ">
+                        {% if not voting.start_date  %}
+                        <div class="text-center time">No comenzada</div>
+                        {% elif not voting.end_date %}
+                        <div class="text-center time">No finalizada</div>
+                        {% else %}
+                        <div class="text-center time">{{time}}</div>
+                        {% endif %}
+                    </div>
+                    </article>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-danger card-texto">
+                    <article class="card-body">
+        <!-- TRADUCCION -->
+                    <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-person"></i> Nº Censo</h4>
+                    <div class="row">
+                        <div class="text-center people">{{people}}</div>
+                    </div>
+                    </article>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-danger card-texto">
+                    <article class="card-body">
+        <!-- TRADUCCION -->
+                    <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-envelope"></i> Nº Votos</h4>
+                    <div class="row">
+                        <div class="text-center numervotes">{{numberOfVotes}}</div>
+                    </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="card border-danger card-texto">
+                    <article class="card-body">
+        <!-- TRADUCCION -->
+                    <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-bezier2"></i> Paridad</h4>
+                    <div class="row">
+                        {% if parity == True %}
+                            <div class="text-center parity">Se ha cumplido la paridad para esta votación</div>
+                        {% elif numDif == 1 %}
+                            <div class="text-center parity">No se ha cumplido la paridad para esta votación, hay {{numDif}} voto más de {{mayor}} que de {{menor}}</div>
+                        {% else %}
+                            <div class="text-center parity">No se ha cumplido la paridad para esta votación, hay {{numDif}} votos más de {{mayor}} que de {{menor}}</div>
+                        {% endif %}
+                    </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <!-- TRADUCCION -->
+        {% if voting.tally %}
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="card border-danger">
+                    <article class="card-body row d-flex">
         
-        {% else %}
-
-        <H1>Nombre de la votación</H1>
-        <p>{{voting.name}}</p>
-        <H1>Descripción de la votación</H1>
-        <p>{{description}}</p>
-        <H1>Tipo de pregunta</H1>
-        <p>{{questionType}}</p>
-        <H1>Número de personas en el censo</H1>
-        <p>{{people}}</p>
-        <H1>Número de votos</H1>
-        <p>{{numberOfVotes}}</p>
-        <H1>Duración de la votación</H1>
-        <p> {{time}}</p>
-        <H1>Paridad</H1>
-        {% if parity == True %}
-            <p>Se ha cumplido la paridad para esta votación</p>
-        {% elif numDif == 1 %}
-            <p>No se ha cumplido la paridad para esta votación, hay {{numDif}} voto más de {{mayor}} que de {{menor}}</p>
-        {% else %}
-            <p>No se ha cumplido la paridad para esta votación, hay {{numDif}} votos más de {{mayor}} que de {{menor}}</p>
-        {% endif %}
-    </div>
-    <!-- TRADUCCION -->
-    <H1 style="text-align: center;">
-        Resultados de la votación
-    </H1>
-    <canvas id="myChart" width="800" height="200"></canvas>
-
-
-    <!-- TRADUCCION -->
-    <H1 >
-        Porcentaje de personas que votaron
-    </H1>
-    <div>
-        <canvas id = "my2Chart" width = "100" height = "100 " ></canvas>
+                    <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-clipboard-data"></i> Resultados de la Votación</h4>
+                    <div class="col-10 mx-auto">
+                        <canvas id="myChart" width="800" height="500"></canvas>
+                    </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        {% endif%}
     </div>
 
-    <!-- TRADUCCION -->
-    <H1 >
-        Gŕafica de paridad
-    </H1>
-    <div>
-        <canvas id = "my3Chart" width = "100" height = "100 " ></canvas>
-    </div>
+
+</div>
     
+    {% endblock %}
 
-
+    {% block extrabody %}
     <script src ="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 
     <!-- TRADUCCION -->
     <script>
         const ctx = document.getElementById('myChart').getContext('2d');
-
+        ctx.canvas.parentNode.style.width = "800px";
+        ctx.canvas.parentNode.style.height = "500px";
         const myChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -159,8 +246,6 @@
             }
         });
     </script>
-    {% endif %}
-</body>
-
-
+    {% endblock %}
+   
 

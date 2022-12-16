@@ -15,13 +15,13 @@
     <!-- Navbar -->
     <b-navbar toggleable="lg" type="dark" variant="dark">
         <!-- TRADUCCION -->
-        <b-navbar-brand href="#">Decide</b-navbar-brand>
+        <b-navbar-brand href="/">Decide</b-navbar-brand>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     </b-navbar>
 
     <div id="header" class="container text-center my-4">
         <!-- TRADUCCION -->
-        <h1>Bienvenido a Decide</h1>
+        <h1>Panel de Control</h1>
     </div>
 
     <div id="content" class="container">
@@ -29,25 +29,14 @@
 
             <div class="col-lg-6 text-center my-3 mx-auto">
 
-                <div id="id-voting-panel" class="row">
-                    <!-- TRADUCCION -->
-                    <h2>Si vienes a votar...</h2>
-                    <b-card header="Busca tu votación">
-                        <b-list-group class="voting-list my-3">
-                            {% for voting in voting_votings %}
-                                <b-list-group-item href="/booth/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
-                            {% endfor %}
-                        </b-list-group>
-                    </b-card>
-                </div>
 
                 <div id="id-visualizer-panel" class="row my-3">
                     <!-- TRADUCCION -->
-                    <h2>Si vienes a ver resultados...</h2>
+                    <h2>Paneles Individuales</h2>
                     <b-card header="Busca tu votación">
                         <b-list-group class="voting-list my-3">
                             {% for voting in visualize_votings %}
-                                <b-list-group-item href="/visualizer/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
+                                <b-list-group-item href="/dashboard/dashboard/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
                             {% endfor %}
                         </b-list-group>
                     </b-card>
@@ -60,46 +49,37 @@
             <div id="id-admin-panel" class="col-lg-6 text-center my-3 mx-auto">
                 <!-- TRADUCCION -->
                 <h2>Si eres administrador...</h2>
-                <div class="row my-3">
+
+                <div class="row my-4">
                     <div class="d-grid gap-2 col-8 mx-auto">
-                        <b-button size="lg" block variant="outline-primary" href="/admin">
+                        <b-button block variant="outline-danger" size="lg"  href="/dashboard/dashboard">
                             <div class="row">
                                 <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
                                 <!-- TRADUCCION -->
-                                <div class="col-10 text-start">Administra Decide</div>
+                                <div class="col-10 text-start">Panel de Control Global</div>
+                            </div>
+                        </b-button>
+                    </div>
+                </div>
+
+                <div class="row my-4">
+                    <div class="d-grid gap-2 col-8 mx-auto">
+                        <b-button size="lg" block variant="outline-danger" href="/dashboard/download">
+                            <div class="row">
+                                <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
+                                <!-- TRADUCCION -->
+                                <div class="col-10 text-start">Descargar Estadísticas</div>
                             </div>
                         </b-button>
                     </div>
                 </div>
                 <div class="row my-4">
                     <div class="d-grid gap-2 col-8 mx-auto">
-                        <b-button size="lg" block variant="outline-primary" href="/voting">
+                        <b-button size="lg" block variant="outline-danger" href="https://t.me/decide_stadistics_bot">
                             <div class="row">
                                 <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
                                 <!-- TRADUCCION -->
-                                <div class="col-10 text-start">Administra Votaciones</div>
-                            </div>
-                        </b-button>
-                    </div>
-                </div>
-                <div class="row my-4">
-                    <div class="d-grid gap-2 col-8 mx-auto">
-                        <b-button size="lg" block variant="outline-primary" href="/census">
-                            <div class="row">
-                                <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                                <!-- TRADUCCION -->
-                                <div class="col-10 text-start">Administra Censos</div>
-                            </div>
-                        </b-button>
-                    </div>
-                </div>
-                <div class="row my-4">
-                    <div class="d-grid gap-2 col-8 mx-auto">
-                        <b-button size="lg" block variant="outline-primary" href="/dashboard">
-                            <div class="row">
-                                <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                                <!-- TRADUCCION -->
-                                <div class="col-10 text-start">Panel de Control</div>
+                                <div class="col-10 text-start">Acceso al Bot de Telegram</div>
                             </div>
                         </b-button>
                     </div>

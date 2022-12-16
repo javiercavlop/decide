@@ -2,7 +2,6 @@ import os
 from base.tests import BaseTestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from django.utils import timezone
 from voting.models import Voting, Question, QuestionOption
@@ -13,7 +12,6 @@ from django.contrib.auth.models import User
 from mixnet.models import Auth
 from django.contrib.auth import get_user_model
 from selenium.webdriver.common.action_chains import ActionChains
-from voting.models import Voting
 from pathlib import Path
 from django.conf import settings
 import time
@@ -25,14 +23,17 @@ from mixnet.mixcrypt import MixCrypt
 import itertools
 from base import mods
 
-import time
-from selenium import webdriver
-from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support import expected_conditions
+
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+
+
+
+import logging
+from selenium.webdriver.remote.remote_connection import LOGGER
+from urllib3.connectionpool import log as urllibLogger
+
+
 
 
 
@@ -42,7 +43,8 @@ class DashBoard_test_case(StaticLiveServerTestCase):
 
     def setUp(self):
         # Load base test functionality for decide
-
+        LOGGER.setLevel(logging.WARNING)
+        urllibLogger.setLevel(logging.WARNING)
         self.base = BaseTestCase()
         self.base.setUp()
         User = get_user_model()
@@ -58,6 +60,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         prefs = {"download.default_directory": str(path)}
         options.add_experimental_option("prefs", prefs)
         self.driver = webdriver.Chrome(options=options)
+        self.driver.set_window_size(1920,1080)
 
         super().setUp()
 
@@ -77,7 +80,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         v.create_pubkey()
         v.start_date = timezone.now()
         v.save()
-        response = self.driver.get(f'{self.live_server_url}/dashboard')
+        response = self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
         percentages_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.ID, value="noadmin"))
         self.assertEqual(percentages_selector.text,"noadmin")
@@ -92,7 +95,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         v.create_pubkey()
         v.start_date = timezone.now()
         v.save()
-        response = self.driver.get(f'{self.live_server_url}/dashboard')
+        response = self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
         percentages_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.ID, value="noadmin"))
         self.assertNotEqual(percentages_selector.text,"adminadmin")
@@ -170,7 +173,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         self.driver.find_element(By.NAME, "index").click()
         v=Voting.objects.get(name='voting test')
 
-        self.driver.get(f'{self.live_server_url}/dashboard/')
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
         percentages_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.ID, value=v.pk))
         self.assertNotEqual(percentages_selector.text, "0%")
@@ -186,12 +189,12 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         v.create_pubkey()
         v.start_date = timezone.now()
         v.save()
-        response = self.driver.get(f'{self.live_server_url}/dashboard')
+        response = self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
         percentages_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.ID, value="noadmin"))
         self.assertEqual(percentages_selector.text, "noadmin")
 
-    def test_vote_dashboard_user_negative(self):
+    def test_vote_dashboard_user_negative_2(self):
         q = Question(desc='test questcccion')
         q.save()
         v = Voting(name='test voting', question=q)
@@ -199,12 +202,12 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         v.create_pubkey()
         v.start_date = timezone.now()
         v.save()
-        response = self.driver.get(f'{self.live_server_url}/dashboard')
+        response = self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
         percentages_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.ID, value="noadmin"))
         self.assertNotEqual(percentages_selector.text, "adminadmin")
 
-    def test_vote_dashboard_census_negative(self):
+    def test_vote_dashboard_census_negative_2(self):
         q = Question(desc='test questionnn')
         q.save()
 
@@ -278,7 +281,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, "input:nth-child(4)").click()
 
 
-        self.driver.get(f'{self.live_server_url}/dashboard/')
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
         percentages_selector =""
         try:
             percentages_selector = self.driver.find_element(by=By.ID, value=v.pk)
@@ -287,8 +290,9 @@ class DashBoard_test_case(StaticLiveServerTestCase):
             self.assertEqual(len(percentages_selector), 0)
 
     def test_download_pdf(self):
-        self.driver.get(f'{self.live_server_url}/dashboard/')
-        self.driver.find_element(By.CSS_SELECTOR, "input:nth-child(7)").click()
+
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
+        self.driver.find_element_by_xpath('//*[@id="descargar"]').click()
         time.sleep(10)
         path = str(Path.cwd())
         self.assertEqual(True,os.path.isfile(path+"/record.pdf"))
@@ -298,6 +302,8 @@ class DashBoard_test_case(StaticLiveServerTestCase):
 class DashBoard2TestCase(BaseTestCase):
 
     def setUp(self):
+        LOGGER.setLevel(logging.WARNING)
+        urllibLogger.setLevel(logging.WARNING)
         super().setUp()
 
     def tearDown(self):
@@ -306,13 +312,15 @@ class DashBoard2TestCase(BaseTestCase):
 
     def test_get_to_dashboard(self):
 
-        response = self.client.get('/dashboard')
-        self.assertEqual(response.status_code, 301)
+        response = self.client.get('/dashboard/dashboard')
+        self.assertEqual(response.status_code, 200)
 
     
 class Dashboard_TestCase(StaticLiveServerTestCase):
 
     def setUp(self):
+        LOGGER.setLevel(logging.WARNING)
+        urllibLogger.setLevel(logging.WARNING)
         self.base = BaseTestCase()
         self.base.setUp()
         User = get_user_model()
@@ -346,7 +354,7 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         v.save()
         v.create_pubkey()
         v.save()
-        rq = self.client.get("/dashboard/"+str(v.id)+"/")
+        rq = self.client.get("/dashboard/dashboard/"+str(v.id)+"/")
         self.assertEqual(rq.status_code,200)
         self.assertEqual(rq.context.get('time'),'Aún no ha comenzado')
         self.assertEqual(rq.context.get('description'),q.desc)
@@ -362,9 +370,9 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         self.assertEqual(rq.context.get('mayor'),'')
         self.assertEqual(rq.context.get('menor'),'')
 
-        self.driver.get(f'{self.live_server_url}/dashboard/{v.id}/')
-        tim = self.driver.find_element(By.CSS_SELECTOR, "h1:nth-child(1)").text
-        self.assertEqual(tim,"Aún no ha comenzado la votación "+ str(v.id))
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard/{v.id}/')
+        tim = self.driver.find_element(By.CLASS_NAME, "time").text
+        self.assertEqual(tim,"No comenzada")
 
     
     def test_positive_model_data_normal_no_finish(self):
@@ -382,7 +390,7 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         v.save()
         v.start_date = timezone.now()
         v.save()
-        rq = self.client.get("/dashboard/"+str(v.id)+"/")
+        rq = self.client.get("/dashboard/dashboard/"+str(v.id)+"/")
         self.assertEqual(rq.status_code,200)
         self.assertEqual(rq.context.get('time'),'Aún no ha terminado')
         self.assertEqual(rq.context.get('description'),q.desc)
@@ -398,9 +406,9 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         self.assertEqual(rq.context.get('mayor'),'')
         self.assertEqual(rq.context.get('menor'),'')
 
-        self.driver.get(f'{self.live_server_url}/dashboard/{v.id}/')
-        tim = self.driver.find_element(By.CSS_SELECTOR, "h1:nth-child(1)").text
-        self.assertEqual(tim,"Aún no ha terminado la votación "+ str(v.id))
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard/{v.id}/')
+        tim = self.driver.find_element(By.CLASS_NAME, "time").text
+        self.assertEqual(tim,"No finalizada")
 
 
     def test_positive_model_data_normal_no_tally_and_voting_desc(self):
@@ -419,7 +427,7 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         v.start_date = timezone.now()
         v.end_date = timezone.now()
         v.save()
-        rq = self.client.get("/dashboard/"+str(v.id)+"/")
+        rq = self.client.get("/dashboard/dashboard/"+str(v.id)+"/")
         self.assertEqual(rq.status_code,200)
 
         time = v.end_date-v.start_date
@@ -440,11 +448,11 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         self.assertEqual(rq.context.get('menor'),'')
 
 
-        self.driver.get(f'{self.live_server_url}/dashboard/{v.id}/')
-        tim = self.driver.find_element(By.CSS_SELECTOR, "h1:nth-child(1)").text
-        self.assertEqual(tim,"Aún no se ha hecho el recuento de la votación "+ str(v.id))
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard/{v.id}/')
+        tim = self.driver.find_element(By.CLASS_NAME, "time").text
+        self.assertEqual(tim,"0:00:00")
 
-        dsc = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(5)").text
+        dsc = self.driver.find_element(By.CLASS_NAME, "description").text
         self.assertEqual(dsc,"Votación de prueba")
 
     
@@ -592,10 +600,10 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         time = v.end_date - v.start_date
         duracion = str(time - datetime.timedelta(microseconds = time.microseconds))
 
-        rq = self.client.get("/dashboard/" + str(v.id) + "/")
+        rq = self.client.get("/dashboard/dashboard/" + str(v.id) + "/")
         self.assertEqual(rq.status_code, 200)
 
-        "Check that the data assigned to the model is correct"
+        #"Check that the data assigned to the model is correct"
         self.assertEqual(rq.context.get('time'), duracion)
         self.assertEqual(rq.context.get('description'),"No hay una descripción asociada a esta votación ni a esta pregunta")
         self.assertEqual(rq.context.get('questionType'),'normal')
@@ -605,7 +613,7 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         values = []
         numberOfVotes = 0
         numberOfPeople = len(Census.objects.filter(voting_id = v.id))
-        'Como se generan de forma aleatoria hay que calcularlo aquí'
+        #'Como se generan de forma aleatoria hay que calcularlo aquí'
         for vote in postpro:
             values.append(vote['votes'])
             numberOfVotes = numberOfVotes + vote['votes']
@@ -619,12 +627,12 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         self.assertEqual(rq.context.get('values2'),[numberOfVotes,numberOfPeople-numberOfVotes])
         self.assertEqual(rq.context.get('parity'),True)
 
-        "Get the HTML elements to check if the data from the model is processed correctly"
-        self.driver.get(f'{self.live_server_url}/dashboard/{v.id}/')
-        numeroVotos = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(10)").text
-        tipoPregunta = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(6)").text
-        desc_nav = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(4)").text
-        parity = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(14)").text
+        #"Get the HTML elements to check if the data from the model is processed correctly"
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard/{v.id}/')
+        numeroVotos = self.driver.find_element(By.CLASS_NAME, "numervotes").text
+        tipoPregunta = self.driver.find_element(By.CLASS_NAME, "questionType").text
+        desc_nav = self.driver.find_element(By.CLASS_NAME, "description").text
+        parity = self.driver.find_element(By.CLASS_NAME, "parity").text
         chart = self.driver.find_element(By.ID, "myChart")
         chart2 = self.driver.find_element(By.ID, "my2Chart")
         chart3 = self.driver.find_element(By.ID, "my3Chart")
@@ -633,7 +641,7 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         self.assertEqual(desc_nav,"No hay una descripción asociada a esta votación ni a esta pregunta")
         self.assertEqual(numeroVotos,str(numberOfVotes))
         self.assertEqual(parity,'Se ha cumplido la paridad para esta votación')
-        "Check that the charts are displayed"
+        #"Check that the charts are displayed"
         self.assertTrue(chart != None)
         self.assertTrue(chart2 != None)
         self.assertTrue(chart3 != None)
@@ -675,7 +683,7 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         v.get_paridad(user_id_list)
         v.save()
 
-        rq = self.client.get("/dashboard/" + str(v.id) + "/")
+        rq = self.client.get("/dashboard/dashboard/" + str(v.id) + "/")
         self.assertEqual(rq.status_code, 200)
 
         postpro = v.postproc
@@ -699,11 +707,11 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
 
         numDif = abs(v.num_votes_M - v.num_votes_W)
         "Get the HTML elements to check if the data from the model is processed correctly"
-        self.driver.get(f'{self.live_server_url}/dashboard/{v.id}/')
-        numeroVotos = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(10)").text
-        tipoPregunta = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(6)").text
-        desc_nav = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(4)").text
-        parity = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(14)").text
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard/{v.id}/')
+        numeroVotos = self.driver.find_element(By.CLASS_NAME, "numervotes").text
+        tipoPregunta = self.driver.find_element(By.CLASS_NAME, "questionType").text
+        desc_nav = self.driver.find_element(By.CLASS_NAME, "description").text
+        parity = self.driver.find_element(By.CLASS_NAME, "parity").text
         chart = self.driver.find_element(By.ID, "myChart")
         chart2 = self.driver.find_element(By.ID, "my2Chart")
         chart3 = self.driver.find_element(By.ID, "my3Chart")
@@ -757,7 +765,7 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         v.get_paridad(user_id_list)
         v.save()
 
-        rq = self.client.get("/dashboard/" + str(v.id) + "/")
+        rq = self.client.get("/dashboard/dashboard/" + str(v.id) + "/")
         self.assertEqual(rq.status_code, 200)
 
         postpro = v.postproc
@@ -781,11 +789,11 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
 
         numDif = abs(v.num_votes_M - v.num_votes_W)
         "Get the HTML elements to check if the data from the model is processed correctly"
-        self.driver.get(f'{self.live_server_url}/dashboard/{v.id}/')
-        numeroVotos = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(10)").text
-        tipoPregunta = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(6)").text
-        desc_nav = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(4)").text
-        parity = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(14)").text
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard/{v.id}/')
+        numeroVotos = self.driver.find_element(By.CLASS_NAME, "numervotes").text
+        tipoPregunta = self.driver.find_element(By.CLASS_NAME, "questionType").text
+        desc_nav = self.driver.find_element(By.CLASS_NAME, "description").text
+        parity = self.driver.find_element(By.CLASS_NAME, "parity").text
         chart = self.driver.find_element(By.ID, "myChart")
         chart2 = self.driver.find_element(By.ID, "my2Chart")
         chart3 = self.driver.find_element(By.ID, "my3Chart")
@@ -832,7 +840,7 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         v.do_postproc()
         v.tally_votes()
         v.save()
-        rq = self.client.get("/dashboard/" + str(v.id) + "/")
+        rq = self.client.get("/dashboard/dashboard/" + str(v.id) + "/")
         self.assertEqual(rq.status_code, 200)
 
         postpro = v.postproc
@@ -857,11 +865,11 @@ class Dashboard_TestCase(StaticLiveServerTestCase):
         self.assertEqual(rq.context.get('parity'),True)
 
         "Get the HTML elements to check if the data from the model is processed correctly"
-        self.driver.get(f'{self.live_server_url}/dashboard/{v.id}/')
-        numeroVotos = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(10)").text
-        tipoPregunta = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(6)").text
-        desc_nav = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(4)").text
-        parity = self.driver.find_element(By.CSS_SELECTOR, "p:nth-child(14)").text
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard/{v.id}/')
+        numeroVotos = self.driver.find_element(By.CLASS_NAME, "numervotes").text
+        tipoPregunta = self.driver.find_element(By.CLASS_NAME, "questionType").text
+        desc_nav = self.driver.find_element(By.CLASS_NAME, "description").text
+        parity = self.driver.find_element(By.CLASS_NAME, "parity").text
         chart = self.driver.find_element(By.ID, "myChart")
         chart2 = self.driver.find_element(By.ID, "my2Chart")
         chart3 = self.driver.find_element(By.ID, "my3Chart")
