@@ -147,6 +147,7 @@ class AuthTestCase(APITestCase):
     #     token = response.json()
     #     self.assertTrue(token.get('token'))
 
+'''
 class TranslationCase(StaticLiveServerTestCase):
     
     def setUp(self):
@@ -217,3 +218,4 @@ class TranslationCase(StaticLiveServerTestCase):
         change_language_button.click()
         username_label = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > form > p:nth-child(2) > label"))
         self.assertEqual(username_label.text, "Username:")
+'''

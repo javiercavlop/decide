@@ -26,6 +26,8 @@ from base import mods
 from selenium.webdriver.common.action_chains import ActionChains
 
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support.ui import Select
+
 
 
 
@@ -138,7 +140,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
 
 
         #crear votación
-        self.driver.find_element(By.LINK_TEXT, "Inicio").click()
+        self.driver.get(f'{self.live_server_url}/admin/')
         self.driver.find_element(By.LINK_TEXT, "Votings").click()
         self.driver.find_element(By.CSS_SELECTOR, ".addlink").click()
         self.driver.find_element(By.ID, "id_name").send_keys("voting test")
@@ -211,6 +213,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         q = Question(desc='test questionnn')
         q.save()
 
+
         self.driver.get(f'{self.live_server_url}/admin/')
         user_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.ID, value="id_username"))
@@ -223,6 +226,13 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         submit_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element_by_xpath('//*[@id="login-form"]/div[3]/input'))
         submit_selector.click()
+        self.driver.get(f'{self.live_server_url}')
+        self.driver.set_window_size(1450, 873)
+        dropdown = Select(self.driver.find_element(By.NAME, "language"))
+        dropdown.select_by_visible_text("español (es)")
+        self.driver.find_element(By.ID, "change-language-button").click()
+        self.driver.get(f'{self.live_server_url}/admin/')
+
         self.driver.find_element(By.LINK_TEXT, "Auths").click()
         self.driver.find_element(By.CSS_SELECTOR, ".addlink").click()
         self.driver.find_element(By.ID, "id_name").click()
@@ -241,7 +251,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         self.driver.find_element(By.NAME, "_save").click()
 
         # crear votación
-        self.driver.find_element(By.LINK_TEXT, "Inicio").click()
+        self.driver.get(f'{self.live_server_url}/admin/')
         self.driver.find_element(By.LINK_TEXT, "Votings").click()
         self.driver.find_element(By.CSS_SELECTOR, ".addlink").click()
         self.driver.find_element(By.ID, "id_name").send_keys("voting test")
@@ -265,9 +275,11 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         v=Voting.objects.get(name='voting test')
 
 
+
         self.driver.find_element(By.NAME, "_selected_action").click()
-        dropdown = self.driver.find_element(By.NAME, "action")
-        dropdown.find_element(By.XPATH, "//option[. = 'Eliminar votings seleccionado/s']").click()
+        dropdown = Select(self.driver.find_element(By.NAME, "action"))
+        dropdown.select_by_visible_text("Eliminar votings seleccionado/s")
+
         element = self.driver.find_element(By.NAME, "action")
         actions = ActionChains(self.driver)
         actions.move_to_element(element).click_and_hold().perform()

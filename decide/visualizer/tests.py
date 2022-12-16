@@ -7,6 +7,11 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import Select
+from time import sleep
+from selenium.webdriver.support.ui import Select
+
+
 
 
 from base.tests import BaseTestCase
@@ -15,8 +20,9 @@ from voting.models import Question, Voting
 
 class VisualizerTestCase(StaticLiveServerTestCase):
 
-
     def setUp(self):
+        # Load base test functionality for decide
+
         self.base = BaseTestCase()
         self.base.setUp()
         User = get_user_model()
@@ -32,8 +38,9 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         prefs = {"download.default_directory": str(path)}
         options.add_experimental_option("prefs", prefs)
         self.driver = webdriver.Chrome(options=options)
+        self.driver.set_window_size(1920, 1080)
 
-        super().setUp()            
+        super().setUp()
             
     def tearDown(self):           
         super().tearDown()
@@ -77,11 +84,13 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         vState= self.driver.find_element(By.TAG_NAME,"h2").text
         self.assertTrue(vState, "Votación en curso")
 
-    def test_DeletedVotingVisualizer(self):        
+    def test_DeletedVotingVisualizer(self):
+
         q = Question(desc='test question')
         q.save()
         v = Voting(name='test voting', question=q)
         v.save()
+
         self.driver.get(f'{self.live_server_url}/admin/')
         user_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.ID, value="id_username"))
@@ -94,6 +103,14 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         submit_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element_by_xpath('//*[@id="login-form"]/div[3]/input'))
         submit_selector.click()
+        self.driver.get(f'{self.live_server_url}')
+        self.driver.set_window_size(1450, 873)
+        dropdown = Select(self.driver.find_element(By.NAME, "language"))
+        dropdown.select_by_visible_text("español (es)")
+        self.driver.find_element(By.ID, "change-language-button").click()
+        self.driver.get(f'{self.live_server_url}/admin/')
+
+
         self.driver.find_element(By.LINK_TEXT, "Auths").click()
         self.driver.find_element(By.CSS_SELECTOR, ".addlink").click()
         self.driver.find_element(By.ID, "id_name").click()
@@ -126,8 +143,9 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         v=Voting.objects.get(name='voting test')
         
         self.driver.find_element(By.NAME, "_selected_action").click()
-        dropdown = self.driver.find_element(By.NAME, "action")
-        dropdown.find_element(By.XPATH, "//option[. = 'Eliminar votings seleccionado/s']").click()
+        dropdown = Select(self.driver.find_element(By.NAME, "action"))
+
+        dropdown.select_by_visible_text("Eliminar votings seleccionado/s")
         element = self.driver.find_element(By.NAME, "action")
         actions = ActionChains(self.driver)
         actions.move_to_element(element).click_and_hold().perform()
