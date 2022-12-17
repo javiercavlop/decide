@@ -11,37 +11,39 @@
 
 {% block content %}
     <div id="app-visualizer">
+        <div class="voting">
 
-        <div class="voting container">
-            <h1>[[ voting.id ]] - [[ voting.name ]]</h1>
+            <h1>Votación [[voting.id]]</h1>
+            <div class="container bg-gray w-35 p-4 my-4 rounded m-0">
+                <h2>[[ voting.name ]]</h2>
 
-            <!-- TRADUCCION -->
-            <h2 v-if="!voting.start_date">Votación no comenzada</h2>
-            <!-- TRADUCCION -->
-            <h2 v-else-if="!voting.end_date">Votación en curso</h2>
-            <div v-else>
                 <!-- TRADUCCION -->
-                <h2 class="heading">Resultados:</h2>
+                <h4 v-if="!voting.start_date">Votación no comenzada</h4>
+                <!-- TRADUCCION -->
+                <h4 v-else-if="!voting.end_date">Votación en curso</h4>
+                <div v-else>
+                    <!-- TRADUCCION -->
+                    <h4 class="heading">Resultados:</h4>
 
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <!-- TRADUCCION -->
-                            <th>Opción</th>
-                            <th>Puntuación</th>
-                            <th>Votos</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="opt in voting.postproc" :key="opt.number">
-                            <th>[[opt.option]]</th>
-                            <td>[[opt.postproc]]</td>
-                            <td class="text-muted">[[opt.votes]]</td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <table id="visualizer-table" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <!-- TRADUCCION -->
+                                <th>Opción</th>
+                                <th>Puntuación</th>
+                                <th>Votos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="opt in voting.postproc" :key="opt.number">
+                                <th>[[opt.option]]</th>
+                                <td>[[opt.postproc]]</td>
+                                <td class="text-muted">[[opt.votes]]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
         </div>
     </div>
 {% endblock %}
