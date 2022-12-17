@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-17 10:42+0000\n"
+"POT-Creation-Date: 2022-12-17 11:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,42 +18,67 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: dashboard/templates/dashboard/dashboard.html:25
+#: dashboard/templates/dashboard/dashboard.html:24
 msgid "Usuarios"
 msgstr "Users"
 
-#: dashboard/templates/dashboard/dashboard.html:27
+#: dashboard/templates/dashboard/dashboard.html:26
 msgid "Número de encuestas votadas en tiempo real"
 msgstr "Number of surveys voted in real time"
 
-#: dashboard/templates/dashboard/dashboard.html:34
+#: dashboard/templates/dashboard/dashboard.html:33
 msgid "Perfiles"
 msgstr "Profiles"
 
-#: dashboard/templates/dashboard/dashboard.html:49
+#: dashboard/templates/dashboard/dashboard.html:48
 msgid "Votante"
 msgstr "Voter"
 
-#: dashboard/templates/dashboard/dashboard.html:50
+#: dashboard/templates/dashboard/dashboard.html:49
 msgid "Encuestas"
 msgstr "Surveys"
 
-#: dashboard/templates/dashboard/dashboard.html:63
+#: dashboard/templates/dashboard/dashboard.html:62
 msgid "Porcentajes de votaciones según censo"
 msgstr "Voting percentages according to census"
 
-#: dashboard/templates/dashboard/dashboard.html:68
+#: dashboard/templates/dashboard/dashboard.html:67
 msgid "Id de votacion"
 msgstr "Voting id"
 
-#: dashboard/templates/dashboard/dashboard.html:69
+#: dashboard/templates/dashboard/dashboard.html:68
 msgid "Porcentaje del censo"
 msgstr "Census percentage"
 
-#: dashboard/templates/dashboard/dashboard.html:96
+#: dashboard/templates/dashboard/dashboard.html:95
+#: dashboard/templates/dashboard/mainpage_dashboard.html:60
 msgid "Descargar Estadísticas"
 msgstr "Download Statistics"
 
-#: dashboard/templates/dashboard/dashboard.html:98
+#: dashboard/templates/dashboard/dashboard.html:97
 msgid "Descargar"
 msgstr "Download"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:17
+msgid "Panel de Control"
+msgstr "Dashboard"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:27
+msgid "Paneles Individuales"
+msgstr "Individual Dashboards"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:28
+msgid "Busca tu votación"
+msgstr "Search your voting"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:42
+msgid "Si eres administrador"
+msgstr "If you are an administrator"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:49
+msgid "Panel de Control Global"
+msgstr "Global Dashboard"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:70
+msgid "Acceso al Bot de Telegram"
+msgstr "Access to the Telegram Bot"
