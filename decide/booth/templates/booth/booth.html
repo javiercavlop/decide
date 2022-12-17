@@ -89,7 +89,7 @@
                 <b-button type="button" variant="primary" class="w-100 mt-4 h4" id="send" v-on:click="decideSend">
                     {% trans "Vote" %}
                 </b-button>
-                </b-form-group>
+                
 
                 
 
@@ -97,6 +97,7 @@
                 
             </div>
         </div>
+        <div v-if="!signup">
         {% if auxBorda%}
             <div class="container bg-gray w-35 p-4 my-4 rounded m-0">
             <!-- TRADUCCION -->
@@ -105,7 +106,7 @@
             </div>
             </div>
         {% endif %}
-        
+        </div>
     </div>
     </div>
 {% endblock %}
