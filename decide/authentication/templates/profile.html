@@ -17,7 +17,8 @@
                     </div>
                 {% endfor %}
             {% endif %}
-            <h1 class="text-center mt-5">Gestiona tu perfil</h1>
+            <!--TRADUCCION-->
+            <h1 class="text-center mt-5" id="profile-title">Gestiona tu perfil</h1>
         </div>
 
     <div id="app-profile">
@@ -32,6 +33,7 @@
                                 {% csrf_token %}
                                 <b-row>
                                     <b-col cols="12" md="3">
+                                        <!--TRADUCCION-->
                                         <label for="username">Username:</label>
                                     </b-col>
                                     <b-col cols="12" md="9">
@@ -43,6 +45,7 @@
     
                                 <b-row class="mt-4">
                                     <b-col cols="12" md="3">
+                                        <!--TRADUCCION-->
                                         <label for="first_name">First name:</label>
                                     </b-col>
                                     <b-col cols="12" md="9">
@@ -52,6 +55,7 @@
     
                                 <b-row class="mt-4">
                                     <b-col cols="12" md="3">
+                                        <!--TRADUCCION-->
                                         <label for="last_name">Last name:</label>
                                     </b-col>
                                     <b-col cols="12" md="9">
@@ -61,6 +65,7 @@
     
                                 <b-row class="mt-4">
                                     <b-col cols="12" md="3">
+                                        <!--TRADUCCION-->
                                         <label for="email">Email:</label>
                                     </b-col>
                                     <b-col cols="12" md="9">
@@ -70,6 +75,7 @@
 
                                 <b-row class="mt-4">
                                     <b-col cols="12" md="3">
+                                        <!--TRADUCCION-->
                                         <label for="genre">Genero:</label>
                                     </b-col>
                                     <b-col cols="12" md="9">
@@ -79,7 +85,7 @@
                                           </select>
                                     </b-col>
                                 </b-row>
-                                <!--Traducir-->                   
+                                <!--TRADUCCION-->                   
                                 <button class="btn btn-primary mt-4" type="submit" value="OK">Update</button>
                             </form>    
                         </b-card-body>
@@ -104,7 +110,7 @@
     {% else %}
     <div class="container-md">
         {% csrf_token %}
-        <!--Traducir--> 
+        <!--TRADUCCION-->
         <a class="btn btn-primary" href="http://localhost:8000/authentication/signin/" role="button">Sign in</a>
     </div>
     
