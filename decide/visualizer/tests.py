@@ -246,7 +246,7 @@ class visualizerTranslationCase(StaticLiveServerTestCase):
         
     def test_french_translation(self):
         self.driver.set_window_size(1920,1080)
-        id_voting = Voting.objects.get(name='test voting')
+        id_voting = Voting.objects.get(name='test voting').id
         self.driver.get('{}/visualizer/{}'.format(self.live_server_url, id_voting))        
         language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
         language_selector.click()
@@ -259,7 +259,7 @@ class visualizerTranslationCase(StaticLiveServerTestCase):
         
     def test_german_translation(self):
         self.driver.set_window_size(1920,1080)
-        id_voting = Voting.objects.get(name='test voting')
+        id_voting = Voting.objects.get(name='test voting').id
         self.driver.get('{}/visualizer/{}'.format(self.live_server_url, id_voting))  
         language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
         language_selector.click()
@@ -272,7 +272,7 @@ class visualizerTranslationCase(StaticLiveServerTestCase):
     
     def test_spanish_translation(self):
         self.driver.set_window_size(1920,1080)
-        id_voting = Voting.objects.get(name='test voting')
+        id_voting = Voting.objects.get(name='test voting').id
         self.driver.get('{}/visualizer/{}'.format(self.live_server_url, id_voting))  
         language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
         language_selector.click()
@@ -285,7 +285,7 @@ class visualizerTranslationCase(StaticLiveServerTestCase):
 
     def test_english_translation(self):
         self.driver.set_window_size(1920,1080)
-        id_voting = Voting.objects.get(name='test voting')
+        id_voting = Voting.objects.get(name='test voting').id
         self.driver.get('{}/visualizer/{}'.format(self.live_server_url, id_voting))  
         language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
         language_selector.click()
