@@ -609,7 +609,6 @@ class HelloTranslationCase(StaticLiveServerTestCase):
     def test_french_translation(self):
         self.driver.set_window_size(1920, 1080)
         self.driver.get('{}/authentication/hello/'.format(self.live_server_url))
-
         language_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.NAME, value="language"))
         language_selector.click()
@@ -627,7 +626,6 @@ class HelloTranslationCase(StaticLiveServerTestCase):
     def test_german_translation(self):
         self.driver.set_window_size(1920, 1080)
         self.driver.get('{}/authentication/profile/'.format(self.live_server_url))
-
         language_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.NAME, value="language"))
         language_selector.click()
@@ -645,7 +643,6 @@ class HelloTranslationCase(StaticLiveServerTestCase):
     def test_spanish_translation(self):
         self.driver.set_window_size(1920, 1080)
         self.driver.get('{}/authentication/profile/'.format(self.live_server_url))
-
         language_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.NAME, value="language"))
         language_selector.click()
@@ -663,7 +660,6 @@ class HelloTranslationCase(StaticLiveServerTestCase):
     def test_english_translation(self):
         self.driver.set_window_size(1920, 1080)
         self.driver.get('{}/authentication/profile/'.format(self.live_server_url))
-
         language_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.NAME, value="language"))
         language_selector.click()
