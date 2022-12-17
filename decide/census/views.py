@@ -255,7 +255,7 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
             census = Census.objects.get(voting_id=voting_id, voter_id=voter_id)
             census.delete()
         except ObjectDoesNotExist:
-            return Response('The voter does not have census in this voting', status=ST_400)  
+            return Response('The voter does not have census in this voting', status=ST_400)
         return Response('Census deleted', status=ST_204)
 
     def retrieve(self, request, voting_id, *args, **kwargs):
