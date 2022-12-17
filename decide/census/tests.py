@@ -5,6 +5,18 @@ from base.tests import BaseTestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.keys import Keys
 from django.test import TestCase, Client
+from voting.models import Voting, Question, QuestionOption
+from mixnet.models import Auth
+from django.utils import timezone
+from django.conf import settings
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -564,6 +576,23 @@ class CensusReuseTestCase(BaseTestCase):
         data = {'voting_id':1,'new_voting':2,'staff':staff}
         response = self.client.post('/census/reuse',data=data)
         self.assertRedirects(response,'/census', status_code=302, target_status_code=301)
+
+class CensusNewTestCase(StaticLiveServerTestCase):
+    def setUp(self):
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+    
+    def tearDown(self):
+        super().tearDown()
+        self.driver.quit()
+    
+    def test_viewcreatecensus(self):
+        self.driver.get(f'{self.live_server_url}/census/new')
+        self.assertTrue(len(self.driver.find_elements(By.ID, "id_voting_id"))==1)
+        self.assertTrue(len(self.driver.find_elements(By.ID, "id_voter_name"))==1)
+        self.assertTrue(len(self.driver.find_elements(By.ID, "id_group_name"))==1)
+        self.assertTrue(len(self.driver.find_elements(By.ID, "btn"))==1)
 
 class CensusExportTestCase(TestCase):
     def setUp(self):
