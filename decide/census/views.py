@@ -1,12 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.db.utils import IntegrityError
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.shortcuts import render, get_object_or_404
 from rest_framework import generics
 from rest_framework.response import Response
@@ -18,17 +17,14 @@ from rest_framework.status import (
         HTTP_409_CONFLICT as ST_409
 )
 
-from rest_framework.permissions import IsAdminUser,IsAuthenticated
-from base.perms import UserIsStaff
+from rest_framework.permissions import IsAdminUser
 from .models import Census,CensusGroup
 from .forms import CensusReuseForm, CensusGroupingForm, CensusForm
 from .serializers import CensusGroupSerializer,CensusSerializer
 from django.shortcuts import render
-from rest_framework.decorators import api_view, permission_classes 
 
 from django.conf import settings
 import pandas as pd
-from rest_framework.decorators import api_view
 from django.db import transaction
 import math
 from django.http import HttpResponse
@@ -285,9 +281,10 @@ def censusReuse(request):
                                 census.save()
                             except:
                                 pass
-                return HttpResponseRedirect('/census')
+                return redirect('/census')
             else:
-                return Response('Error try to create census', status=ST_400)
+                # TRADUCCION
+                return render(request,'census/census_reuse_form.html',{'errors':['Entries must be integers']})
     else:
         form = CensusReuseForm()
     return render(request,'census/census_reuse_form.html',{'form':form})
