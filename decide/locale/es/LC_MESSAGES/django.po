@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-17 11:44+0000\n"
+"POT-Creation-Date: 2022-12-17 12:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,3 +82,71 @@ msgstr "Panel de Control Global"
 #: dashboard/templates/dashboard/mainpage_dashboard.html:70
 msgid "Acceso al Bot de Telegram"
 msgstr "Acceso al Bot de Telegram"
+
+#: dashboard/templates/dashboard_with_pv.html:38
+msgid "Sin Recuento"
+msgstr "Sin Recuento"
+
+#: dashboard/templates/dashboard_with_pv.html:46
+#, fuzzy
+#| msgid "Porcentaje del censo"
+msgid "Porcentaje de personas que votaron"
+msgstr "Porcentaje de personas que votaron"
+
+#: dashboard/templates/dashboard_with_pv.html:58
+msgid "Gráfica de paridad"
+msgstr "Gráfica de paridad"
+
+#: dashboard/templates/dashboard_with_pv.html:73
+msgid "Tipo de Pregunta"
+msgstr "Tipo de Pregunta"
+
+#: dashboard/templates/dashboard_with_pv.html:83
+msgid "Duración"
+msgstr "Duración"
+
+#: dashboard/templates/dashboard_with_pv.html:86
+msgid "No comenzada"
+msgstr "No comenzada"
+
+#: dashboard/templates/dashboard_with_pv.html:88
+msgid "No finalizada"
+msgstr "No finalizada"
+
+#: dashboard/templates/dashboard_with_pv.html:99
+msgid "Nº Censo"
+msgstr "Nº Censo"
+
+#: dashboard/templates/dashboard_with_pv.html:109
+msgid "Nº Votos"
+msgstr "Nº Votos"
+
+#: dashboard/templates/dashboard_with_pv.html:121
+msgid "Paridad"
+msgstr "Paridad"
+
+#: dashboard/templates/dashboard_with_pv.html:124
+msgid "Se ha cumplido la paridad para esta votación"
+msgstr "Se ha cumplido la paridad para esta votación"
+
+#: dashboard/templates/dashboard_with_pv.html:126
+#: dashboard/templates/dashboard_with_pv.html:128
+msgid "No se ha cumplido la paridad para esta votación, hay"
+msgstr "No se ha cumplido la paridad para esta votación, hay"
+
+#: dashboard/templates/dashboard_with_pv.html:126
+msgid "voto más de"
+msgstr "voto más de"
+
+#: dashboard/templates/dashboard_with_pv.html:126
+#: dashboard/templates/dashboard_with_pv.html:128
+msgid "que de"
+msgstr "que de"
+
+#: dashboard/templates/dashboard_with_pv.html:128
+msgid "votos más de"
+msgstr "votos más de"
+
+#: dashboard/templates/dashboard_with_pv.html:140
+msgid "Resultados de la Votación"
+msgstr "Resultados de la Votación"
