@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% load i18n static %}
+{% load static %}
+{% load i18n %}
 
 {% block extrahead %}
     <link type="text/css" rel="stylesheet"
@@ -19,22 +20,18 @@
     <div id="app-dashboard">
 
         <div id="users" class="voting container my-4">
-                    <!-- TRADUCCION -->
             
             <div class="row my-3">
-                 <!-- TRADUCCION -->
-                <div class="col-5"><h3 class="heading">Usuarios</h3></div>
+                <div class="col-5"><h3 class="heading">{% trans 'Usuarios' %}</h3></div>
                 <div class="col-1"></div>
-                 <!-- TRADUCCION -->
-                <div class="col-6"><h3 class="heading">Número de encuestas votadas en tiempo real</h3></div>
+                <div class="col-6"><h3 class="heading">{% trans 'Número de encuestas votadas en tiempo real' %}</h3></div>
             </div>
             <div class="row"> 
                 <div class="col-5 table-wrapper-scroll-y-perf my-custom-scrollbar-perf">
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                    <!-- TRADUCCION -->
-                                <th>Perfiles</th>
+                                <th>{% trans 'Perfiles' %}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,21 +41,17 @@
                         </tbody>
                     </table>
                 </div>
-                    <!-- TRADUCCION -->
                 <div class="col-1"></div>
                 <div class="col-6 table-wrapper-scroll-y-perf my-custom-scrollbar-perf">
                     <table id="vot-real" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                           <!-- TRADUCCION -->
-                                <th>Votante</th>
-                                           <!-- TRADUCCION -->
-                                <th>Encuestas</th>
+                                <th>{% trans 'Votante' %}</th>
+                                <th>{% trans 'Encuestas' %}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="f in new_votes">
-                                 <!-- TRADUCCION -->
                                 <th v-bind:id="[[f.voter]]"><i class="bi bi-person mx-2"></i>[[f.voter]]</th>
                                 <th>[[f.number]] </th>
                             </tr>
@@ -67,22 +60,19 @@
                     </table>
                 </div>
             </div>
- <!-- TRADUCCION -->
-            <h3>Porcentajes de votaciones según censo</h3>
+            <h3>{% trans 'Porcentajes de votaciones según censo' %}</h3>
         <div class="table-wrapper-scroll-y my-custom-scrollbar">
             <table id= "vot-census" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                                    <!-- TRADUCCION -->
-                        <th>Id de votacion</th>
-                                    <!-- TRADUCCION -->
-                        <th>Porcentaje del censo</th>
+                        <th>{% trans 'Id de votacion' %}</th>
+                        <th>{% trans 'Porcentaje del censo' %}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="por in percentages">
                         <th v-bind:id="[[por.voting]]" >[[por.voting]]</th>
-                        <th class="">
+                        <th>
                             <div class="row">
                                 <div class="col-10">
                                     <b-progress  v-if="por.percen*100>75" :value="por.percen *100" :max="100" variant="success" show-progress ></b-progress>
@@ -99,15 +89,13 @@
                 </tbody>
             </table>
         </div>
-                    <!-- TRADUCCION -->
             <div class="row justify-content-center mt-5">
                 <div class="col-md-3">
                 <div class="card border-danger descargar">
                     <article class="card-body">
-             <!-- TRADUCCION -->
-                    <h4 class="card-title mb-4 mt-1 text-align-center text-center">Descargar Estadísticas</h4>
+                    <h4 class="card-title mb-4 mt-1 text-align-center text-center">{% trans 'Descargar Estadísticas' %}</h4>
                     <div class="row d-flex justify-content-center align-items-center mx-2">
-                        <input type="button" id="descargar" class="btn btn-danger mx-auto align-self-center" value="Descargar" onclick="window.open('download')">
+                        <input type="button" id="descargar" class="btn btn-danger mx-auto align-self-center" value="{% trans 'Descargar' %}" onclick="window.open('download')">
                     </div>
                     </article>
                 </div>

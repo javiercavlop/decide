@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 18:40+0000\n"
+"POT-Creation-Date: 2022-12-17 10:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,22 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: authentication/form.py:33
-msgid "First name"
-msgstr "First name"
-
-#: authentication/form.py:34
-msgid "Last name"
-msgstr "Last name"
-
-#: authentication/form.py:36
-msgid "Password"
-msgstr "Password"
-
-#: authentication/form.py:37
-msgid "Password confirmation"
-msgstr "Password confirmation"
 
 #: authentication/templates/signin.html:11
 msgid "Sign In"
@@ -74,3 +58,15 @@ msgstr "Already have an account?"
 #: authentication/templates/signup.html:45
 msgid "Log in"
 msgstr "Log in"
+
+#~ msgid "First name"
+#~ msgstr "First name"
+
+#~ msgid "Last name"
+#~ msgstr "Last name"
+
+#~ msgid "Password"
+#~ msgstr "Password"
+
+#~ msgid "Password confirmation"
+#~ msgstr "Password confirmation"

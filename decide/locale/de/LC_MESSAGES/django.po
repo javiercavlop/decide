@@ -1,0 +1,59 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-17 10:42+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: dashboard/templates/dashboard/dashboard.html:25
+msgid "Usuarios"
+msgstr "Benutzer"
+
+#: dashboard/templates/dashboard/dashboard.html:27
+msgid "Número de encuestas votadas en tiempo real"
+msgstr "Anzahl der in Echtzeit abgestimmten Umfragen"
+
+#: dashboard/templates/dashboard/dashboard.html:34
+msgid "Perfiles"
+msgstr "Benutzerprofil"
+
+#: dashboard/templates/dashboard/dashboard.html:49
+msgid "Votante"
+msgstr "Wähler"
+
+#: dashboard/templates/dashboard/dashboard.html:50
+msgid "Encuestas"
+msgstr "Umfragen"
+
+#: dashboard/templates/dashboard/dashboard.html:63
+msgid "Porcentajes de votaciones según censo"
+msgstr "Stimmanteile laut Volkszählung"
+
+#: dashboard/templates/dashboard/dashboard.html:68
+msgid "Id de votacion"
+msgstr "Wahl-ID"
+
+#: dashboard/templates/dashboard/dashboard.html:69
+msgid "Porcentaje del censo"
+msgstr "Volkszählung Prozentsatz"
+
+#: dashboard/templates/dashboard/dashboard.html:96
+msgid "Descargar Estadísticas"
+msgstr "Statistik herunterladen"
+
+#: dashboard/templates/dashboard/dashboard.html:98
+msgid "Descargar"
+msgstr "Entladung"
