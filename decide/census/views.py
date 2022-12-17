@@ -290,6 +290,8 @@ def censusReuse(request):
     return render(request,'census/census_reuse_form.html',{'form':form})
 
 def censusCreation(request):
+    msg=''
+    tipo=''
     if request.method == 'POST':
         form=CensusForm(request.POST)
         
@@ -302,23 +304,33 @@ def censusCreation(request):
                 try:
                     census=Census(voting_id=voting_id,voter_id=voter_id)
                     census.save()
+                    msg="Censo creado con éxito"
+                    tipo="success"
                 except:
+                    msg="No se ha podido crear el censo"
+                    tipo="danger"
                     pass
-                return HttpResponseRedirect('/census')
+                return render(request,'census/census_create.html',{'form':form, 'msg':msg, 'tipo':tipo})
             else:
                 group_search=CensusGroup.objects.get_or_create(name=str(group))
                 group_result=get_object_or_404(CensusGroup,name=str(group_search[0]))
                 try:
                     census=Census(voting_id=voting_id,voter_id=voter_id,group_id=group_result.id)
                     census.save()
+                    msg="Censo creado con éxito"
+                    tipo="success"
                 except:
+                    msg="No se ha podido crear el censo"
+                    tipo="danger"
                     pass
-                return HttpResponseRedirect('/census')
+                return render(request,'census/census_create.html',{'form':form, 'msg':msg, 'tipo':tipo})
         else:
-            return Response('Error try to create census', status=ST_400)
+            msg="No se ha podido crear el censo"
+            tipo="danger"
+            return render(request,'census/census_create.html',{'form':form, 'msg':msg, 'tipo':tipo})
     else:
         form = CensusForm()
-    return render(request,'census/census_create.html',{'form':form})
+    return render(request,'census/census_create.html',{'form':form, 'msg':msg, 'tipo':tipo})
 
 def censusList(request):
     censos = Census.objects.all().values()
