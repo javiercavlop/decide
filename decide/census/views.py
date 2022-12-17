@@ -64,8 +64,6 @@ class CensusCreate(generics.ListCreateAPIView):
         voters = Census.objects.filter(voting_id=voting_id).values_list('voter_id', flat=True)
         return Response({'voters': voters})
 
-
-
 @transaction.atomic
 def import_excel(request):
     cont=2
@@ -180,7 +178,6 @@ def import_csv(request):
         return render(request,"csv.html")
     return render(request,"csv.html")
 
-
 @transaction.atomic
 @login_required(login_url='/authentication/signin/?next=/census/import')
 def import_excel(request):
@@ -223,7 +220,6 @@ def import_excel(request):
 
     return render(request,"census/import.html")
 
-
 @login_required(login_url='/authentication/signin/?next=/census/export')
 def export_excel(request):
     try:           
@@ -242,10 +238,6 @@ def export_excel(request):
             messages.error(request,'Error in exporting data. There are null data in rows')
             return render(request, "census/export.html")
     return render(request,"census/export.html")
-
-
-
-
 
 class CensusDetail(generics.RetrieveDestroyAPIView):
     serializer_class = CensusSerializer
@@ -278,7 +270,6 @@ class CensusGroupCreate(generics.ListCreateAPIView):
             return Response('Error try to create census', status=ST_409)
         return Response('Census created', status=ST_201)
 
-@api_view(['GET','POST'])
 def censusReuse(request):
     if request.method == 'POST':
             form = CensusReuseForm(request.POST)
@@ -301,7 +292,6 @@ def censusReuse(request):
         form = CensusReuseForm()
     return render(request,'census/census_reuse_form.html',{'form':form})
 
-@api_view(['GET','POST'])
 def censusCreation(request):
     if request.method == 'POST':
         form=CensusForm(request.POST)
@@ -333,7 +323,6 @@ def censusCreation(request):
         form = CensusForm()
     return render(request,'census/census_create.html',{'form':form})
 
-@api_view(['GET'])
 def censusList(request):
     censos = Census.objects.all().values()
     res = []
@@ -358,7 +347,6 @@ def censusList(request):
         res.append({'voting_id':censo,'voter':votante,'group':grupo})
     return render(request,'census/census.html',{'censos':res, 'options':options})
 
-
 class CensusGroupDetail(generics.RetrieveDestroyAPIView):
     serializer_class = CensusGroupSerializer
     queryset = CensusGroup.objects.all()
@@ -375,7 +363,6 @@ class CensusGroupDetail(generics.RetrieveDestroyAPIView):
             return Response('Non-existent group', status=ST_401)
         return Response('Valid group')
 
-@api_view(['GET','POST'])
 def census_grouping(request):
 
     censos = Census.objects.all().values()
@@ -409,7 +396,6 @@ def census_grouping(request):
         census = census_list(censos)
     return render(request,'census/census_grouping.html',{'form':form, 'censos': census})
 
-@api_view(['GET','POST'])
 def census_details(request):
 
     censos = Census.objects.all().values()
