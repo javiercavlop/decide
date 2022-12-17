@@ -85,7 +85,7 @@ msgstr "Accès au robot Telegram"
 
 #: dashboard/templates/dashboard_with_pv.html:38
 msgid "Sin Recuento"
-msgstr "Pas de compte"
+msgstr "Pas de Compte"
 
 #: dashboard/templates/dashboard_with_pv.html:46
 #, fuzzy

@@ -85,7 +85,7 @@ msgstr "Access to the Telegram Bot"
 
 #: dashboard/templates/dashboard_with_pv.html:38
 msgid "Sin Recuento"
-msgstr "No count"
+msgstr "No Count"
 
 #: dashboard/templates/dashboard_with_pv.html:46
 #, fuzzy
