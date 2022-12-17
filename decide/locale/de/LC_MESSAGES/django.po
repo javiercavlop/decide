@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-17 11:44+0000\n"
+"POT-Creation-Date: 2022-12-17 12:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,3 +82,71 @@ msgstr "Globales Dashboard"
 #: dashboard/templates/dashboard/mainpage_dashboard.html:70
 msgid "Acceso al Bot de Telegram"
 msgstr "Zugriff auf den Telegram Bot"
+
+#: dashboard/templates/dashboard_with_pv.html:38
+msgid "Sin Recuento"
+msgstr "Keine Zählung"
+
+#: dashboard/templates/dashboard_with_pv.html:46
+#, fuzzy
+#| msgid "Porcentaje del censo"
+msgid "Porcentaje de personas que votaron"
+msgstr "Prozentsatz der Personen, die gewählt haben"
+
+#: dashboard/templates/dashboard_with_pv.html:58
+msgid "Gráfica de paridad"
+msgstr "Paritätsdiagramm"
+
+#: dashboard/templates/dashboard_with_pv.html:73
+msgid "Tipo de Pregunta"
+msgstr "Fragetyp"
+
+#: dashboard/templates/dashboard_with_pv.html:83
+msgid "Duración"
+msgstr "Dauer"
+
+#: dashboard/templates/dashboard_with_pv.html:86
+msgid "No comenzada"
+msgstr "Nicht angefangen"
+
+#: dashboard/templates/dashboard_with_pv.html:88
+msgid "No finalizada"
+msgstr "Nicht beendet"
+
+#: dashboard/templates/dashboard_with_pv.html:99
+msgid "Nº Censo"
+msgstr "Volkszählung Nr."
+
+#: dashboard/templates/dashboard_with_pv.html:109
+msgid "Nº Votos"
+msgstr "Anzahl der Stimmen"
+
+#: dashboard/templates/dashboard_with_pv.html:121
+msgid "Paridad"
+msgstr "Parität"
+
+#: dashboard/templates/dashboard_with_pv.html:124
+msgid "Se ha cumplido la paridad para esta votación"
+msgstr "Bei dieser Abstimmung ist Parität erreicht"
+
+#: dashboard/templates/dashboard_with_pv.html:126
+#: dashboard/templates/dashboard_with_pv.html:128
+msgid "No se ha cumplido la paridad para esta votación, hay"
+msgstr "Bei dieser Abstimmung wurde die Parität nicht erreicht, es gibt"
+
+#: dashboard/templates/dashboard_with_pv.html:126
+msgid "voto más de"
+msgstr "stimme mehr für"
+
+#: dashboard/templates/dashboard_with_pv.html:126
+#: dashboard/templates/dashboard_with_pv.html:128
+msgid "que de"
+msgstr "als für"
+
+#: dashboard/templates/dashboard_with_pv.html:128
+msgid "votos más de"
+msgstr "stimmen mehr für"
+
+#: dashboard/templates/dashboard_with_pv.html:140
+msgid "Resultados de la Votación"
+msgstr "Abstimmungsergebnisse"
