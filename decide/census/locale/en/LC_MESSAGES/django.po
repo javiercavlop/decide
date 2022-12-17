@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-17 10:50+0000\n"
+"POT-Creation-Date: 2022-12-17 12:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -150,7 +150,7 @@ msgid "Exportar"
 msgstr "Export"
 
 #: census/templates/census/export.html:30 census/templates/csv.html:43
-#: census/templates/json.html:42
+#: census/templates/json.html:43
 msgid "Volver atrás"
 msgstr "Return"
 
@@ -163,7 +163,7 @@ msgid "Introduzca un fichero con el formato .xlsx para importarlo:"
 msgstr "Enter a file in the .xlsx format to import it:"
 
 #: census/templates/census/import.html:33 census/templates/csv.html:39
-#: census/templates/json.html:38
+#: census/templates/json.html:39
 msgid "Subir"
 msgstr "Upload"
 
@@ -179,11 +179,11 @@ msgstr "Import CSV file"
 msgid "Introduzca un fichero con el formato .csv para importarlo"
 msgstr "Enter a file in the .csv format to import it"
 
-#: census/templates/json.html:20
+#: census/templates/json.html:21
 msgid "Importación Fichero JSON"
 msgstr "Import JSON file"
 
-#: census/templates/json.html:24
+#: census/templates/json.html:25
 msgid "Introduzca un fichero con el formato .json para importarlo"
 msgstr "Enter a file in the .json format to import it"
 

@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-17 10:50+0000\n"
+"POT-Creation-Date: 2022-12-17 12:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -150,7 +150,7 @@ msgid "Exportar"
 msgstr "Exportieren"
 
 #: census/templates/census/export.html:30 census/templates/csv.html:43
-#: census/templates/json.html:42
+#: census/templates/json.html:43
 msgid "Volver atrás"
 msgstr "Rückkehr"
 
@@ -163,7 +163,7 @@ msgid "Introduzca un fichero con el formato .xlsx para importarlo:"
 msgstr "Geben Sie eine Datei im .xlsx-Format ein, um sie zu importieren:"
 
 #: census/templates/census/import.html:33 census/templates/csv.html:39
-#: census/templates/json.html:38
+#: census/templates/json.html:39
 msgid "Subir"
 msgstr "Hochladen"
 
@@ -179,11 +179,11 @@ msgstr "CSV-datei importieren"
 msgid "Introduzca un fichero con el formato .csv para importarlo"
 msgstr "Geben Sie eine Datei im .csv-Format ein, um sie zu importieren"
 
-#: census/templates/json.html:20
+#: census/templates/json.html:21
 msgid "Importación Fichero JSON"
 msgstr "JSON-datei importieren"
 
-#: census/templates/json.html:24
+#: census/templates/json.html:25
 msgid "Introduzca un fichero con el formato .json para importarlo"
 msgstr "Geben Sie eine Datei im .json-Format ein, um sie zu importieren"
 
@@ -193,7 +193,9 @@ msgstr "Die eingegebene Zählungsgruppe existiert nicht"
 
 #: census/views.py:134
 msgid "Error trying to import JSON. A census cannot be repeated."
-msgstr "Fehler beim Versuch, JSON zu importieren. Eine Zählung kann nicht wiederholt werden."
+msgstr ""
+"Fehler beim Versuch, JSON zu importieren. Eine Zählung kann nicht wiederholt "
+"werden."
 
 #: census/views.py:137
 msgid "Census created"
@@ -209,7 +211,9 @@ msgstr "Die eingegebene Zählungsgruppe existiert nicht, in Zeile {}"
 
 #: census/views.py:174
 msgid "Error trying to import CSV, in row {}. A census cannot be repeated."
-msgstr "Fehler beim Versuch, CSV zu importieren, in Zeile {}. Eine Zählung kann nicht wiederholt werden."
+msgstr ""
+"Fehler beim Versuch, CSV zu importieren, in Zeile {}. Eine Zählung kann "
+"nicht wiederholt werden."
 
 #: census/views.py:177
 msgid "Census Created"

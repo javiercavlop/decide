@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-17 10:50+0000\n"
+"POT-Creation-Date: 2022-12-17 12:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,6 +54,23 @@ msgstr "Contraseña"
 msgid "Password confirmation"
 msgstr "Repita la contraseña"
 
+#: authentication/templates/hello.html:18
+msgid "Hello"
+msgstr "Hola"
+
+#: authentication/templates/hello.html:20
+msgid "Logout"
+msgstr "Cerrar Sesión"
+
+#: authentication/templates/hello.html:21
+msgid "Ver Perfil"
+msgstr "Ver Perfil"
+
+#: authentication/templates/hello.html:27
+#: authentication/templates/profile.html:116
+msgid "Sign in"
+msgstr "Inicia sesión"
+
 #: authentication/templates/profile.html:20
 msgid "Gestiona tu perfil"
 msgstr "Gestiona tu perfil"
@@ -77,12 +94,6 @@ msgstr "Cerrar sesión"
 #: authentication/templates/profile.html:102
 msgid "Delete account"
 msgstr "Borrar cuenta"
-
-#: authentication/templates/profile.html:116
-#, fuzzy
-#| msgid "Sign In"
-msgid "Sign in"
-msgstr "Inicia sesión"
 
 #: authentication/templates/signin.html:11
 msgid "Sign In"

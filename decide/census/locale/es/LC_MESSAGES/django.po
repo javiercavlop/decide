@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-17 10:50+0000\n"
+"POT-Creation-Date: 2022-12-17 12:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -150,7 +150,7 @@ msgid "Exportar"
 msgstr "Exportar"
 
 #: census/templates/census/export.html:30 census/templates/csv.html:43
-#: census/templates/json.html:42
+#: census/templates/json.html:43
 msgid "Volver atrás"
 msgstr "Volver"
 
@@ -163,7 +163,7 @@ msgid "Introduzca un fichero con el formato .xlsx para importarlo:"
 msgstr "Introduzca un fichero con el formato .xlsx para importarlo:"
 
 #: census/templates/census/import.html:33 census/templates/csv.html:39
-#: census/templates/json.html:38
+#: census/templates/json.html:39
 msgid "Subir"
 msgstr "Subir"
 
@@ -179,11 +179,11 @@ msgstr "Importación Fichero Excel"
 msgid "Introduzca un fichero con el formato .csv para importarlo"
 msgstr "Introduzca un fichero con el formato .csv para importarlo"
 
-#: census/templates/json.html:20
+#: census/templates/json.html:21
 msgid "Importación Fichero JSON"
 msgstr "Importación Fichero JSON"
 
-#: census/templates/json.html:24
+#: census/templates/json.html:25
 msgid "Introduzca un fichero con el formato .json para importarlo"
 msgstr "Introduzca un fichero con el formato .json para importarlo"
 
@@ -209,7 +209,8 @@ msgstr "La entrada Census Group no existe en la fila {}"
 
 #: census/views.py:174
 msgid "Error trying to import CSV, in row {}. A census cannot be repeated."
-msgstr "Error al tratar de importar el CSV, en fila {}. Un censo no puede repetirse."
+msgstr ""
+"Error al tratar de importar el CSV, en fila {}. Un censo no puede repetirse."
 
 #: census/views.py:177
 msgid "Census Created"
