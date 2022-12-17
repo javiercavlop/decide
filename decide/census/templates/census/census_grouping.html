@@ -12,6 +12,12 @@
 {% block content %}
 <div id="app-census-grouping">
 
+    {%if msg%}
+    <b-alert variant={{tipo}} show dismissible>
+        {{msg}}
+    </b-alert>
+    {%endif%}
+
     <form action="/census/census_grouping/" method="post">
         {% csrf_token %}
 
