@@ -957,3 +957,96 @@ class DashboardPageTranslationCase(StaticLiveServerTestCase):
         change_language_button.click()
         header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="#users > div.row.my-3 > div.col-5 > h3"))
         self.assertEqual(header_text.text, "Users")
+        
+class DashboardMainPageTranslationCase(StaticLiveServerTestCase):
+        
+    def setUp(self):
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+        
+        super().setUp()
+        
+        self.test_user = User.objects.create_user(username='test_user', password='test_user_password')
+        
+        self.driver.get(f'{self.live_server_url}/authentication/signin')
+        username_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_username"))
+        username_field.send_keys('test_user')
+        password_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_password"))
+        password_field.send_keys('test_user_password')
+        
+        submit_login_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id-signin-btn"))
+        submit_login_button.click()
+        
+    def tearDown(self):           
+        super().tearDown()
+        self.driver.quit()
+
+        self.base.tearDown()
+    
+    def test_french_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get(f'{self.live_server_url}/dashboard')
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(4)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        if self.driver.current_url != f'{self.live_server_url}/dashboard':
+            self.driver.get(f'{self.live_server_url}/dashboard')
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="#id-visualizer-panel > h2"))
+        self.assertEqual(header_text.text, "Panneaux Individuels")
+        
+    def test_german_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get(f'{self.live_server_url}/dashboard')
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(3)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        if self.driver.current_url != f'{self.live_server_url}/dashboard':
+            self.driver.get(f'{self.live_server_url}/dashboard')
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="#id-visualizer-panel > h2"))
+        self.assertEqual(header_text.text, "Einzelne Tafeln")
+        
+    def test_spanish_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get(f'{self.live_server_url}/dashboard')
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(1)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        if self.driver.current_url != f'{self.live_server_url}/dashboard':
+            self.driver.get(f'{self.live_server_url}/dashboard')
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="#id-visualizer-panel > h2"))
+        self.assertEqual(header_text.text, "Paneles Individuales")
+
+    def test_english_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get(f'{self.live_server_url}/dashboard')
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(2)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        if self.driver.current_url != f'{self.live_server_url}/dashboard':
+            self.driver.get(f'{self.live_server_url}/dashboard')
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="#id-visualizer-panel > h2"))
+        self.assertEqual(header_text.text, "Individual Dashboards")
