@@ -7,8 +7,6 @@ from django.contrib.auth.models import User
 from postproc.models import UserProfile
 
 
-# Register your models here.
-
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
     can_delete = False

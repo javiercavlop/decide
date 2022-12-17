@@ -141,9 +141,6 @@ class AuthTestCase(APITestCase):
             ['token', 'user_pk']
         )
 
-
-
-
 class AuthTestSelenium(StaticLiveServerTestCase):
 
     def setUp(self):
