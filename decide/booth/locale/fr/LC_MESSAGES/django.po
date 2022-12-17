@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 18:40+0000\n"
+"POT-Creation-Date: 2022-12-17 10:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,31 +18,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: booth/templates/booth/booth.html:22
-msgid "logout"
-msgstr ""
-
-#: booth/templates/booth/booth.html:38
+#: booth/templates/booth/booth.html:27
 msgid "Username"
 msgstr ""
 
-#: booth/templates/booth/booth.html:46
+#: booth/templates/booth/booth.html:35
 msgid "Password"
 msgstr ""
 
-#: booth/templates/booth/booth.html:55
+#: booth/templates/booth/booth.html:44
 msgid "Login"
 msgstr ""
 
-#: booth/templates/booth/booth.html:80
+#: booth/templates/booth/booth.html:79
 msgid "Vote"
 msgstr ""
 
-#: booth/templates/booth/booth.html:189 booth/templates/booth/booth.html:199
-#: booth/templates/booth/booth.html:259 booth/templates/booth/booth.html:277
+#: booth/templates/booth/booth.html:195 booth/templates/booth/booth.html:205
+#: booth/templates/booth/booth.html:265 booth/templates/booth/booth.html:283
 msgid "Error: "
 msgstr ""
 
-#: booth/templates/booth/booth.html:256 booth/templates/booth/booth.html:274
+#: booth/templates/booth/booth.html:262 booth/templates/booth/booth.html:280
 msgid "Conglatulations. Your vote has been sent"
 msgstr ""

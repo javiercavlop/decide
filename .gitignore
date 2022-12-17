@@ -126,4 +126,6 @@ ENV/
 #migration files
 **/migrations/
 
+#report files
+**/files/*.pdf
 

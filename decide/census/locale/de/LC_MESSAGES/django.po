@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 18:40+0000\n"
+"POT-Creation-Date: 2022-12-17 10:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,126 +18,126 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: census/templates/census/census.html:26
+#: census/templates/census/census.html:22
 msgid "Lista de censos"
 msgstr "Liste der Volkszählungen"
 
-#: census/templates/census/census.html:27
+#: census/templates/census/census.html:23
 msgid "Escribe para buscar"
 msgstr "Schreiben Sie zum Suchen"
 
-#: census/templates/census/census.html:37
-#: census/templates/census/census_grouping.html:36
+#: census/templates/census/census.html:33
+#: census/templates/census/census_grouping.html:29
 msgid "Votación"
 msgstr "Abstimmungsabstimmung"
 
-#: census/templates/census/census.html:38
-#: census/templates/census/census_grouping.html:37
+#: census/templates/census/census.html:34
+#: census/templates/census/census_grouping.html:30
 msgid "Votante"
 msgstr "Wähler"
 
-#: census/templates/census/census.html:39
-#: census/templates/census/census_details.html:35
-#: census/templates/census/census_grouping.html:38
+#: census/templates/census/census.html:35
+#: census/templates/census/census_details.html:28
+#: census/templates/census/census_grouping.html:31
 msgid "Grupo"
 msgstr "Cluster"
 
-#: census/templates/census/census.html:62
+#: census/templates/census/census.html:58
 msgid "Crear Censo"
 msgstr "Volkszählung erstellen"
 
-#: census/templates/census/census.html:72
+#: census/templates/census/census.html:68
 msgid "Detalles de Censos"
 msgstr "Einzelheiten der Volkszählung"
 
-#: census/templates/census/census.html:82
-#: census/templates/census/census_details.html:59
+#: census/templates/census/census.html:78
+#: census/templates/census/census_details.html:52
 msgid "Agrupar Censos"
 msgstr "Gruppenzählungen"
 
-#: census/templates/census/census.html:92
-#: census/templates/census/census_details.html:56
+#: census/templates/census/census.html:88
+#: census/templates/census/census_details.html:49
 msgid "Reutilizar Censos"
 msgstr "Volkszählungen wiederverwenden"
 
-#: census/templates/census/census.html:102
+#: census/templates/census/census.html:98
 msgid "Importar Csv"
 msgstr "CSV importieren"
 
-#: census/templates/census/census.html:110
+#: census/templates/census/census.html:106
 msgid "Importar JSON"
 msgstr "JSON importieren"
 
-#: census/templates/census/census.html:120
+#: census/templates/census/census.html:116
 msgid "Importar Excel"
 msgstr "EXCEL importieren"
 
-#: census/templates/census/census.html:128
+#: census/templates/census/census.html:124
 msgid "Exportar Excel"
 msgstr "EXCEL exportieren"
 
-#: census/templates/census/census_details.html:24
+#: census/templates/census/census_details.html:17
 msgid "Detalles de censos"
 msgstr "Einzelheiten zur Volkszählung"
 
-#: census/templates/census/census_details.html:32
+#: census/templates/census/census_details.html:25
 msgid "Censo Id"
 msgstr "Volkszählungs-ID"
 
-#: census/templates/census/census_details.html:33
+#: census/templates/census/census_details.html:26
 msgid "Votación Id"
 msgstr "Abstimmungs-ID"
 
-#: census/templates/census/census_details.html:34
+#: census/templates/census/census_details.html:27
 msgid "Votante (Id)"
 msgstr "Wähler-ID"
 
-#: census/templates/census/census_details.html:36
+#: census/templates/census/census_details.html:29
 msgid "Eliminar censo"
 msgstr "Volkszählung löschen"
 
-#: census/templates/census/census_details.html:46
+#: census/templates/census/census_details.html:39
 msgid "Eliminar"
 msgstr "Entfernen"
 
-#: census/templates/census/census_grouping.html:30
+#: census/templates/census/census_grouping.html:23
 msgid "Agrupar Censo"
 msgstr "Gruppenzählung"
 
-#: census/templates/census/census_grouping.html:39
+#: census/templates/census/census_grouping.html:32
 msgid "Selección"
 msgstr "Auswahl"
 
-#: census/templates/census/census_grouping.html:60
+#: census/templates/census/census_grouping.html:49
 msgid "Grupo de censos:"
 msgstr "Volkszählungsgruppe"
 
-#: census/templates/census/census_grouping.html:62
+#: census/templates/census/census_grouping.html:51
 msgid "En blanco para quitar censo del grupo"
 msgstr "leer, um die Volkszählung aus der Gruppe zu entfernen"
 
-#: census/templates/census/census_grouping.html:66
-#: census/templates/census/census_reuse_form.html:43
+#: census/templates/census/census_grouping.html:55
+#: census/templates/census/census_reuse_form.html:38
 msgid "Aceptar"
 msgstr "Akzeptieren"
 
-#: census/templates/census/census_reuse_form.html:26
+#: census/templates/census/census_reuse_form.html:20
 msgid "Reutilizar Censo"
 msgstr "Volkszählung wiederverwenden"
 
-#: census/templates/census/census_reuse_form.html:31
+#: census/templates/census/census_reuse_form.html:25
 msgid "Votación origen:"
 msgstr "Herkunftsabstimmung:"
 
-#: census/templates/census/census_reuse_form.html:33
+#: census/templates/census/census_reuse_form.html:27
 msgid "Id de la votación a copiar"
 msgstr "ID der zu kopierenden abstimmung"
 
-#: census/templates/census/census_reuse_form.html:37
+#: census/templates/census/census_reuse_form.html:31
 msgid "Votación destino:"
 msgstr "Abstimmung ziel:"
 
-#: census/templates/census/census_reuse_form.html:39
+#: census/templates/census/census_reuse_form.html:33
 msgid "Id de la votación deseada"
 msgstr "ID der gewünschten abstimmung"
 
