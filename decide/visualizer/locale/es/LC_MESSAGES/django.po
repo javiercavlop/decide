@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-10 23:34+0100\n"
+"POT-Creation-Date: 2022-12-17 12:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,32 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-#: visualizer/templates/signin.html:13
-msgid "Sign In"
-msgstr "Iniciar Sesión"
 
-#: visualizer/templates/signin.html:21
-msgid "Submit"
-msgstr "Enviar"
+#: visualizer/templates/visualizer/visualizer.html:16
+msgid "Votación"
+msgstr "Votación"
 
-#: visualizer/templates/signin.html:25
-msgid "Register"
-msgstr "Registrarse"
+#: visualizer/templates/visualizer/visualizer.html:21
+msgid "Votación no comenzada"
+msgstr "Votación no comenzada"
+
+#: visualizer/templates/visualizer/visualizer.html:23
+msgid "Votación en curso"
+msgstr "Votación en curso"
+
+#: visualizer/templates/visualizer/visualizer.html:26
+msgid "Resultados"
+msgstr "Resultados"
+
+#: visualizer/templates/visualizer/visualizer.html:32
+msgid "Opción"
+msgstr ""
+
+#~ msgid "Sign In"
+#~ msgstr "Iniciar Sesión"
+
+#~ msgid "Submit"
+#~ msgstr "Enviar"
+
+#~ msgid "Register"
+#~ msgstr "Registrarse"

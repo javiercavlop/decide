@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-17 12:02+0000\n"
+"POT-Creation-Date: 2022-12-17 12:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgstr "Schreiben Sie zum Suchen"
 #: census/templates/census/census.html:33
 #: census/templates/census/census_grouping.html:29
 msgid "Votación"
-msgstr "Abstimmungsabstimmung"
+msgstr "Abstimmung"
 
 #: census/templates/census/census.html:34
 #: census/templates/census/census_grouping.html:30
