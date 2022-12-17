@@ -15,8 +15,8 @@ class CensusGroupingForm(forms.Form):
     )
 
 
-votings= list((x.id, x.id) for x in Voting.objects.all())
-voters= list((x.id, x.username) for x in User.objects.all())
+votings=[] #list((x.id, x.id) for x in Voting.objects.all())
+voters=[] #list((x.id, x.username) for x in User.objects.all())
 
 class CensusForm(forms.Form):
     voting_id=forms.ChoiceField(widget=forms.Select(attrs={'class': "form-control"}), choices=votings, label="Elige votación")

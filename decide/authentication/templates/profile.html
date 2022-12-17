@@ -17,7 +17,7 @@
                     </div>
                 {% endfor %}
             {% endif %}
-            <h1 class="text-center mt-5">Gestiona tu perfil</h1>
+            <h1 class="text-center mt-5">{% trans 'Gestiona tu perfil' %}</h1>
         </div>
 
     <div id="app-profile">
@@ -32,7 +32,7 @@
                                 {% csrf_token %}
                                 <b-row>
                                     <b-col cols="12" md="3">
-                                        <label for="username">Username:</label>
+                                        <label for="username">{% trans 'Username' %}:</label>
                                     </b-col>
                                     <b-col cols="12" md="9">
                                         <b-form-input v-b-popover.hover.top="'150 carácteres como máximo. Únicamente letras, dígitos y @/./+/-/_ '" 
@@ -43,7 +43,7 @@
     
                                 <b-row class="mt-4">
                                     <b-col cols="12" md="3">
-                                        <label for="first_name">First name:</label>
+                                        <label for="first_name">{% trans 'First name' %}:</label>
                                     </b-col>
                                     <b-col cols="12" md="9">
                                         <b-form-input placeholder="Optional" id="first_name" name="first_name" value="{{ user.first_name }}"></b-form-input>
@@ -52,7 +52,7 @@
     
                                 <b-row class="mt-4">
                                     <b-col cols="12" md="3">
-                                        <label for="last_name">Last name:</label>
+                                        <label for="last_name">{% trans 'Last name' %}:</label>
                                     </b-col>
                                     <b-col cols="12" md="9">
                                         <b-form-input placeholder="Optional" id="last_name" name="last_name" value="{{ user.last_name }}"></b-form-input>
@@ -61,7 +61,7 @@
     
                                 <b-row class="mt-4">
                                     <b-col cols="12" md="3">
-                                        <label for="email">Email:</label>
+                                        <label for="email">{% trans 'Email' %}:</label>
                                     </b-col>
                                     <b-col cols="12" md="9">
                                         <b-form-input id="email" name="email" value="{{ user.email }}"></b-form-input>
@@ -70,28 +70,38 @@
 
                                 <b-row class="mt-4">
                                     <b-col cols="12" md="3">
-                                        <label for="genre">Genero:</label>
+                                        <label for="genre">{% trans 'Genero' %}:</label>
                                     </b-col>
                                     <b-col cols="12" md="9">
                                         <select class="form-select" id="genre" name="genre" aria-label="Default select example">
-                                            <option value="M" {% if genero == "M"%} selected {% endif %}>Male</option>
-                                            <option value="W" {% if genero == "W"%} selected {% endif %}>Female</option>
-                                            <option value="O" {% if genero == "O"%} selected {% endif %}>Other</option>
+                                            {% if genre == 'O' %}
+                                                <option value="M" >Male</option>
+                                                <option value="W" >Female</option>
+                                                <option value="O" selected>Other</option>
+                                            {% elif genre == 'M' %}
+                                                <option value="M" selected>Male</option>
+                                                <option value="W" >Female</option>
+                                                <option value="O">Other</option>
+                                            {% else %}
+                                                <option value="M">Male</option>
+                                                <option value="W" selected>Female</option>
+                                                <option value="O">Other</option>
+                                            {% endif %}
                                           </select>
                                     </b-col>
                                 </b-row>
                                 <!--Traducir-->                   
-                                <button class="btn btn-primary mt-4" type="submit" value="OK">Update</button>
+                                <button class="btn btn-primary mt-4" type="submit" value="OK">{% trans 'Update' %}</button>
                             </form>    
                         </b-card-body>
                         <b-progress height="2px" value="100" variant="dark"></b-progress>
                         <b-card-body>
                             <b-row>
                                 <b-col class="text-center">
-                                    <b-button href="#" variant="warning"><!--TRADUCCION-->Log out</b-button> 
+                                    <b-button href="#" variant="warning">{% trans 'Log out' %}</b-button>
                                 </b-col>
                                 <b-col class="text-center">
-                                    <b-button href="#" variant="danger"><!--TRADUCCION-->Delete account</b-button> 
+                                    <b-button href="#" variant="danger">{% trans 'Delete account' %}</b-button>
                                 </b-col>
                             </b-row>  
                         </b-card-body>
@@ -106,7 +116,7 @@
     <div class="container-md">
         {% csrf_token %}
         <!--Traducir--> 
-        <a class="btn btn-primary" href="http://localhost:8000/authentication/signin/" role="button">Sign in</a>
+        <a class="btn btn-primary" href="http://localhost:8000/authentication/signin/" role="button">{% trans 'Login in' %}</a>
     </div>
     
     {% endif %}

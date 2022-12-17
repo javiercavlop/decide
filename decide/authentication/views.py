@@ -273,9 +273,9 @@ class EditUserView(APIView):
                 user.username = request.POST['username']
                 user.save()
                 userprofile = UserProfile.objects.filter(user_id=request.user.id)[0]
-                if request.POST['select'] == UserProfile.MALE:
+                if request.POST['genre'] == 'M':
                     userprofile.genre = UserProfile.MALE
-                elif request.POST['select'] == UserProfile.WOMEN:
+                elif request.POST['genre'] == 'W':
                     userprofile.genre = UserProfile.WOMEN
                 else:
                     userprofile.genre = UserProfile.OTHER
