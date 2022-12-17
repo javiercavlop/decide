@@ -3,13 +3,11 @@ from base.tests import BaseTestCase
 from django.utils import timezone
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.keys import Keys
-from django.test import Client
 from voting.models import Voting, Question, QuestionOption
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-from base.tests import BaseTestCase
 import time
 
 # Create your tests here.
