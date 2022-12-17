@@ -29,22 +29,23 @@ class LoginUserForm(AuthenticationForm):
 										'class':'form-control mb-lg-0 mb-2',
 										}),
     )
-	
+
 class NewUserForm(UserCreationForm):
-	first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-	last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-	email = forms.EmailField(required=True)
+
+	first_name = forms.CharField(max_length=30, required=False, help_text='Optional.', label=_('First name'))
+	last_name = forms.CharField(max_length=30, required=False, help_text='Optional.', label=_('Last name'))
+	email = forms.EmailField(required=True, label=_('Email'))
 
 	MALE = 'M'
 	WOMEN = 'W'
 	OTHER = 'O'
 
-	genre_choices = ((MALE, 'Hombre'), (WOMEN, 'Mujer'), (OTHER, 'Otro'))
+	genre_choices = ((MALE, _('Men')), (WOMEN, _('Women')), (OTHER, _('Other')))
 
-	genre = forms.ChoiceField(choices = genre_choices)
+	genre = forms.ChoiceField(choices = genre_choices, label=_('Genre'))
 	
-	password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-	password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+	password1 = forms.CharField(label=_('Password'), widget=forms.PasswordInput)
+	password2 = forms.CharField(label=_('Password confirmation'), widget=forms.PasswordInput)
 
 	class Meta:
 		model = User
@@ -75,7 +76,7 @@ class UserEditForm(forms.ModelForm):
 	WOMEN = 'W'
 	OTHER = 'O'
 
-	genre_choices = ((MALE, 'Hombre'), (WOMEN, 'Mujer'), (OTHER, 'Otro'))
+	genre_choices = ((MALE, _('Men')), (WOMEN, _('Women')), (OTHER, _('Other')))
 
 	genre = forms.ChoiceField(choices = genre_choices)
 	
