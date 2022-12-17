@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-17 17:56+0000\n"
+"POT-Creation-Date: 2022-12-17 19:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: authentication/form.py:35
+#: authentication/form.py:35 authentication/templates/profile.html:46
 msgid "First name"
 msgstr "Vorname"
 
-#: authentication/form.py:36
+#: authentication/form.py:36 authentication/templates/profile.html:55
 msgid "Last name"
 msgstr "Nachname"
 
-#: authentication/form.py:37
+#: authentication/form.py:37 authentication/templates/profile.html:64
 msgid "Email"
 msgstr "Email"
 
@@ -55,6 +55,34 @@ msgstr "Passwort"
 #: authentication/form.py:48
 msgid "Password confirmation"
 msgstr "Passwort Bestätigung"
+
+#: authentication/templates/profile.html:20
+msgid "Gestiona tu perfil"
+msgstr "Verwalten Sie Ihr Profil"
+
+#: authentication/templates/profile.html:35
+msgid "Username"
+msgstr "Nutzername"
+
+#: authentication/templates/profile.html:73
+msgid "Genero"
+msgstr "Geschlecht"
+
+#: authentication/templates/profile.html:84
+msgid "Update"
+msgstr "Aktualisieren"
+
+#: authentication/templates/profile.html:91
+msgid "Log out"
+msgstr "Einloggen"
+
+#: authentication/templates/profile.html:94
+msgid "Delete account"
+msgstr "Konto löschen"
+
+#: authentication/templates/profile.html:109
+msgid "Login in"
+msgstr "Einloggen"
 
 #: authentication/templates/signin.html:11
 msgid "Sign In"

@@ -70,13 +70,13 @@ class RegisterView(APIView):
         return Response({'user_pk': user.pk, 'token': token.key}, HTTP_201_CREATED)
 
 class SignUpView(APIView):
-    
+
     @staticmethod
     def register(request):
-        
+
         if request.user.is_authenticated:
             return redirect('main')
-        
+
         if request.method == "POST":
             errors = []
             try:
@@ -146,21 +146,21 @@ class SignUpView(APIView):
                 userProfile.save()
                 login(request, user)
                 return redirect("main")
-            
+
         else:
             form = NewUserForm()
             return render(request, 'signup.html', {'register_form': form})
 
 class SignInView(APIView):
- 
-    @staticmethod     
+
+    @staticmethod
     def sing_in(request):
 
         if request.user.is_authenticated:
             return redirect('main')
 
         if request.method == 'GET':
-            
+
             return render(request, 'signin.html', {
                 'form' : LoginUserForm
             })
@@ -169,7 +169,7 @@ class SignInView(APIView):
             user = authenticate(request, username=request.POST['username'],
                                 password=request.POST['password'])
             if user is None:
-                
+
                 return render(request, 'signin.html', {
                     'form' : LoginUserForm,
                     'error': 'Username or password is incorrect'
@@ -183,13 +183,13 @@ class SignInView(APIView):
 
                 return redirect('main')
 
-    @staticmethod     
+    @staticmethod
     def hello(request):
         return render(request, 'hello.html', {
                 'username' : request.user
             })
 
-    @staticmethod     
+    @staticmethod
     def sign_out(request):
        logout(request)
        return redirect('signin')
@@ -198,11 +198,11 @@ class EditUserView(APIView):
 
     @staticmethod
     def edit(request):
-        if(str(request.user) == "AnonymousUser"):
+        if not request.user.is_authenticated:
             request.user = User.objects.get(username=request.POST["user"])
-            up = UserProfile.objects.get(user=request.user)
+            up = UserProfile.objects.get_or_create(user=request.user)
         else:
-            up = UserProfile.objects.get(user=request.user)
+            up = UserProfile.objects.get_or_create(user=request.user)
 
         if request.method == "POST":
 
@@ -226,13 +226,13 @@ class EditUserView(APIView):
                     pass
             try:
                 account = SocialAccount.objects.get(user=request.user)
-            
-                if request.user.email == account.user.email and request.POST['email'] != request.user.email: 
+
+                if request.user.email == account.user.email and request.POST['email'] != request.user.email:
                     change_email = "You can't change your email"
                     errors.append(change_email)
             except:
                 pass
-            
+
             if request.POST['email'] == "":
                 no_email = "You must enter an email"
                 errors.append(no_email)
@@ -251,8 +251,8 @@ class EditUserView(APIView):
             are_errors = False
 
             form = UserEditForm(initial={'first_name': request.user.first_name,
-                                            'last_name': request.user.last_name, 
-                                            'email': request.user.email, 
+                                            'last_name': request.user.last_name,
+                                            'email': request.user.email,
                                             'username': request.user.username,
                                             'genero':str(up.genre)})
 
@@ -264,7 +264,7 @@ class EditUserView(APIView):
                     'errors': errors,
                     'are_errors': are_errors
                     })
-            
+
             else:
                 user = request.user
                 user.first_name = request.POST['first_name']
@@ -273,9 +273,9 @@ class EditUserView(APIView):
                 user.username = request.POST['username']
                 user.save()
                 userprofile = UserProfile.objects.filter(user_id=request.user.id)[0]
-                if request.POST['select'] == UserProfile.MALE:
+                if request.POST['genre'] == 'M':
                     userprofile.genre = UserProfile.MALE
-                elif request.POST['select'] == UserProfile.WOMEN:
+                elif request.POST['genre'] == 'W':
                     userprofile.genre = UserProfile.WOMEN
                 else:
                     userprofile.genre = UserProfile.OTHER
@@ -284,8 +284,8 @@ class EditUserView(APIView):
         else:
 
             form = UserEditForm(initial={'first_name': request.user.first_name,
-                                            'last_name': request.user.last_name, 
-                                            'email': request.user.email, 
+                                            'last_name': request.user.last_name,
+                                            'email': request.user.email,
                                             'username': request.user.username})
             userProfile = UserProfile.objects.filter(user_id=request.user.id)[0]
 
