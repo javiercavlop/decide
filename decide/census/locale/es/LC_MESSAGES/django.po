@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-17 19:23+0000\n"
+"POT-Creation-Date: 2022-12-17 21:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgid "Votante"
 msgstr "Votante"
 
 #: census/templates/census/census.html:35
-#: census/templates/census/census_details.html:28
+#: census/templates/census/census_details.html:21
 #: census/templates/census/census_grouping.html:31
 msgid "Grupo"
 msgstr "Grupo"
@@ -51,12 +51,12 @@ msgid "Detalles de Censos"
 msgstr "Detalles de Censos"
 
 #: census/templates/census/census.html:78
-#: census/templates/census/census_details.html:52
+#: census/templates/census/census_details.html:46
 msgid "Agrupar Censos"
 msgstr "Agrupar Censos"
 
 #: census/templates/census/census.html:88
-#: census/templates/census/census_details.html:49
+#: census/templates/census/census_details.html:43
 msgid "Reutilizar Censos"
 msgstr "Reutilizar Censos"
 
@@ -76,27 +76,27 @@ msgstr "Importar Excel"
 msgid "Exportar Excel"
 msgstr "Exportar Excel"
 
-#: census/templates/census/census_details.html:17
+#: census/templates/census/census_details.html:9
 msgid "Detalles de censos"
 msgstr "Detalles de censos"
 
-#: census/templates/census/census_details.html:25
+#: census/templates/census/census_details.html:18
 msgid "Censo Id"
 msgstr "Censo Id"
 
-#: census/templates/census/census_details.html:26
+#: census/templates/census/census_details.html:19
 msgid "Votación Id"
 msgstr "Votación Id"
 
-#: census/templates/census/census_details.html:27
+#: census/templates/census/census_details.html:20
 msgid "Votante (Id)"
 msgstr "Votante (Id)"
 
-#: census/templates/census/census_details.html:29
+#: census/templates/census/census_details.html:22
 msgid "Eliminar censo"
 msgstr "Eliminar censo"
 
-#: census/templates/census/census_details.html:39
+#: census/templates/census/census_details.html:32
 msgid "Eliminar"
 msgstr "Eliminar"
 
@@ -117,37 +117,29 @@ msgid "En blanco para quitar censo del grupo"
 msgstr "En blanco para quitar censo del grupo"
 
 #: census/templates/census/census_grouping.html:55
-#: census/templates/census/census_reuse_form.html:38
+#: census/templates/census/census_reuse_form.html:37
 msgid "Aceptar"
 msgstr "Aceptar"
 
-#: census/templates/census/census_reuse_form.html:20
+#: census/templates/census/census_reuse_form.html:19
 msgid "Reutilizar Censo"
 msgstr "Reutilizar Censo"
 
-#: census/templates/census/census_reuse_form.html:25
+#: census/templates/census/census_reuse_form.html:24
 msgid "Votación origen:"
 msgstr "Votación origen:"
 
-#: census/templates/census/census_reuse_form.html:27
+#: census/templates/census/census_reuse_form.html:26
 msgid "Id de la votación a copiar"
 msgstr "ID de la votación a copiar"
 
-#: census/templates/census/census_reuse_form.html:31
+#: census/templates/census/census_reuse_form.html:30
 msgid "Votación destino:"
 msgstr "Votación destino:"
 
-#: census/templates/census/census_reuse_form.html:33
+#: census/templates/census/census_reuse_form.html:32
 msgid "Id de la votación deseada"
 msgstr "ID de la votación deseada"
-
-#: census/templates/census/export.html:13
-msgid "Exportación de Fichero Excel"
-msgstr "Exportación de Fichero Excel"
-
-#: census/templates/census/export.html:25
-msgid "Exportar"
-msgstr "Exportar"
 
 #: census/templates/census/import.html:17
 msgid "Importación Fichero Excel"
@@ -157,10 +149,16 @@ msgstr "Importación Fichero Excel"
 msgid "Introduzca un fichero con el formato .xlsx para importarlo:"
 msgstr "Introduzca un fichero con el formato .xlsx para importarlo:"
 
-#: census/templates/census/import.html:31
+#: census/templates/census/import.html:33
 msgid "Subir"
 msgstr "Subir"
 
-#: census/templates/census/import.html:32
+#: census/templates/census/import.html:36
 msgid "Volver"
 msgstr "Volver"
+
+#~ msgid "Exportación de Fichero Excel"
+#~ msgstr "Exportación de Fichero Excel"
+
+#~ msgid "Exportar"
+#~ msgstr "Exportar"

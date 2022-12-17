@@ -17,7 +17,7 @@
                     </div>
                 {% endfor %}
             {% endif %}
-            <h1 class="text-center mt-5">{% trans 'Gestiona tu perfil' %}</h1>
+            <h1 class="text-center mt-5" id="profile-title">{% trans 'Gestiona tu perfil' %}</h1>
         </div>
 
     <div id="app-profile">
@@ -25,7 +25,6 @@
             <b-row align-h="center">
                 <b-col cols="12" md="6">
                     <b-card-group deck>
-                        <!--TRADUCCION-->
                         <b-card style="background: rgba(211, 229, 237, 1); border: none;border-radius: 10px;">
                         <b-card-body class="text-center">
                             <form action="/authentication/profile/" method="post">
@@ -89,8 +88,7 @@
                                             {% endif %}
                                           </select>
                                     </b-col>
-                                </b-row>
-                                <!--Traducir-->                   
+                                </b-row>                 
                                 <button class="btn btn-primary mt-4" type="submit" value="OK">{% trans 'Update' %}</button>
                             </form>    
                         </b-card-body>
@@ -115,8 +113,7 @@
     {% else %}
     <div class="container-md">
         {% csrf_token %}
-        <!--Traducir--> 
-        <a class="btn btn-primary" href="http://localhost:8000/authentication/signin/" role="button">{% trans 'Login in' %}</a>
+        <a class="btn btn-primary" href="http://localhost:8000/authentication/signin/" role="button">{% trans 'Sign in' %}</a>
     </div>
     
     {% endif %}

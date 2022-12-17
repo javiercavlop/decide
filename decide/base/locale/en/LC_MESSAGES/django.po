@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-17 19:23+0000\n"
+"POT-Creation-Date: 2022-12-17 21:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,34 +18,38 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: base/templates/mainpage.html:13
+#: base/templates/mainpage.html:12
 msgid "Bienvenido a"
 msgstr "Welcome to"
 
-#: base/templates/mainpage.html:23
+#: base/templates/mainpage.html:22
 msgid "Si vienes a votar..."
 msgstr "If you come to vote..."
 
-#: base/templates/mainpage.html:24 base/templates/mainpage.html:35
+#: base/templates/mainpage.html:23 base/templates/mainpage.html:34
 msgid "Busca tu votación"
 msgstr "Search your votation"
 
-#: base/templates/mainpage.html:34
+#: base/templates/mainpage.html:33
 msgid "Si vienes a ver resultados..."
 msgstr "If you come to see results..."
 
-#: base/templates/mainpage.html:50
+#: base/templates/mainpage.html:49
 msgid "Si eres administrador..."
 msgstr "If you are administrator..."
 
-#: base/templates/mainpage.html:56
+#: base/templates/mainpage.html:55
 msgid "Administra Decide"
 msgstr "Manage Decide"
 
-#: base/templates/mainpage.html:66
+#: base/templates/mainpage.html:65
 msgid "Administra Votaciones"
 msgstr "Manage Voting"
 
-#: base/templates/mainpage.html:76
+#: base/templates/mainpage.html:75
 msgid "Administra Censos"
 msgstr "Manage Census"
+
+#: base/templates/mainpage.html:85
+msgid "Panel de Control"
+msgstr "Dashboard"

@@ -8,7 +8,6 @@
 
 {% block content %}
 <div id="app-main">
-
     <div id="header" class="container text-center my-4">
         <h1>{% trans "Bienvenido a" %} Decide</h1>
         <hr class="border-3 border-top border-dark">
@@ -17,7 +16,7 @@
     <div id="content" class="container">
         <div class="row">
 
-            <div class="{% if is_staff %}col-lg-6{% else %}col-lg-12{% endif %} text-center my-3 mx-auto">
+            <div class="{% if user.is_staff %}col-lg-6{% else %}col-lg-12{% endif %} text-center my-3 mx-auto">
                 <div class="row">
                     <div id="id-voting-panel" class="{% if is_staff %}col-lg-12{%else%}col-lg-6{%endif%}">
                         <h2>{% trans "Si vienes a votar..." %}</h2>
@@ -45,7 +44,7 @@
 
 
 
-            {% if is_staff %}
+            {% if user.is_staff %}
             <div id="id-admin-panel" class="col-lg-6 text-center my-3 mx-auto">
                 <h2>{% trans "Si eres administrador..." %}</h2>
                 <div class="row my-3">
@@ -83,8 +82,7 @@
                         <b-button size="lg" block variant="outline-primary" href="/dashboard">
                             <div class="row">
                                 <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                                <!-- TRADUCCION -->
-                                <div class="col-10 text-start">Panel de Control</div>
+                                <div class="col-10 text-start">{% trans  'Panel de Control' %}</div>
                             </div>
                         </b-button>
                     </div>
