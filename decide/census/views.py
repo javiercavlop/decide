@@ -406,15 +406,21 @@ def census_grouping(request):
     return render(request,'census/census_grouping.html',{'form':form, 'censos': census})
 
 def census_details(request):
-
+    msg=''
+    tipo=''
     censos = Census.objects.all().values()
 
     if request.method == 'POST':
-        censo = Census.objects.filter(id = request.POST['delete'])
-        censo.delete()
-
+        try:
+            censo = Census.objects.filter(id = request.POST['delete'])
+            censo.delete()
+            msg="Censo eliminado correctamente"
+            tipo="success"
+        except:
+            msg="No se pudo eliminar el censo"
+            tipo="danger"
     census = census_list(censos)
-    return render(request,'census/census_details.html',{'censos': census})
+    return render(request,'census/census_details.html',{'censos':census,'msg':msg,'tipo':tipo})
 
 def census_list(censos):
     res = []
