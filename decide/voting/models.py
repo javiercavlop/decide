@@ -2,26 +2,40 @@ from django.db import models
 from django.contrib.postgres.fields import JSONField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.exceptions import ValidationError
 
 from base import mods
 from base.models import Auth, Key
 from postproc.admin import *
 
 
-
 QUESTION_TYPES = (
     ('normal','Votación normal'),
     ('borda', 'Votación con recuento borda'),
-    ('dhondt', "Votación con sistema D'Hondt")
+    #('dhondt', "Votación con sistema D'Hondt")
 )
+
+# TRADUCCION
+def validate_nonzero(value):
+    if value == 0:
+        raise ValidationError(
+            ('Quantity %(value) is not allowed'),
+            params={'value': value},
+        )
 
 class Question(models.Model):
     desc = models.TextField()
     questionType = models.CharField(max_length=50, choices=QUESTION_TYPES, default='normal')
+    seats = models.PositiveSmallIntegerField(default=4, validators=[validate_nonzero])
 
     def __str__(self):
         return self.desc
 
+class DHondtQuestion(Question):
+    def save(self):
+        self.questionType = "dhondt"
+        print(self.questionType)
+        return super().save()
 
 class QuestionOption(models.Model):
     question = models.ForeignKey(Question, related_name='options', on_delete=models.CASCADE)
@@ -56,6 +70,8 @@ class Voting(models.Model):
     num_votes_M = models.PositiveIntegerField(default=0)
     num_votes_W = models.PositiveIntegerField(default=0)
     num_votes_O = models.PositiveIntegerField(default=0)
+
+    paridad = models.CharField(max_length=200, default='')
 
     def create_pubkey(self):
         if self.pub_key or not self.auths.count():
@@ -107,7 +123,6 @@ class Voting(models.Model):
 
         return [num_votes_M, num_votes_W, num_votes_O]
         
-    
 
     def tally_votes(self, token=''):
         '''
@@ -120,6 +135,7 @@ class Voting(models.Model):
         #Calculamos el numero de votos por genero
         genre = self.get_paridad(userid)
         #Y lo devolvemos a la votación
+
         self.num_votes_M = genre[0]
         self.num_votes_W = genre[1]
         self.num_votes_O = genre[2]
@@ -155,6 +171,17 @@ class Voting(models.Model):
         tally = self.tally
         options = self.question.options.all()
 
+        paridad = 'No cumple paridad'
+
+        #Comprobamos si existe paridad en la votación
+        if (self.num_votes_M == self.num_votes_W):
+            paridad = 'Cumple paridad'
+            if (self.num_votes_M == 0) and (self.num_votes_W == 0):
+                paridad = 'No existen votos de genero masculino ni femenino'
+            
+
+        self.paridad = paridad
+
         #Debido a que el tally viene de forma ["123",["312"]], hay que separarlos ordenados, ahora quedan todos metidos en una lista
         if(self.question.questionType == "borda"):
             tallyAux = []
@@ -163,8 +190,6 @@ class Voting(models.Model):
                 for i in integer:
                     tallyAux.append(int(i))
             tally = tallyAux
-        #No es necesario cambiar el formato del tally para D'Hondt
-        #elif(self.question.questionType == "dhondt"):
 
         opts = []
         for opt in options:
@@ -182,15 +207,17 @@ class Voting(models.Model):
         if(self.question.questionType == "borda"):
             data = { 'type': 'IDENTITY', 'options': opts , "extra": tally, "questionType": "borda"}
         elif(self.question.questionType == "dhondt"):
-            data = { 'type': 'IDENTITY', 'options': opts , "extra": tally, "questionType": "dhondt"}
+            seats = self.question.seats
+            data = data = { 'type': 'IDENTITY', 'options': opts , "extra": tally, "questionType": "dhondt", "seats": seats}
         else:
             data = { 'type': 'IDENTITY', 'options': opts, "questionType": "normal"}
+            
         postp = mods.post('postproc', json=data)
 
         self.postproc = postp
         self.save()
 
-        
+        return[paridad]
 
     def __str__(self):
         return self.name
