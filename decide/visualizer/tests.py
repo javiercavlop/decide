@@ -1,11 +1,9 @@
-from django.test import TestCase, Client
 from django.contrib.auth.models import User
-from census.models import Census,CensusGroup
 from base.tests import BaseTestCase
 from django.utils import timezone
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.keys import Keys
-from django.test import TestCase, Client
+from django.test import Client
 from voting.models import Voting, Question, QuestionOption
 
 from selenium import webdriver
@@ -13,22 +11,16 @@ from selenium.webdriver.common.by import By
 
 from base.tests import BaseTestCase
 import time
-import os
-import csv
-import json
-import xlsxwriter
 
 # Create your tests here.
 class CensusPageTestCase(StaticLiveServerTestCase):
     def setUp(self):
         self.base = BaseTestCase()
-        self.base.setUp() 
+        self.base.setUp()
 
         u = User(username='Enrique', is_staff=True)
         u.set_password('qwerty')
         u.save()
-
-        id = User.objects.get(username="Enrique").pk
 
         q = Question(desc='test question')
         q.save()
