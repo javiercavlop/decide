@@ -11,12 +11,6 @@
 
 {% block content %}
 <div id="app-census-reuse">
-    <!-- Navbar -->
-    <b-navbar toggleable="lg" type="dark" variant="dark">
-        <b-navbar-brand href="#">Decide</b-navbar-brand>
-        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-    </b-navbar>
-</div>
 <div class="container-fluid">
 <div class="row justify-content-center mt-5">
     <div class="col-md-3">
@@ -31,23 +25,23 @@
                         <label for="voting_id" class="col-sm-5 col-form-label">{% trans "Votación origen:" %} </label>
                         <div class="col-sm-7">
                             <input class="form-control" id="voting_id" name="voting_id" placeholder="{% trans 'Id de la votación a copiar' %}">
-                    </div>
+                        </div>
                     </div>
                     <div class="mb-3 row">
-                    <label for="new_voting" class="col-sm-5 col-form-label">{% trans "Votación destino:" %} </label>
-                    <div class="col-sm-7">
-                        <input class="form-control" id="new_voting" name="new_voting" placeholder="{% trans 'Id de la votación deseada' %}">
+                        <label for="new_voting" class="col-sm-5 col-form-label">{% trans "Votación destino:" %}</label>
+                        <div class="col-sm-7">
+                            <input class="form-control" id="new_voting" name="new_voting" placeholder="{% trans 'Id de la votación deseada' %}">
+                        </div>
                     </div>
                 </div>
-            <div class="form-group mt-4 text-center">
-                <button type="submit" class="btn btn-primary btn-block" value="OK"> {% trans "Aceptar" %}  </button>
-            </div> <!-- form-group// -->                                                           
-        </form>
+                <div class="form-group mt-4 text-center">
+                    <button type="submit" class="btn btn-primary btn-block" value="OK">{% trans "Aceptar" %}</button>
+                </div> <!-- form-group// -->                                                           
+            </form>
         </article>
     </div>
+    </div>
 </div>
-
-
 </div>
 
 </div>

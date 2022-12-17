@@ -1,8 +1,10 @@
+from urllib.request import HTTPBasicAuthHandler
 from base import mods
 from base.tests import BaseTestCase
 from django.contrib.auth.models import User
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-
+from django.test import TestCase
+from postproc.models import UserProfile
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient, APITestCase
 from selenium import webdriver
@@ -129,22 +131,43 @@ class AuthTestCase(APITestCase):
             sorted(list(response.json().keys())),
             ['token', 'user_pk']
         )
+class GenreCase(BaseTestCase):
+    def setUp(self):
+        self.client = APIClient()
+        mods.mock_query(self.client)
+        u = User(username='voter1')
+        u.set_password('123')
+        u.save()
 
-    # #New tests for the new urls
+        up = UserProfile(user=u,genre="W")
+        up.save()
 
-    # def test_login_user_by_mail(self):
-    #     self.client = APIClient()
-    #     mods.mock_query(self.client)
-    #     u = User(username='josgarmar31', email='josgarmar31@alum.us.es')
-    #     u.set_password('contraseña1')
-    #     u.save()
-    #     data = {'username': 'josgarmar31@alum.us.es', 'password': 'contraseña1'}
-    #     response = self.client.post('/authentication/signin/', data, format='json')
-    #     print(response)
-    #     self.assertEqual(response.status_code, 200)
+        u2 = User(username='admin',email="d@gmail.com", is_staff=True)
+        u2.set_password('qwerty')
+        u2.is_superuser = True
+        u2.save()
 
-    #     token = response.json()
-    #     self.assertTrue(token.get('token'))
+        up = UserProfile(user=u2,genre="W")
+        up.save()
+
+    def tearDown(self):
+        self.client = None
+
+    def test_signup(self):
+        data = {'username': 'user2', 'password1': '1234','password2': '1234', 'first_name':'Nombre','last_name':'Apellido','email':'correo@gmail.com','genre':'M'}
+        response = self.client.post('/authentication/signup/', data=data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_edit(self):
+        self.login()
+
+        user = User.objects.get(username="admin")
+
+        data = {'user':user,'genre':'W','email':'','first_name':'','last_name':'','username':'admin'}
+        response = self.client.post('/authentication/profile/',data=data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        username_label = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value=".container > h1"))
+        self.assertEqual(username_label.text, "Sign In")
 
 class AuthenticationViewsTestCase(StaticLiveServerTestCase):
 
@@ -268,11 +291,11 @@ class LoginPageTranslationCase(StaticLiveServerTestCase):
         #Load base test functionality for decide
         self.base = BaseTestCase()
         self.base.setUp()
-
+        super().setUp()
+        
         options = webdriver.ChromeOptions()
         options.headless = True
         self.driver = webdriver.Chrome(options=options)
-        super().setUp()
         
     def tearDown(self):           
         super().tearDown()

@@ -1,13 +1,17 @@
+from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from .models import Census,CensusGroup
 from base.tests import BaseTestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from selenium.webdriver.common.keys import Keys
+from django.test import TestCase, Client
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
 from base.tests import BaseTestCase
+import time
 import os
 import csv
 import json
@@ -25,6 +29,7 @@ class CensusTestCase(BaseTestCase):
     def tearDown(self):
         super().tearDown()
         self.census = None
+        self.user = None
 
     def test_check_vote_permissions(self):
         response = self.client.get('/census/api/{}/?voter_id={}'.format(1, 2), format='json')
@@ -98,6 +103,7 @@ class CensusGroupTestCase(BaseTestCase):
 
     def tearDown(self):
         super().tearDown()
+        self.census = None
         self.census_group = None
 
     def test_group_creation(self):
@@ -138,6 +144,13 @@ class SeleniumImportExcelTestCase(StaticLiveServerTestCase):
         superuser_admin.set_password('qwerty')
         superuser_admin.save()
 
+        self.driver.get(f'{self.live_server_url}/authentication/signin')
+        self.driver.find_element(By.ID, "id_username").send_keys('superadmin')
+        self.driver.find_element(By.ID, "id_password").send_keys('qwerty')
+        self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+
+
+
         super().setUp()            
             
     def tearDown(self):           
@@ -145,6 +158,7 @@ class SeleniumImportExcelTestCase(StaticLiveServerTestCase):
         self.driver.quit()
         self.base.tearDown()
         self.census_group = None
+        self.census = None
         os.remove("census/test_import.xlsx")
 
 
@@ -277,6 +291,7 @@ class SeleniumImportJSONTestCase(StaticLiveServerTestCase):
         self.driver.quit()
         self.base.tearDown()
         self.census_group = None
+        self.census = None
         os.remove("census/test_import_census_json.json")
     
 
@@ -396,6 +411,11 @@ class SeleniumImportCSVTestCase(StaticLiveServerTestCase):
         superuser_admin = User(username='superadmin', is_staff=True, is_superuser=True)
         superuser_admin.set_password('qwerty')
         superuser_admin.save()
+
+        # self.driver.get(f'{self.live_server_url}/authentication/signin')
+        # self.driver.find_element(By.ID, "id_username").send_keys('superadmin')
+        # self.driver.find_element(By.ID, "id_password").send_keys('qwerty')
+        # self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
         
         self.census_group = CensusGroup(name='Test Group 1')
         self.census_group.save() 
@@ -406,6 +426,7 @@ class SeleniumImportCSVTestCase(StaticLiveServerTestCase):
         super().tearDown()
         self.driver.quit()
         self.base.tearDown()
+        self.census = None
         self.census_group = None
         os.remove("census/test_import_census_csv.csv")
     
@@ -533,25 +554,39 @@ class SeleniumImportCSVTestCase(StaticLiveServerTestCase):
         self.assertTrue(len(self.driver.find_elements(By.CLASS_NAME,'alert-danger'))==1)
         self.assertEqual(0,Census.objects.count())
 
-
 class CensusReuseTestCase(BaseTestCase):
     def setUp(self):
         super().setUp()
+
+    def tearDown(self):
+        super().tearDown()
+        self.census = None
+    
+    def test_census_reuse_fail(self):
+        self.login()
+
+        staff = User.objects.get(username="admin").is_staff
+
+        data = {'voting_id':'x','new_voting':'y','staff':staff}
+        response = self.client.post('/census/reuse',data=data)
+        self.assertEqual(response.status_code, 400)
     
     def test_census_reuse(self):
         self.login()
 
-        data = {'voting_id':'x','new_voting':'y'}
+        self.logout()
+    
+    def test_census_reuse(self):
+        self.login()
+
+        staff = User.objects.get(username="admin").is_staff
+
+        data = {'voting_id':1,'new_voting':2,'staff':staff}
         response = self.client.post('/census/reuse',data=data)
-        self.assertEqual(response.status_code, 400)
+        self.assertRedirects(response,'/census', status_code=302, target_status_code=301)
 
-        data = {'voting_id':1,'new_voting':2}
-        response = self.client.post('/census/reuse',data=data)
-        self.assertEqual(response.status_code, 302)
-        
 
-class CensusExportTestCase(BaseTestCase):
-
+class CensusExportTestCase(TestCase):
     def setUp(self):
         super().setUp()
 
@@ -559,6 +594,14 @@ class CensusExportTestCase(BaseTestCase):
         self.census_group.save()
         self.census = Census(voting_id=1, voter_id=1)
         self.census.save()
+
+
+        self.user = User.objects.create_user(username='admins', password='admins')
+
+        self.client = Client()
+
+        self.client.login(username='admins', password='admins')
+        
 
     def tearDown(self):
         super().tearDown()
@@ -594,7 +637,7 @@ class CensusExportTestCase(BaseTestCase):
         
     def test_export_census_data_with_groups(self):
 
-        self.census = Census(voting_id=2, voter_id=2,group=CensusGroup.objects.get(id=1))
+        self.census = Census(voting_id=2, voter_id=2,group=CensusGroup.objects.get(id=self.census_group.id))
         self.census.save()
         
 
@@ -622,14 +665,57 @@ class CensusExportTestCase(BaseTestCase):
                 self.assertEqual(int(values[i]), census_values[0][i])
             else:
                 self.assertEqual(None, census_values[0][i])
-    
+class CensusPageTestCase(StaticLiveServerTestCase):
+    def setUp(self):
+        self.base = BaseTestCase()
+        self.base.setUp() 
+
+        u = User(username='Jaime', is_staff=True)
+        u.set_password('qwerty')
+        u.save()
+
+        id = User.objects.get(username="Jaime").pk
+
+        census = Census(voting_id=1, voter_id=id)
+        census.save()
+
+        census2 = Census(voting_id=2, voter_id=id)
+        census2.save()
+        
+    def tearDown(self):
+        super().tearDown()
+        self.driver.quit()
+        self.base.tearDown()
+        self.census = None
+        self.user = None
+
+    def test_census_reuse(self):
+        self.driver.get(f'{self.live_server_url}/admin')
+        self.driver.find_element(By.ID, "id_username").send_keys('Jaime')
+        self.driver.find_element(By.ID, "id_password").send_keys('qwerty',Keys.ENTER)
+
+        self.driver.get(f'{self.live_server_url}/census/reuse')
+        self.assertTrue(len(self.driver.find_elements(By.ID,'voting_id')) == 1)
+        self.assertTrue(len(self.driver.find_elements(By.ID,'new_voting')) == 1)
+        
+
+    def test_census_mainpage(self):
+        self.driver.get(f'{self.live_server_url}/admin')
+        self.driver.find_element(By.ID, "id_username").send_keys('Jaime')
+        self.driver.find_element(By.ID, "id_password").send_keys('qwerty',Keys.ENTER)
+
+        time.sleep(5)
+        self.driver.get(f'{self.live_server_url}/census')
+        time.sleep(5)
+        self.assertTrue(len(self.driver.find_elements(By.ID,'tabla-votacion'))==1)
+        self.assertTrue(len(self.driver.find_elements(By.ID,'1-Jaime')) == 1)
 class CensusDetailsTranslationCase(StaticLiveServerTestCase):
 
     def setUp(self):
         #Load base test functionality for decide
         self.base = BaseTestCase()
         self.base.setUp()
-
+        
         options = webdriver.ChromeOptions()
         options.headless = True
         self.driver = webdriver.Chrome(options=options)

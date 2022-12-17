@@ -2,10 +2,7 @@
 {% load i18n %}
 
 {% block extrahead %}
-    <link type="text/css" rel="stylesheet"
-         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-    <link type="text/css" rel="stylesheet"
-         href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
 {% endblock %}
 
 {% block content %} 
@@ -20,31 +17,89 @@
                     </div>
                 {% endfor %}
             {% endif %}
-            <div class="container py-5">
-                <!--Traducir--> 
-                <h1>Your profile</h1>
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ register_form.as_p }}  
-                    <!--Traducir-->                   
-                    <button class="btn btn-primary" type="submit">Update</button>
-                </form>
-            </div>
-            <div>
-                <!--Traducir--> 
-                <a class="btn btn-primary" href="http://localhost:8000/authentication/signout" role="button">Logout</a>
-            </div>
-            <br>
-            <div>
-                <!--Traducir--> 
-                <h1>Do you want to delete your user account?</h1>
-                <br>
-                <!--Traducir--> 
-                <button class="btn btn-primary" onclick="delete_user()">Delete account</button>
+            <h1 class="text-center mt-5">Gestiona tu perfil</h1>
+        </div>
 
+    <div id="app-profile">
+        <b-container fluid="lg" class="mt-5">
+            <b-row align-h="center">
+                <b-col cols="12" md="6">
+                    <b-card-group deck>
+                        <!--TRADUCCION-->
+                        <b-card style="background: rgba(211, 229, 237, 1); border: none;border-radius: 10px;">
+                        <b-card-body class="text-center">
+                            <form action="/authentication/profile/" method="post">
+                                {% csrf_token %}
+                                <b-row>
+                                    <b-col cols="12" md="3">
+                                        <label for="username">Username:</label>
+                                    </b-col>
+                                    <b-col cols="12" md="9">
+                                        <b-form-input v-b-popover.hover.top="'150 carácteres como máximo. Únicamente letras, dígitos y @/./+/-/_ '" 
+                                        title="Requirements" placeholder="Required" id="username" name="username" value="{{ user.username }}">
+                                        </b-form-input>
+                                    </b-col>
+                                </b-row>
+    
+                                <b-row class="mt-4">
+                                    <b-col cols="12" md="3">
+                                        <label for="first_name">First name:</label>
+                                    </b-col>
+                                    <b-col cols="12" md="9">
+                                        <b-form-input placeholder="Optional" id="first_name" name="first_name" value="{{ user.first_name }}"></b-form-input>
+                                    </b-col>
+                                </b-row>
+    
+                                <b-row class="mt-4">
+                                    <b-col cols="12" md="3">
+                                        <label for="last_name">Last name:</label>
+                                    </b-col>
+                                    <b-col cols="12" md="9">
+                                        <b-form-input placeholder="Optional" id="last_name" name="last_name" value="{{ user.last_name }}"></b-form-input>
+                                    </b-col>
+                                </b-row>
+    
+                                <b-row class="mt-4">
+                                    <b-col cols="12" md="3">
+                                        <label for="email">Email:</label>
+                                    </b-col>
+                                    <b-col cols="12" md="9">
+                                        <b-form-input id="email" name="email" value="{{ user.email }}"></b-form-input>
+                                    </b-col>
+                                </b-row>
 
-            </div>
-
+                                <b-row class="mt-4">
+                                    <b-col cols="12" md="3">
+                                        <label for="genre">Genero:</label>
+                                    </b-col>
+                                    <b-col cols="12" md="9">
+                                        <select class="form-select" id="genre" name="genre" aria-label="Default select example">
+                                            <option value="M" {% if genero == "M"%} selected {% endif %}>Male</option>
+                                            <option value="W" {% if genero == "W"%} selected {% endif %}>Female</option>
+                                          </select>
+                                    </b-col>
+                                </b-row>
+                                <!--Traducir-->                   
+                                <button class="btn btn-primary mt-4" type="submit" value="OK">Update</button>
+                            </form>    
+                        </b-card-body>
+                        <b-progress height="2px" value="100" variant="dark"></b-progress>
+                        <b-card-body>
+                            <b-row>
+                                <b-col class="text-center">
+                                    <b-button href="#" variant="warning"><!--TRADUCCION-->Log out</b-button> 
+                                </b-col>
+                                <b-col class="text-center">
+                                    <b-button href="#" variant="danger"><!--TRADUCCION-->Delete account</b-button> 
+                                </b-col>
+                            </b-row>  
+                        </b-card-body>
+    
+                        </b-card>
+                </b-col>
+            </b-row>
+        </b-container>
+    
         </div>
     {% else %}
     <div class="container-md">
@@ -54,7 +109,6 @@
     </div>
     
     {% endif %}
-
 
 <script>
   function delete_user() {
@@ -66,4 +120,18 @@
 </script>
 
 
+
+{% endblock %}
+
+
+{% block extrabody %}
+    <!-- Vuejs -->
+    <script src="https://unpkg.com/vue@2.6/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.min.js"></script>
+    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue-icons.min.js"></script>
+    
+    <script>
+        new Vue({ el: '#app-profile' }); 
+    </script>
 {% endblock %}
