@@ -127,7 +127,7 @@ class CensusGroupTestCase(BaseTestCase):
         self.login()
         response = self.client.delete('/census/censusgroups/{}/'.format(group_id),format='json')
         self.assertEqual(response.status_code, 204)
-        self.assertEqual(before-1,CensusGroup.objects.count()) 
+        self.assertEqual(before-1,CensusGroup.objects.count())
 
 class SeleniumImportExcelTestCase(StaticLiveServerTestCase):
     def setUp(self):
@@ -283,7 +283,7 @@ class SeleniumImportJSONTestCase(StaticLiveServerTestCase):
         self.base.tearDown()
         self.census_group = None
         self.census = None
-        os.remove("census/test_import_census_json.json")  
+        os.remove("census/test_import_census_json.json")
 
     def create_json_file(self,expenses):
         
