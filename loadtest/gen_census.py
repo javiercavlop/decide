@@ -42,7 +42,7 @@ def add_census(voters_pk, voting_pk):
 
     data2 = {'voters': voters_pk, 'voting_id': voting_pk}
     auth = {'Authorization': 'Token ' + token.get('token')}
-    response = requests.post(HOST + '/census/', json=data2, headers=auth)
+    response = requests.post(HOST + '/census/api/', json=data2, headers=auth)
 
 
 

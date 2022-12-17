@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+    <link type="text/css" rel="stylesheet"
+    href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet"
+    href="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.css" />
+    <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
+{% endblock %}
+
+{% block content %}
+<div id="app-census-create">
+
+    {%if msg%}
+    <b-alert variant={{tipo}} show dismissible>
+        {{msg}}
+    </b-alert>
+    {%endif%}
+
+<div class="container-fluid">
+<div class="row justify-content-center mt-5">
+    <div class="col-md-3">
+    <div class="card">
+        <article class="card-body">
+
+        <h4 class="card-title mb-4 mt-1 text-align-center text-center">Crear Censo</h4>
+            <form action="/census/new/" method="post">
+                {% csrf_token %}
+                {{form}}
+            <div class="form-group mt-4 text-center">
+                <button type="submit" class="btn btn-primary btn-block" value="OK">Crear censo</button>
+            </div> <!-- form-group// -->                                                           
+        </form>
+        </article>
+    </div>
+    </div>
+</div>
+</div>
+
+</div>
+
+{% endblock %}
+
+{% block extrabody %}
+    <!-- Vuejs -->
+    <script src="https://unpkg.com/vue@2.6/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.min.js"></script>
+    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue-icons.min.js"></script>
+    
+    <script>
+        new Vue({ el: '#app-census-create' }); 
+    </script>
+{% endblock %}
