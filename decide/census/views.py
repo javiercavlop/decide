@@ -410,7 +410,7 @@ def census_details(request):
     censos = Census.objects.all().values()
 
     if request.method == 'POST':
-        censo = Census.objects.filter(id = request.data.get('delete'))
+        censo = Census.objects.filter(id = request.POST['delete'])
         censo.delete()
 
     census = census_list(censos)
