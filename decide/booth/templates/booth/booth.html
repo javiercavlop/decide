@@ -13,6 +13,17 @@
 {% block content %}
     <div id="app-booth">
 
+        <b-navbar type="dark" variant="secondary" style="display: none;">
+            <!-- TRADUCCION -->
+            <b-navbar-brand tag="h1">Decide</b-navbar-brand>
+                <b-navbar-nav class="ml-auto" v-if="!signup">
+                    <b-nav-item href="#" v-on:click="decideLogout">
+                        <!-- TRADUCCION -->
+                        {% trans "logout" %}
+                    </b-nav-item>
+                </b-navbar-nav>
+        </b-navbar>
+
         <b-alert :variant="alertLvl" dismissible v-model="alertShow">
             <!-- TRADUCCION -->
             [[ alertMsg ]]
@@ -67,18 +78,19 @@
                 <div class="container bg-gray w-35 p-4 my-4 rounded m-0">
                 <h2>[[ voting.name ]]</h2>
                 <h4>[[ voting.question.desc ]]</h4>
+                <b-form>
                 <b-form-group v-for="opt in voting.question.options" :key="opt.number">
                     <b-form-radio class="p-3 border border-secondary rounded my-2" v-model="selected"
-                                  :id="'q' + opt.number"
-                                  name="question"
-                                  :value="opt.number">
+                    :id="'q' + opt.number"
+                    name="question"
+                    :value="opt.number">
                         [[ opt.option ]]
                     </b-form-radio>
                 </b-form-group>
-                <b-button type="button" variant="primary" class="w-100 mt-4 h4" id="send" v-on:click="decideSend">
+                <b-button type="button" variant="primary" class="w-100 mt-4 h4"  v-on:click="decideSend" id="send">
                     {% trans "Vote" %}
                 </b-button>
-                
+                </b-form>
 
                 
 
