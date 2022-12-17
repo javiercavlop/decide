@@ -166,8 +166,7 @@ class GenreCase(BaseTestCase):
         data = {'user':user,'genre':'W','email':'','first_name':'','last_name':'','username':'admin'}
         response = self.client.post('/authentication/profile/',data=data, follow=True)
         self.assertEqual(response.status_code, 200)
-        username_label = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value=".container > h1"))
-        self.assertEqual(username_label.text, "Sign In")
+
 
 class AuthenticationViewsTestCase(StaticLiveServerTestCase):
 
