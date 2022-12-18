@@ -14,12 +14,17 @@
   <h1>{% trans "Sign In" %}</h1>
   <br>
 
-  {{ error }}
+
+  
+  <p id="error">{{ error }}</p>
+
  
   <form  method="POST">
     {% csrf_token %}
     {{form.as_p}}
-    <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+
+    <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+
   </form>
 
   <br>

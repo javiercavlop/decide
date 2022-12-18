@@ -1,9 +1,13 @@
-from python:3.8.13-alpine3.16
+FROM python:3.8.13-alpine3.16
 
 ENV CRYPTOGRAPHY_DONT_BUILD_RUST=1
 
+RUN apk update
 RUN apk add --no-cache git postgresql-dev gcc libc-dev
 RUN apk add --no-cache gcc g++ make libffi-dev python3-dev build-base
+RUN apk add py3-pip py3-pillow py3-cffi py3-brotli gcc musl-dev python3-dev pango
+RUN apk add chromium
+RUN apk add chromium-chromedriver
 
 RUN pip install gunicorn
 RUN pip install ipdb
@@ -12,7 +16,8 @@ RUN pip install ipython
 WORKDIR /app
 
 RUN git clone https://github.com/egc-decide-trebujena/decide.git .
-RUN git checkout milestone/M2
+RUN git checkout develop
+RUN git pull
 RUN echo "$(<requirements.txt)"s
 RUN pip install -U pip
 RUN pip install -r requirements.txt
