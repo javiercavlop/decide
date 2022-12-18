@@ -1,0 +1,135 @@
+{% extends  "base.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+{% endblock %}
+
+
+{% block content %}
+<div id="app-census">
+<div class="container-fluid">
+<div class="row align-middle">
+
+<div class="col-lg-6">
+    <div class="row justify-content-center">
+            <div class="col-md-10">
+            <h3 class="mt-5 text-center">{% trans "Lista de censos"%}</h3>
+            <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="{% trans 'Escribe para buscar'%}">
+            <datalist id="datalistOptions">
+                {% for o in options %}
+                <option value="{{o}}">
+                {% endfor %}
+            </datalist>
+
+            <table class="table table-bordered table-striped mt-2" id="tabla-votacion">
+                <thead>
+                    <tr>
+                        <th>{% trans 'Votación'%}</th>
+                        <th id="voter">{% trans 'Votante'%}</th>
+                        <th>{% trans 'Grupo'%}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for censo in censos %}
+                    <tr id="{{censo.voting_id}}-{{censo.voter}}">
+                        <th>{{censo.voting_id}}</th>
+                        <th>{{censo.voter}}</th>
+                        <th>{{censo.group}}<b-icon icon="x-square" class="ms-3" variant="danger"></b-icon></th>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>
+    </div>
+</div>
+
+<div class="col-lg-6 text-center my-3 mt-5">
+    <div class="row my-3">
+        <div class="d-grid gap-2 col-11 mx-auto">
+            <b-button size="lg" block variant="outline-success" href="/census/new">
+                <div class="row">
+                    <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
+                    <div class="col-10 text-start">{% trans 'Crear Censo'%}</div>
+                </div>
+            </b-button>
+        </div>
+    </div>
+    <div class="row my-4">
+        <div class="d-grid gap-2 col-11 mx-auto">
+            <b-button size="lg" block variant="outline-success" href="/census/census_details">
+                <div class="row">
+                    <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
+                    <div class="col-10 text-start">{% trans 'Detalles de Censos'%}</div>
+                </div>
+            </b-button>
+        </div>
+    </div>
+    <div class="row my-4">
+        <div class="d-grid gap-2 col-11 mx-auto">
+            <b-button size="lg" block variant="outline-success" href="/census/census_grouping">
+                <div class="row">
+                    <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
+                    <div class="col-10 text-start">{% trans 'Agrupar Censos'%}</div>
+                </div>
+            </b-button>
+        </div>
+    </div>
+    <div class="row my-4">
+        <div class="d-grid gap-2 col-11 mx-auto">
+            <b-button size="lg" block variant="outline-success" href="/census/reuse">
+                <div class="row">
+                    <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
+                    <div class="col-10 text-start">{% trans 'Reutilizar Censos'%}</div>
+                </div>
+            </b-button>
+        </div>
+    </div>
+    <div class="row my-4">
+        <div class="d-grid gap-2 col-5 mx-auto">
+            <b-button size="lg" block variant="outline-success" href="/census/import_csv">
+                <div class="row">
+                    <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
+                    <div class="col-10 text-start">{% trans 'Importar Csv'%}</div>
+                </div>
+            </b-button>
+        </div>
+        <div class="d-grid gap-2 col-5 mx-auto">
+            <b-button size="lg" block variant="outline-success" href="/census/import_json">
+                <div class="row">
+                    <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
+                    <div class="col-10 text-start">{% trans 'Importar JSON'%}</div>
+                </div>
+            </b-button>
+        </div>
+    </div>
+    <div class="row my-4">
+        <div class="d-grid gap-2 col-5 mx-auto">
+            <b-button size="lg" block variant="outline-success" href="/census/import">
+                <div class="row">
+                    <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
+                    <div class="col-10 text-start">{% trans 'Importar Excel'%}</div>
+                </div>
+            </b-button>
+        </div>
+        <div class="d-grid gap-2 col-5 mx-auto">
+            <b-button size="lg" block variant="outline-success" href="/census/export">
+                <div class="row">
+                    <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
+                    <div class="col-10 text-start">{% trans 'Exportar Excel'%}</div>
+                </div>
+            </b-button>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block extrabody %}
+     <!-- Vuejs -->     
+     <script>
+        new Vue({ el: '#app-census' });
+     </script>
+{% endblock %}

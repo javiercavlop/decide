@@ -1,0 +1,64 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-18 20:20+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: booth/templates/booth/boot.html:15 booth/templates/booth/booth.html:36
+msgid "Username"
+msgstr "Username"
+
+#: booth/templates/booth/boot.html:23 booth/templates/booth/booth.html:44
+msgid "Password"
+msgstr "Password"
+
+#: booth/templates/booth/boot.html:32 booth/templates/booth/booth.html:53
+msgid "Login"
+msgstr "Login"
+
+#: booth/templates/booth/boot.html:57 booth/templates/booth/booth.html:81
+msgid "Vote"
+msgstr "Vote"
+
+#: booth/templates/booth/booth.html:22
+msgid "logout"
+msgstr "logout"
+
+#: booth/templates/booth/booth.html:62
+msgid ""
+"This votation has been configured as an ordenation, so you have to vote for "
+"each one of the options."
+msgstr ""
+"This votation has been configured as an ordenation, so you have to vote for "
+"each one of the options."
+
+#: booth/templates/booth/booth.html:67
+msgid "Votación"
+msgstr "Voting"
+
+#: booth/templates/booth/booth.html:95
+msgid "Order"
+msgstr "Order"
+
+#: booth/templates/booth/booth.html:198 booth/templates/booth/booth.html:208
+#: booth/templates/booth/booth.html:268 booth/templates/booth/booth.html:286
+msgid "Error: {}"
+msgstr "Error: {}"
+
+#: booth/templates/booth/booth.html:265 booth/templates/booth/booth.html:283
+msgid "Conglatulations. Your vote has been sent"
+msgstr "Conglatulations. Your vote has been sent"

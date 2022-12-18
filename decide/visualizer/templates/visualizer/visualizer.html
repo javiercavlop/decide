@@ -2,55 +2,49 @@
 {% load i18n static %}
 
 {% block extrahead %}
-    <link type="text/css" rel="stylesheet"
-         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-    <link type="text/css" rel="stylesheet"
-         href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
-    <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'booth/style.css' %}" />
 {% endblock %}
 
 {% block content %}
     <div id="app-visualizer">
-        <!-- Navbar -->
-        <b-navbar type="dark" variant="secondary">
-            <b-navbar-brand tag="h1">Decide</b-navbar-brand>
-        </b-navbar>
+        <div class="voting">
 
-        <div class="voting container">
-            <h1>[[ voting.id ]] - [[ voting.name ]]</h1>
+            <h1 id="voting_id_title">{% trans 'Votación' %} [[voting.id]]</h1>
+            <div class="container bg-gray w-35 p-4 my-4 rounded m-0">
+                <h2>[[ voting.name ]]</h2>
 
-            <h2 v-if="!voting.start_date">Votación no comenzada</h2>
-            <h2 v-else-if="!voting.end_date">Votación en curso</h2>
-            <div v-else>
-                <h2 class="heading">Resultados:</h2>
+                <h4 v-if="!voting.start_date">{% trans 'Votación no comenzada' %}</h4>
+                <h4 v-else-if="!voting.end_date">{% trans 'Votación en curso' %}</h4>
+                <div v-else>
+                    <h4 class="heading">{% trans 'Resultados' %}:</h4>
 
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Opción</th>
-                            <th>Puntuación</th>
-                            <th>Votos</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="opt in voting.postproc" :key="opt.number">
-                            <th>[[opt.option]]</th>
-                            <td>[[opt.postproc]]</td>
-                            <td class="text-muted">[[opt.votes]]</td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <table id="visualizer-table" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>{% trans 'Opción' %}</th>
+                                <th>{% trans 'Puntuación' %}</th>
+                                <th>{% trans 'Votos' %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="opt in voting.postproc" :key="opt.number">
+                                <th>[[opt.option]]</th>
+                                <td>[[opt.postproc]]</td>
+                                <td class="text-muted">[[opt.votes]]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
         </div>
     </div>
 {% endblock %}
 
 {% block extrabody %}
     <!-- Vuejs -->
-    <script src="https://unpkg.com/vue@2.7.10"></script>
+    <script src="https://unpkg.com/vue@2.6"></script>
     <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.js"></script>
 
     <script>
         var voting = {{voting|safe}};

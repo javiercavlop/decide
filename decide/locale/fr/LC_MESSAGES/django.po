@@ -1,0 +1,178 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-18 20:21+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: dashboard/templates/dashboard/dashboard.html:21
+msgid "Usuarios"
+msgstr "Utilisateurs"
+
+#: dashboard/templates/dashboard/dashboard.html:23
+msgid "Número de encuestas votadas en tiempo real"
+msgstr "Nombres de sondages votés en temps réel"
+
+#: dashboard/templates/dashboard/dashboard.html:30
+msgid "Perfiles"
+msgstr "Profils"
+
+#: dashboard/templates/dashboard/dashboard.html:45
+msgid "Votante"
+msgstr "Électeur"
+
+#: dashboard/templates/dashboard/dashboard.html:46
+msgid "Encuestas"
+msgstr "Enquêtes"
+
+#: dashboard/templates/dashboard/dashboard.html:59
+msgid "Porcentajes de votaciones según censo"
+msgstr "Pourcentajes des votes selon le rencensement"
+
+#: dashboard/templates/dashboard/dashboard.html:64
+msgid "Id de votacion"
+msgstr "Identifiant de vote"
+
+#: dashboard/templates/dashboard/dashboard.html:65
+msgid "Porcentaje del censo"
+msgstr "Pourcentaje de rencensement"
+
+#: dashboard/templates/dashboard/dashboard.html:92
+#: dashboard/templates/dashboard/mainpage_dashboard.html:60
+msgid "Descargar Estadísticas"
+msgstr "Télécharger les statistiques"
+
+#: dashboard/templates/dashboard/dashboard.html:94
+msgid "Descargar"
+msgstr "Télécharger"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:17
+msgid "Panel de Control"
+msgstr "Panneau de commande"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:27
+msgid "Paneles Individuales"
+msgstr "Panneaux Individuels"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:28
+msgid "Busca tu votación"
+msgstr "Trouvez votre vote"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:42
+msgid "Si eres administrador"
+msgstr "Si vous êtes administrateur"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:49
+msgid "Panel de Control Global"
+msgstr "Tableau de bord global"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:70
+msgid "Acceso al Bot de Telegram"
+msgstr "Accès au robot Telegram"
+
+#: dashboard/templates/dashboard_with_pv.html:36
+msgid "Sin Recuento"
+msgstr "Pas de Compte"
+
+#: dashboard/templates/dashboard_with_pv.html:44
+#, fuzzy
+#| msgid "Porcentaje del censo"
+msgid "Porcentaje de personas que votaron"
+msgstr "Pourcentage de personnes qui ont voté"
+
+#: dashboard/templates/dashboard_with_pv.html:56
+msgid "Gráfica de paridad"
+msgstr "Graphique de parité"
+
+#: dashboard/templates/dashboard_with_pv.html:71
+msgid "Tipo de Pregunta"
+msgstr "Type de question"
+
+#: dashboard/templates/dashboard_with_pv.html:81
+msgid "Duración"
+msgstr "Durée"
+
+#: dashboard/templates/dashboard_with_pv.html:84
+msgid "No comenzada"
+msgstr "Pas commencé"
+
+#: dashboard/templates/dashboard_with_pv.html:86
+msgid "No finalizada"
+msgstr "Pas terminé"
+
+#: dashboard/templates/dashboard_with_pv.html:97
+msgid "Nº Censo"
+msgstr "Numéro de recensement"
+
+#: dashboard/templates/dashboard_with_pv.html:107
+msgid "Nº Votos"
+msgstr "Nombre de votes"
+
+#: dashboard/templates/dashboard_with_pv.html:119
+msgid "Paridad"
+msgstr "Parité"
+
+#: dashboard/templates/dashboard_with_pv.html:122
+msgid "Se ha cumplido la paridad para esta votación"
+msgstr "La parité a été respectée pour ce vote"
+
+#: dashboard/templates/dashboard_with_pv.html:124
+#: dashboard/templates/dashboard_with_pv.html:126
+msgid "No se ha cumplido la paridad para esta votación, hay"
+msgstr "La parité n'a pas été respectée pour ce vote, il y a plus de"
+
+#: dashboard/templates/dashboard_with_pv.html:124
+msgid "voto más de"
+msgstr "vote de plus pour"
+
+#: dashboard/templates/dashboard_with_pv.html:124
+#: dashboard/templates/dashboard_with_pv.html:126
+msgid "que de"
+msgstr "que pour"
+
+#: dashboard/templates/dashboard_with_pv.html:126
+msgid "votos más de"
+msgstr "votes de plus pour"
+
+#: dashboard/templates/dashboard_with_pv.html:138
+msgid "Resultados de la Votación"
+msgstr "Résultats du vote"
+
+#: dashboard/views.py:32
+#, fuzzy
+#| msgid "No comenzada"
+msgid "Aún no ha comenzado"
+msgstr "Pas commencé"
+
+#: dashboard/views.py:34
+msgid "Aún no ha terminado"
+msgstr "Ce ne est pas encore terminée"
+
+#: dashboard/views.py:46
+msgid "No hay una descripción asociada a esta votación ni a esta pregunta"
+msgstr "Aucune description n'est associée à ce sondage ou à cette question"
+
+#: postproc/views.py:29
+msgid "Invalid number of seats was given. Must be above 0"
+msgstr "Nombre de sièges fournis non valide. Doit être supérieur à 0"
+
+#: voting/models.py:22
+msgid "Quantity"
+msgstr "Quantité"
+
+#: voting/models.py:22
+msgid "is not allowed"
+msgstr "n'est pas autorisé"

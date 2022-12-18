@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block extrahead %}
+{% endblock %}
+
+{% block content %}
+<div id="app-hello">
+{% if user.is_authenticated %}
+
+<div class="container-md">
+  {% csrf_token %}
+  <h1>{% trans 'Hello' %}, {{user.username}}</h1>
+  <a class="btn btn-primary" href="/authentication/signout" role="button">{% trans 'Logout' %}</a>
+  <a class="btn btn-primary" href="/authentication/profile" role="button">{% trans 'Ver Perfil' %}</a>
+</div>
+{% else %}
+<div class="container-md">
+  {% csrf_token %}
+  <a class="btn btn-primary" href="/authentication/signin/" role="button">{% trans 'Sign in' %}</a>
+</div>
+
+{% endif %}
+</div>
+{% endblock %}
+
+{% block extrabody %}
+<script>
+  new Vue({ el: '#app-hello' }); 
+</script>
+{% endblock %}

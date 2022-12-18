@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+{% load i18n static %}
+<div id="app-export">
+{% if messages %}
+    {% for message in messages %}
+    <div {% if message.tags == 'error' %} class="alert alert-danger" {% elif message.tags == 'success' %} class="alert alert-success"{% endif %}  role="alert">
+      {{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<div class="shadow-lg container-fluid mt-3 py-3">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+ 
+    <div class="container">
+      <div class="x_title col-12 mt-3 ml-2 mb-4">
+        <h1 id="page_title">{% trans "Exportación de Censo" %}</h1>
+      </div>
+
+      
+      <div class="row">         
+        <div class="col-6 d-grid px-2">
+          <button type="submit" class="btn btn-success" >{% trans "Exportar" %}</button>
+        </div>
+        <div class="col-6 d-grid px-2">
+          <input type="button"  class="btn btn-outline-dark" value="{% trans 'Volver atrás' %}" onClick="history.go(-1);">
+        </div>                        
+      </div>
+    </div>
+
+  </form>
+</div>
+</div>
+    
+{% endblock %}
+
+{% block extrabody %}
+     <!-- Vuejs -->     
+     <script>
+        new Vue({ el: '#app-export' });
+     </script>
+{% endblock %}

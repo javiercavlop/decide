@@ -3,8 +3,8 @@ import requests
 
 
 HOST = "http://localhost:8000"
-USER = "admin"
-PASS = "admin"
+USER = "gonzalo"
+PASS = "gonzalo1234"
 VOTING = 1
 
 
@@ -37,12 +37,13 @@ def add_census(voters_pk, voting_pk):
     Add to census all voters_pk in the voting_pk.
     """
     data = {'username': USER, 'password': PASS}
-    response = requests.post(HOST + '/authentication/login/', data=data)
+    response = requests.post(HOST + '/authentication/login/', json=data)
     token = response.json()
 
-    data2 = {'voters': voters_pk, 'voting_id': voting_pk}
-    auth = {'Authorization': 'Token ' + token.get('token')}
-    response = requests.post(HOST + '/census/', json=data2, headers=auth)
+    auth = {'Authorization': 'Token ' + token.get('token'), 'Content-Type': 'application/json'}
+    for voter_pk in voters_pk:
+        data2 = {"voting_id":int(voting_pk),"voter_id": int(voter_pk),"group":{"name":""} }
+        response = requests.post(HOST + '/census/api', json=data2, headers=auth)
 
 
 

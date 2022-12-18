@@ -1,0 +1,192 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-18 20:21+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: authentication/form.py:35 authentication/templates/profile.html:45
+msgid "First name"
+msgstr "Prénom"
+
+#: authentication/form.py:36 authentication/templates/profile.html:54
+msgid "Last name"
+msgstr "Nom"
+
+#: authentication/form.py:37 authentication/templates/profile.html:63
+msgid "Email"
+msgstr "Courrier électronique"
+
+#: authentication/form.py:43 authentication/form.py:79
+msgid "Men"
+msgstr "Hommes"
+
+#: authentication/form.py:43 authentication/form.py:79
+msgid "Women"
+msgstr "Femme"
+
+#: authentication/form.py:43 authentication/form.py:79
+msgid "Other"
+msgstr "Autre"
+
+#: authentication/form.py:45
+msgid "Genre"
+msgstr "Le genre"
+
+#: authentication/form.py:47
+msgid "Password"
+msgstr "Mot de passe"
+
+#: authentication/form.py:48
+msgid "Password confirmation"
+msgstr "Confirmation mot de passe"
+
+#: authentication/templates/hello.html:17
+msgid "Hello"
+msgstr "Bonjour"
+
+#: authentication/templates/hello.html:18
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: authentication/templates/hello.html:19
+msgid "Ver Perfil"
+msgstr "Voir le profil"
+
+#: authentication/templates/hello.html:24
+#: authentication/templates/profile.html:116
+msgid "Sign in"
+msgstr "Se connecter"
+
+#: authentication/templates/profile.html:20
+msgid "Gestiona tu perfil"
+msgstr "Gérer votre profil"
+
+#: authentication/templates/profile.html:34
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: authentication/templates/profile.html:72
+msgid "Genero"
+msgstr "Le genre"
+
+#: authentication/templates/profile.html:92
+msgid "Update"
+msgstr "Mettre à jour"
+
+#: authentication/templates/profile.html:99
+msgid "Log out"
+msgstr "Fermer la session"
+
+#: authentication/templates/profile.html:102
+msgid "Delete account"
+msgstr "Supprimer le compte"
+
+#: authentication/templates/signin.html:11
+msgid "Sign In"
+msgstr "Commencer la session"
+
+#: authentication/templates/signin.html:24
+msgid "Nombre de usuario"
+msgstr "Nom d'utilisateur"
+
+#: authentication/templates/signin.html:28
+msgid "Contraseña"
+msgstr "Mot de passe"
+
+#: authentication/templates/signin.html:34
+msgid "Submit"
+msgstr "Soumettre"
+
+#: authentication/templates/signin.html:42
+msgid "¿No tienes cuenta?"
+msgstr "Vous n'avez pas de compte ?"
+
+#: authentication/templates/signin.html:42
+msgid "Regístrate ahora"
+msgstr "S'inscrire maintenant"
+
+#: authentication/templates/signin.html:44
+msgid "También puedes iniciar sesión con"
+msgstr "Vous pouvez également vous connecter avec"
+
+#: authentication/templates/signup.html:19
+#: authentication/templates/signup.html:37
+msgid "Register"
+msgstr "Enregistrement"
+
+#: authentication/templates/signup.html:45
+msgid "Already have an account?"
+msgstr "Avez-vous déjà un compte?"
+
+#: authentication/templates/signup.html:45
+msgid "Log in"
+msgstr "Commencer la session"
+
+#: authentication/views.py:85 authentication/views.py:213
+msgid "Email already exists"
+msgstr "L'email existe déjà"
+
+#: authentication/views.py:92 authentication/views.py:221
+msgid "Username already exists"
+msgstr "Ce nom d'utilisateur existe déjà"
+
+#: authentication/views.py:97
+#, fuzzy
+#| msgid "Password confirmation"
+msgid "Passwords don't match"
+msgstr "Confirmation mot de passe"
+
+#: authentication/views.py:100
+msgid "Password must be at least 8 characters"
+msgstr "Mot de passe doit être d'au moins 8 caractères"
+
+#: authentication/views.py:103
+msgid "Password must contain at least one letter"
+msgstr "Le mot de passe doit contenir au moins une lettre"
+
+#: authentication/views.py:106
+msgid "Password must contain at least one number"
+msgstr "Le mot de passe doit contenir au moins un chiffre"
+
+#: authentication/views.py:109 authentication/views.py:235
+msgid "You must enter an email"
+msgstr "Vous devez saisir un email"
+
+#: authentication/views.py:112 authentication/views.py:238
+msgid "You must enter a username"
+msgstr "Vous devez entrer un nom d'utilisateur"
+
+#: authentication/views.py:116 authentication/views.py:242
+msgid "Name must be capitalized"
+msgstr "Le nom doit être en majuscule"
+
+#: authentication/views.py:120 authentication/views.py:246
+msgid "Surname must be capitalized"
+msgstr "Le nom de famille doit être en majuscule"
+
+#: authentication/views.py:173
+msgid "Username or password is incorrect"
+msgstr "L'identifiant ou le mot de passe est incorrect"
+
+#: authentication/views.py:229
+msgid "You can't change your email"
+msgstr "Vous ne pouvez pas changer votre email"
+
+#, fuzzy
+#~| msgid "Password"
+#~ msgid "password2"
+#~ msgstr "Mot de passe"

@@ -7,6 +7,7 @@ DATABASES = {
         'USER': 'postgres',
         'HOST': 'db',
         'PORT': 5432,
+	'PASSWORD': 'postgres',
     }
 }
 
@@ -25,6 +26,7 @@ MODULES = [
     'store',
     'visualizer',
     'voting',
+    'dashboard',
 ]
 
 BASEURL = 'http://10.5.0.1:8000'
@@ -39,4 +41,5 @@ APIS = {
     'store': 'http://10.5.0.1:8000',
     'visualizer': 'http://10.5.0.1:8000',
     'voting': 'http://10.5.0.1:8000',
+    'dashboard': 'http://10.5.0.1:8000',
 }

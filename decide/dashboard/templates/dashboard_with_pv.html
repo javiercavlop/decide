@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block extrahead %}
+    <link rel="stylesheet" 
+         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <link type="text/css" rel="stylesheet" href="{% static 'dashboard/style.css' %}" />
+   
+{% endblock %}
+
+
+{% block content %}
+<div class="row justify-content-center mt-5 mx-5 mb-5">
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-11">
+                <div class="card border-danger card-texto">
+                    <article class="card-body">
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center">{{voting.name}}</h4>
+                        <div class="row">
+                            <div class="text-center description">{{description}}</div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            {% if not voting.tally %}
+            <div class="col-md-11">
+                <div class="card border-danger card-texto">
+                    <article class="card-body">
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center" id="no_talling">{% trans 'Sin Recuento' %}</h4>
+                    </article>
+                </div>
+            </div>
+            {%else%}
+            <div class="col-md-11">
+                <div class="card border-danger">
+                    <article class="card-body row d-flex">
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center">{% trans 'Porcentaje de personas que votaron' %}</h4>
+                        <div class="col-6 mx-auto">
+                            <canvas id = "my2Chart" width = "100" height = "100 " ></canvas>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-11">
+                <div class="card border-danger">
+                    <article class="card-body row d-flex">
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center">{% trans 'Gráfica de paridad' %}</h4>
+                        <div class="col-6 mx-auto">
+                            <canvas id = "my3Chart" width = "100" height = "100 " ></canvas>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        {%endif%}
+    </div>
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-3 ">
+                <div class="card border-danger card-texto">
+                    <article class="card-body">
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-patch-question"></i>{% trans 'Tipo de Pregunta' %}</h4>
+                        <div class="row">
+                            <div class="text-center questionType">{{questionType}}</div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-danger card-texto">
+                    <article class="card-body">
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-clock"></i>{% trans 'Duración' %}</h4>
+                        <div class="row ">
+                            {% if not voting.start_date  %}
+                            <div class="text-center time">{% trans 'No comenzada' %}</div>
+                            {% elif not voting.end_date %}
+                            <div class="text-center time">{% trans 'No finalizada' %}</div>
+                            {% else %}
+                            <div class="text-center time">{{time}}</div>
+                            {% endif %}
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-danger card-texto">
+                    <article class="card-body">
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-person"></i>{% trans 'Nº Censo' %}</h4>
+                        <div class="row">
+                            <div class="text-center people">{{people}}</div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-danger card-texto">
+                    <article class="card-body">
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-envelope"></i>{% trans 'Nº Votos' %}</h4>
+                        <div class="row">
+                            <div class="text-center numervotes">{{numberOfVotes}}</div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="card border-danger card-texto">
+                    <article class="card-body">
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-bezier2"></i>{% trans 'Paridad' %}</h4>
+                        <div class="row">
+                            {% if parity == True %}
+                                <div class="text-center parity">{% trans 'Se ha cumplido la paridad para esta votación' %}</div>
+                            {% elif numDif == 1 %}
+                                <div class="text-center parity">{% trans 'No se ha cumplido la paridad para esta votación, hay' %} {{numDif}} {% trans 'voto más de' %} {{mayor}} {% trans 'que de' %} {{menor}}</div>
+                            {% else %}
+                                <div class="text-center parity">{% trans 'No se ha cumplido la paridad para esta votación, hay' %} {{numDif}} {% trans 'votos más de' %} {{mayor}} {% trans 'que de' %} {{menor}}</div>
+                            {% endif %}
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        {% if voting.tally %}
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="card border-danger">
+                    <article class="card-body row d-flex">
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-clipboard-data"></i>{% trans 'Resultados de la Votación' %}</h4>
+                        <div class="col-10 mx-auto">
+                            <canvas id="myChart" width="800" height="500"></canvas>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        {% endif%}
+    </div>
+
+
+</div>
+    
+    {% endblock %}
+
+    {% block extrabody %}
+    <script src ="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        ctx.canvas.parentNode.style.width = "800px";
+        ctx.canvas.parentNode.style.height = "500px";
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+            labels : [{% for item in labels %}"{{ item }}",{% endfor %}],
+                datasets: [{
+                label: "{{item      }}",
+                data : [{% for item in values %}{{ item }},{% endfor %}],
+                backgroundColor: 'rgb(70, 194, 203,0.7)',
+                borderColor: 'rgba(70, 194, 203, 1)',
+                borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+    <script>
+        const ctx2 = document.getElementById('my2Chart').getContext('2d');
+        ctx2.canvas.parentNode.style.width = "300px";
+        ctx2.canvas.parentNode.style.height = "300px";
+        const myChart2 = new Chart(ctx2, {
+            type: 'pie',
+            
+            data: {
+                
+                labels : [{% for item in labels2 %}"{{ item }}",{% endfor %}],
+                    datasets: [{
+                    label: "{{item}}",
+                    data : [{% for item in values2 %}{{ item }},{% endfor %}],
+                    backgroundColor: ['rgb(70, 194, 203)','rgb(242, 247, 161)']          
+                    }]
+                },
+            options: {
+                responsive: true,
+            }
+        });
+    </script>
+    <script>
+        const ctx3 = document.getElementById('my3Chart').getContext('2d');
+        ctx3.canvas.parentNode.style.width = "300px";
+        ctx3.canvas.parentNode.style.height = "300px";
+        const myChart3 = new Chart(ctx3, {
+            type: 'pie',
+            
+            data: {
+                
+            labels : [{% for item in labels3 %}"{{ item }}",{% endfor %}],
+                datasets: [{
+                label: "{{voting.name}}",
+                data : [{% for item in values3 %}{{ item }},{% endfor %}],
+                backgroundColor: ['rgb(242, 247, 161)','rgb(70, 194, 203)','rgb(69, 60, 103)']          
+                }]
+            },
+            options: {
+                responsive: true,
+            }
+        });
+    </script>
+    {% endblock %}
+   
+

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+{% endblock %}
+
+{% block content %}
+<div id="app-census-grouping">
+
+    {%if msg%}
+    <b-alert variant={{tipo}} show dismissible>
+        {{msg}}
+    </b-alert>
+    {%endif%}
+
+    <form action="/census/census_grouping/" method="post">
+        {% csrf_token %}
+
+        <div class="container-fluid">
+        <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+        <div class="card">
+            <article class="card-body">
+            <h4 class="card-title mb-4 mt-1 text-align-center text-center" id="page_title">{% trans 'Agrupar Censo' %}</h4>
+
+            <div class="mb-3 row">
+                <table class="table table-bordered table-striped mt-2">
+                    <thead  class="text-center">
+                        <tr>
+                            <th>{% trans 'Votación' %}</th>
+                            <th>{% trans 'Votante' %}</th>
+                            <th>{% trans 'Grupo' %}</th>
+                            <th>{% trans 'Selección' %}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        {% for censo in censos %}
+                        <tr>
+                            <td>{{censo.voting_id}}</td>
+                            <td>{{censo.voter}}</td>
+                            <td>{{censo.group}}</td>
+                            <td><input type="checkbox" id="choices" name="choices" value={{censo.id}}></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="group" class="col-sm-3 col-form-label mt-3">{% trans 'Grupo de censos:' %}</label>
+                <div class="col-sm-5 mt-3">
+                    <input class="form-control" id="group" name="group" placeholder="{% trans 'En blanco para quitar censo del grupo' %}">
+                </div>
+
+                <div class="form-group text-center col-sm-4 mt-3">
+                    <button type="submit" class="btn btn-primary btn-block" value="OK">{% trans 'Aceptar' %}</button>
+                </div>
+            </div>
+                  
+            </article>
+        </div>
+        </div>
+        </div>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+
+{% block extrabody %}
+    <!-- Vuejs -->    
+    <script>
+        new Vue({ el: '#app-census-grouping' }); 
+    </script>
+{% endblock %}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table{
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100 %;
+}
+td, th{
+    border: 1px solid  #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+tr:nth-child(even){
+    background-color:  #dddddd;
+}
+</style>
+</head>
+<body>
+<h1>Informe detallado de las estadísticas recogidas</h1>
+<h2>Usuarios de la aplicación</h2>
+<table>
+    <tr>
+    <th>Usuario</th>
+   </tr>
+    <tr>
+    <tr>
+    <td>iredomgar4</td>
+    </tr>
+    <tr>
+    <td>irene0</td>
+    </tr>
+    <tr>
+    <td>irene</td>
+    </tr>
+    <tr>
+    <td>test</td>
+    </tr>
+    <tr>
+    <td>decide</td>
+    </tr>
+</table>
+<h2>Porcentaje del censo</h2>
+<p>Se tomaron estadísticas para el porcentaje de personas que habían votado del total del censo disponible, no sólo se cuenta con conlos datos recogidos de encuestas ya cerradas si no tambíen con aquellas que siguen abiertas. Es por esto que el grado de sensibilidad de estos datos es alto y no deberán ser tranferidos a nadie.
+<p><p> En la tabla adjuntada a continuación se visualizan en la primera columna los identificadores de las votaciones y en otra el porcentaje total del censo que ha votado.
+<p><table>
+    <tr>
+    <th>Id de Votación</th>
+    <th>Porcentaje del censo</th>
+   </tr>
+    <tr>
+</table>
+<h2>Encuestas votadas</h2>
+<p>También se han recogido datos sobre las encuestas contestadas por usuario. Cabe recalcar que este datos se toma a partir de la implementación de este módulo en el sistema, las encuestas votadas previas a la misma estaŕan reflejadas en las estadísticas.
+<p><table>
+    <tr>
+    <th>Votante</th>
+    <th>Encuestas</th>
+   </tr>
+    <tr>
+</table>
+</body>
+</html>

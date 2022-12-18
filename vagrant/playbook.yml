@@ -3,15 +3,15 @@
 
   tasks:
     - include: packages.yml
-      tags: ["packages"]
+      tags: [ "packages" ]
     - include: user.yml
     - include: python.yml
-      tags: ["app"]
+      tags: [ "app" ]
     - include: files.yml
-      tags: ["files"]
+      tags: [ "files" ]
     - include: database.yml
-      tags: ["database"]
+      tags: [ "database" ]
     - include: django.yml
-      tags: ["django"]
+      tags: [ "django" ]
     - include: services.yml
-      tags: ["services"]
+      tags: [ "services" ]
