@@ -43,13 +43,10 @@ class CensusCreate(generics.ListCreateAPIView):
 
         try:
             group = None
-            if group_name.strip() == "":
-                census = Census(voting_id=voting_id, voter_id=voter_id)
-                census.save()
-            else:
+            if group_name is not None:
                 group = CensusGroup.objects.get(name=group_name)
-                census = Census(voting_id=voting_id, voter_id=voter_id, group=group)
-                census.save()
+            census = Census(voting_id=voting_id, voter_id=voter_id, group=group)
+            census.save()
         except CensusGroup.DoesNotExist:
             return Response('The input Census Group does not exist', status=ST_400)
         except IntegrityError:

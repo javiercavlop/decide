@@ -85,7 +85,7 @@ class DefMainpage(SequentialTaskSet):
     def on_quit(self):
         self.voter = None
 
-class DefCensos(SequentialTaskSet):
+class DefCensus(SequentialTaskSet):
     def on_start(self):
         with open('voters.json') as f:
             self.voters = json.loads(f.read())
@@ -100,12 +100,20 @@ class DefCensos(SequentialTaskSet):
         }).json()
 
     @task
+    def getuser(self):
+        self.usr= self.client.post("/authentication/getuser/", self.token).json()
+
+    @task
     def create_census(self):
+        headers = {
+            'Authorization': 'Token ' + self.token.get('token'),
+            'content-type': 'application/json'
+        }
         self.client.post("/census/api", json.dumps({
             "voting_id": VOTING,
-            "voter_id": self.usr.get('id'),
+            "voter_id": self.usr,
             "group":"loadtest"
-        }))
+        }), headers=headers)
 
     def on_quit(self):
         self.voter = None
@@ -125,3 +133,7 @@ class Mainpage(HttpUser):
     tasks = [DefMainpage]
     wait_time = between(3,5)
 
+class Census(HttpUser):
+    host = HOST
+    tasks = [DefCensus]
+    wait_time = between(3,5)
