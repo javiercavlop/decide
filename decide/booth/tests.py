@@ -10,9 +10,6 @@ from mixnet.models import Auth
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-import time
-
-# Create your tests here.
 class BoothPageTestCase(StaticLiveServerTestCase):
     def setUp(self):
         self.base = BaseTestCase()
@@ -37,14 +34,12 @@ class BoothPageTestCase(StaticLiveServerTestCase):
         a.save()
         v.auths.add(a)
         v.save()
-        password = 'qwerty' 
+        password = 'qwerty'
 
         u=User.objects.create_superuser('Enriqu', 'myemail@test.com', password)
 
         c=Census(voting_id=v.id,voter_id=u.id)
         c.save()
-
-
 
         options = webdriver.ChromeOptions()
         options.headless = False
