@@ -2,14 +2,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 import numpy
 
-GIVEN_SEATS = 4
+#GIVEN_SEATS = 4
 
-def d_hondt_ratio(votes, seats_taken):
+def __d_hondt_ratio(votes, seats_taken):
     #Cociente de D'Hondt a ser calculado para cada opción, para cada escaño
     ratio = votes / (seats_taken+1)
     return ratio
 
-def d_hondt_vote_count(tally, options):
+def __d_hondt_vote_count(tally, options):
     #Diccionario con una clave por opción, con el número de votos recibidos en los valores
     result = {}
     for option in options:
@@ -21,17 +21,24 @@ def d_hondt_vote_count(tally, options):
     return result
 
 def d_hondt(tally, given_seats, options):
+
+    #Comprobación para evitar bucles infinitos
+    if(given_seats <= 0):
+        raise ValueError(
+            "Invalid number of seats was given. Must be above 0"
+        )
+
     #Diccionario con una clave por opción, con el número de escaños asignados en los valores
     result = {}
     for option in options:
         result[option["number"]] = 0
     
-    votes = d_hondt_vote_count(tally, options)
+    votes = __d_hondt_vote_count(tally, options)
 
     #Memoria donde, para cada escaño, calcula el cociente de D'Hondt 
     ratio_dict = {}
     for option in options:
-        opt_ratio = d_hondt_ratio(votes[option["number"]],result[option["number"]])
+        opt_ratio = __d_hondt_ratio(votes[option["number"]],result[option["number"]])
         ratio_dict[option["number"]] = opt_ratio
 
     for i in range(given_seats):
@@ -43,7 +50,7 @@ def d_hondt(tally, given_seats, options):
 
         #Actualiza en la memoria únicamente el individuo ganador de esta iteración, excepto si se trata de la última
         if(i < given_seats-1):
-            ratio_dict[max_ratio_index] = d_hondt_ratio(votes[max_ratio_index], result[max_ratio_index])
+            ratio_dict[max_ratio_index] = __d_hondt_ratio(votes[max_ratio_index], result[max_ratio_index])
     
     return result
 
@@ -73,7 +80,7 @@ class PostProcView(APIView):
                 });
         elif(request != False and request.data.get("questionType") == "dhondt"):
 
-            votes_dict = d_hondt(aux, GIVEN_SEATS, options)
+            votes_dict = d_hondt(aux, request.data.get("seats"), options)
 
             for opt in options:
                 out.append({

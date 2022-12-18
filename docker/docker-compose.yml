@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.8.13'
 
 services:
   db:
@@ -11,12 +11,13 @@ services:
       - decide
     environment:
       - POSTGRES_PASSWORD=postgres
+
   web:
     restart: always
     container_name: decide_web
     image: decide_web:latest
     build: .
-    command: ash -c "python manage.py makemigrations && python manage.py migrate && python manage.py loaddata initial_data.json && gunicorn -w 5 decide.wsgi --timeout=500 -b 0.0.0.0:5000"
+    command: ash -c "python manage.py makemigrations && python manage.py migrate && python manage.py init_superuser && python manage.py loaddata initial_data.json && gunicorn -w 5 decide.wsgi --timeout=500 -b 0.0.0.0:5000"
     expose:
       - "5000"
     volumes:
@@ -25,6 +26,7 @@ services:
       - db
     networks:
       - decide
+
   nginx:
     restart: always
     container_name: decide_nginx
@@ -49,8 +51,9 @@ volumes:
 
 networks:
   decide:
+    name: decide
     driver: bridge
     ipam:
-     driver: default
-     config:
-       - subnet: 10.5.0.0/16
+      driver: default
+      config:
+        - subnet: 10.5.0.0/16
