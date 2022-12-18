@@ -13,25 +13,25 @@
     <div id="app-visualizer">
         <div class="voting">
 
-            <h1>Votación [[voting.id]]</h1>
+            <h1>{% trans 'Votación' %} [[voting.id]]</h1>
             <div class="container bg-gray w-35 p-4 my-4 rounded m-0">
                 <h2>[[ voting.name ]]</h2>
 
                 <!-- TRADUCCION -->
-                <h4 v-if="!voting.start_date">Votación no comenzada</h4>
+                <h4 v-if="!voting.start_date">{% trans 'Votación no comenzada' %}</h4>
                 <!-- TRADUCCION -->
-                <h4 v-else-if="!voting.end_date">Votación en curso</h4>
+                <h4 v-else-if="!voting.end_date">{% trans 'Votación en curso' %}</h4>
                 <div v-else>
                     <!-- TRADUCCION -->
-                    <h4 class="heading">Resultados:</h4>
+                    <h4 class="heading">{% trans 'Resultados' %}:</h4>
 
                     <table id="visualizer-table" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <!-- TRADUCCION -->
-                                <th>Opción</th>
-                                <th>Puntuación</th>
-                                <th>Votos</th>
+                                <th>{% trans 'Opción' %}</th>
+                                <th>{% trans 'Puntuación' %}</th>
+                                <th>{% trans 'Votos' %}</th>
                             </tr>
                         </thead>
                         <tbody>

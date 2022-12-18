@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-17 21:08+0000\n"
+"POT-Creation-Date: 2022-12-17 17:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,6 +54,23 @@ msgstr "Mot de passe"
 msgid "Password confirmation"
 msgstr "Confirmation mot de passe"
 
+#: authentication/templates/hello.html:18
+msgid "Hello"
+msgstr "Bonjour"
+
+#: authentication/templates/hello.html:20
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: authentication/templates/hello.html:21
+msgid "Ver Perfil"
+msgstr "Voir le profil"
+
+#: authentication/templates/hello.html:27
+#: authentication/templates/profile.html:116
+msgid "Sign in"
+msgstr "Se connecter"
+
 #: authentication/templates/profile.html:20
 msgid "Gestiona tu perfil"
 msgstr "Gérer votre profil"
@@ -77,12 +94,6 @@ msgstr "Fermer la session"
 #: authentication/templates/profile.html:102
 msgid "Delete account"
 msgstr "Supprimer le compte"
-
-#: authentication/templates/profile.html:116
-#, fuzzy
-#| msgid "Sign In"
-msgid "Sign in"
-msgstr "Commencer la session"
 
 #: authentication/templates/signin.html:11
 msgid "Sign In"

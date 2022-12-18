@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-17 21:08+0000\n"
+"POT-Creation-Date: 2022-12-17 17:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: base/templates/base.html:26
+msgid "Panel de control"
+msgstr "Dashboard"
+
+#: base/templates/base.html:29
+msgid "Censos"
+msgstr "Census"
+
+#: base/templates/base.html:32
+msgid "Votaciones"
+msgstr "Voting"
+
+#: base/templates/base.html:45
+msgid "Ver Perfil"
+msgstr "View Profile"
+
+#: base/templates/base.html:47
+msgid "Cerrar sesión"
+msgstr "Logout"
+
+#: base/templates/base.html:66
+msgid "Go"
+msgstr "Go"
 
 #: base/templates/mainpage.html:12
 msgid "Bienvenido a"

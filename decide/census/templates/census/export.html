@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% load i18n static %}
 <!--TRADUCCION--> <!--Teneis que traducir los mensaje de error que provienen de la gestion de errores  de la importación en census/views. Traducir tambien el html-->
 {% if messages %}
     {% for message in messages %}
@@ -15,18 +16,19 @@
     <div class="container">
       <div class="x_title col-12 mt-3 ml-2 mb-4">
         <!--TRADUCCION-->
-        <h1>Exportación de Censo</h1>
+        <h1>{% trans "Exportación de Censo" %}</h1>
       </div>
 
       
       <div class="row">         
         <div class="col-6 d-grid px-2">
           <!--TRADUCCION-->
-          <button type="submit" class="btn btn-success" >Exportar</button>
+          <button type="submit" class="btn btn-success" >{% trans "Exportar" %}</button>
         </div>
         <div class="col-6 d-grid px-2">
           <!--TRADUCCION-->
-          <input type="button"  class="btn btn-outline-dark" value="Volver atrás" onClick="history.go(-1);">
+          <input type="button"  class="btn btn-outline-dark" value="{% trans 'Volver atrás' %}" onClick="history.go(-1);">
+          
         </div>
  
         </div>                         

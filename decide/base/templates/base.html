@@ -23,13 +23,13 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto">
                         <li class="nav-item px-lg-4">
-                            <a class="nav-link {% if '/dashboard' in request.build_absolute_uri %}active{% endif %} text-uppercase text-expanded" href="/dashboard">Panel de control</a>
+                            <a class="nav-link {% if '/dashboard' in request.build_absolute_uri %}active{% endif %} text-uppercase text-expanded" href="/dashboard">{% trans 'Panel de control' %}</a>
                         </1i>
                         <li class="nav-item px-lg-4">
-                            <a class="nav-link {% if '/census' in request.build_absolute_uri %}active{% endif %} text-uppercase text-expanded" href="/census">Censos</a>
+                            <a class="nav-link {% if '/census' in request.build_absolute_uri %}active{% endif %} text-uppercase text-expanded" href="/census">{% trans 'Censos' %}</a>
                         </1i>
                         <li class="nav-item px-lg-4">
-                            <a class="nav-link {% if '/voting' in request.build_absolute_uri %}active{% endif %} text-uppercase text-expanded" href="/voting">Votaciones</a>
+                            <a class="nav-link {% if '/voting' in request.build_absolute_uri %}active{% endif %} text-uppercase text-expanded" href="/voting">{% trans 'Votaciones' %}</a>
                         </1i>
                     </ul>
                 </div>
@@ -42,9 +42,9 @@
                                 {{ user.get_username }}
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="id-dropdownMenuButton">
-                                <a class="dropdown-item" href="http://localhost:8000/authentication/profile" role="button">Ver Perfil</a>
+                                <a class="dropdown-item" href="http://localhost:8000/authentication/profile" role="button">{% trans 'Ver Perfil' %}</a>
                                 <li><hr class="dropdown-divider"></li>
-                                <a class="dropdown-item" href="http://localhost:8000/authentication/signout" role="button">Cerrar sesión</a>
+                                <a class="dropdown-item" href="http://localhost:8000/authentication/signout" role="button">{% trans 'Cerrar sesión' %}</a>
                             </ul>
                         </li>
                     </ul>
@@ -63,7 +63,7 @@
                                     </option>
                                 {% endfor %}
                             </select>
-                            <button type="submit" class="btn btn-primary" value="Go" id="change-language-button">Go</button>
+                            <button type="submit" class="btn btn-primary" id="change-language-button">{% trans 'Go' %}</button>
                         </div>
                     </form>
                 </div>

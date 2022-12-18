@@ -30,6 +30,7 @@ import math
 from django.http import HttpResponse
 import csv
 from django.contrib import messages
+from django.utils.translation import ugettext_lazy as _
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -123,17 +124,21 @@ def import_json(request):
                     census = Census(voting_id=d[0], voter_id=d[1],group=group)
                     census_from_json.append(census)
                 except CensusGroup.DoesNotExist:
-                    messages.error(request,'The input Census Group does not exist')
+                    message = _('The input Census Group does not exist')
+                    messages.error(request, message)
                     return render(request,"json.html")
             for c in census_from_json:
                 try:
                     c.save()
                 except IntegrityError:
-                    messages.error(request, 'Error trying to import JSON. A census cannot be repeated.')
+                    message = _('Error trying to import JSON. A census cannot be repeated.')
+                    messages.error(request, message)
                     return render(request,"json.html")
-            messages.success(request, 'Census created')
+            message = _('Census created')
+            messages.success(request, message)
     except:
-        messages.error(request, 'Error in JSON data.') 
+        message = _('Error in JSON data.')
+        messages.error(request, message) 
         return render(request,"json.html")
     return render(request,"json.html")
 
@@ -157,7 +162,8 @@ def import_csv(request):
                     census_from_csv.append(census)
                     cont+=1
                 except CensusGroup.DoesNotExist:
-                    messages.error(request, 'The input Census Group does not exist, in row {}'.format(cont-1))
+                    message = _("The input Census Group does not exist, in row {}").format(cont-1)
+                    messages.error(request, message)
                     return render(request, "csv.html")
             cont=0
             for c in census_from_csv:
@@ -165,12 +171,15 @@ def import_csv(request):
                     cont+=1
                     c.save()
                 except IntegrityError:
-                    messages.error(request, 'Error trying to import CSV, in row {}. A census cannot be repeated.'.format(cont))
+                    message = _("Error trying to import CSV, in row {}. A census cannot be repeated.").format(cont)
+                    messages.error(request, message)
                     return render(request,"csv.html")
-            messages.success(request, 'Census Created')
+            message=_("Census Created")
+            messages.success(request, message)
             return render(request,"csv.html")
     except:
-        messages.error(request, 'Error in CSV data. There are wrong data in row {}'.format(cont+1)) 
+        message=_('Error in CSV data. There are wrong data in row {}').format(cont+1)
+        messages.error(request, message) 
         return render(request,"csv.html")
     return render(request,"csv.html")
 
@@ -228,10 +237,12 @@ def export_excel(request):
             census_fields=census.values_list('voting_id','voter_id','group')
             for c in census_fields:
                 writer.writerow(c)
-            messages.success(request,"Exportado correctamente")
+            message = _("Exportado correctamente")
+            messages.success(request, message)
             return response
     except:
-            messages.error(request,'Error in exporting data. There are null data in rows')
+            message = _("Error in exporting data. There are null data in rows")
+            messages.error(request, message)
             return render(request, "census/export.html")
     return render(request,"census/export.html")
 

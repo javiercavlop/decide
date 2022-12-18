@@ -11,6 +11,8 @@ from selenium.webdriver.common.keys import Keys
 from base.tests import BaseTestCase
 from voting.models import Question, Voting, QuestionOption
 import time
+from django.contrib.auth.models import User
+
 
 
 class VisualizerTestCase(StaticLiveServerTestCase):
@@ -152,6 +154,7 @@ class VisualizerTestCase(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, "input:nth-child(4)").click()
         response = self.client.get(f'{self.live_server_url}/visualizer/{v.pk}/')        
         self.assertEqual(response.status_code, 404)
+
 class CensusPageTestCase(StaticLiveServerTestCase):
     def setUp(self):
         self.base = BaseTestCase()
@@ -196,3 +199,99 @@ class CensusPageTestCase(StaticLiveServerTestCase):
         time.sleep(5)
         self.assertTrue(len(self.driver.find_elements(By.ID,'app-visualizer'))==1)
         self.assertTrue(len(self.driver.find_elements(By.ID,'visualizer-table')) == 1)
+
+class visualizerTranslationCase(StaticLiveServerTestCase):
+    
+    def setUp(self):
+        #Load base test functionality for decide
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        q = Question(desc='test question')
+        q.save()
+        for i in range(5):
+            opt = QuestionOption(question=q, option='option {}'.format(i+1))
+            opt.save()
+        self.voting = Voting.objects.create(name='test voting', question=q)
+        self.voting.save()
+        
+
+        self.voting.create_pubkey()
+        self.voting.start_date = timezone.now()
+        time.sleep(5)
+        self.voting.end_date = timezone.now()
+        self.voting.save()
+
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+        super().setUp()
+        
+        self.test_user = User.objects.create_user(username='test_user', password='test_user_password')
+        
+        self.driver.get('{}/authentication/signin'.format(self.live_server_url))
+        username_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_username"))
+        username_field.send_keys('test_user')
+        password_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_password"))
+        password_field.send_keys('test_user_password')
+        
+        submit_login_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id-signin-btn"))
+        submit_login_button.click()
+        
+    def tearDown(self):           
+        super().tearDown()
+        self.driver.quit()
+
+        self.base.tearDown()
+        
+    def test_french_translation(self):
+        self.driver.set_window_size(1920,1080)
+        id_voting = Voting.objects.get(name='test voting').id
+        self.driver.get('{}/visualizer/{}'.format(self.live_server_url, id_voting))        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(4)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="#app-visualizer > div > h1"))
+        self.assertEqual(header_text.text, "Votement {}".format(id_voting))
+        
+    def test_german_translation(self):
+        self.driver.set_window_size(1920,1080)
+        id_voting = Voting.objects.get(name='test voting').id
+        self.driver.get('{}/visualizer/{}'.format(self.live_server_url, id_voting))  
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(3)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="#app-visualizer > div > h1"))
+        self.assertEqual(header_text.text, "Abstimmung {}".format(id_voting))
+    
+    def test_spanish_translation(self):
+        self.driver.set_window_size(1920,1080)
+        id_voting = Voting.objects.get(name='test voting').id
+        self.driver.get('{}/visualizer/{}'.format(self.live_server_url, id_voting))  
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(1)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="#app-visualizer > div > h1"))
+        self.assertEqual(header_text.text, "Votación {}".format(id_voting))
+
+    def test_english_translation(self):
+        self.driver.set_window_size(1920,1080)
+        id_voting = Voting.objects.get(name='test voting').id
+        self.driver.get('{}/visualizer/{}'.format(self.live_server_url, id_voting))  
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(2)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="#app-visualizer > div > h1"))
+        self.assertEqual(header_text.text, "Voting {}".format(id_voting))
