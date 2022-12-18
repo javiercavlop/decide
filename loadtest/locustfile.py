@@ -62,7 +62,7 @@ class DefVoters(SequentialTaskSet):
         self.voter = None
 
 class DefMainpage(SequentialTaskSet):
-    
+
     def on_start(self):
         with open('voters.json') as f:
             self.voters = json.loads(f.read())
