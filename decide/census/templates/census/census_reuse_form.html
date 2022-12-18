@@ -21,7 +21,7 @@
                 {% csrf_token %}
                 <div class="mb-3 row">
                     <div class="mb-3 row">
-                        <label for="voting_id" class="col-sm-5 col-form-label">{% trans "Votación origen:" %} </label>
+                        <label for="voting_id" class="col-sm-5 col-form-label" id="origin_voting">{% trans "Votación origen:" %} </label>
                         <div class="col-sm-7">
                             <input class="form-control" id="voting_id" name="voting_id" placeholder="{% trans 'Id de la votación a copiar' %}">
                         </div>

@@ -2,14 +2,14 @@
 {% load i18n static %}
 
 {% block extrahead %}
-    <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'booth/style.css' %}" />
 {% endblock %}
 
 {% block content %}
     <div id="app-visualizer">
         <div class="voting">
 
-            <h1>{% trans 'Votación' %} [[voting.id]]</h1>
+            <h1 id="voting_id_title">{% trans 'Votación' %} [[voting.id]]</h1>
             <div class="container bg-gray w-35 p-4 my-4 rounded m-0">
                 <h2>[[ voting.name ]]</h2>
 

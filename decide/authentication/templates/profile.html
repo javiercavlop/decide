@@ -113,7 +113,7 @@
     {% else %}
     <div class="container-md">
         {% csrf_token %}
-        <a class="btn btn-primary" href="http://localhost:8000/authentication/signin/" role="button">{% trans 'Sign in' %}</a>
+        <a class="btn btn-primary" href="/authentication/signin/" role="button">{% trans 'Sign in' %}</a>
     </div>
     
     {% endif %}
