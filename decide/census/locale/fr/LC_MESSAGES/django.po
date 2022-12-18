@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-18 12:30+0000\n"
+"POT-Creation-Date: 2022-12-18 05:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -197,15 +197,17 @@ msgstr "Le groupe de recensement saisi n'existe pas, à la ligne {}."
 #, fuzzy
 #| msgid "Error trying to import JSON. A census cannot be repeated."
 msgid "Error trying to import excel, in row"
-msgstr "Erreur lors de la tentative d'importation d'Excel, en ligne"
-"Erreur lors de l'importation du JSON. Un recensement ne peut pas être répété."
+msgstr ""
+"Erreur lors de la tentative d'importation d'Excel, en ligneErreur lors de "
+"l'importation du JSON. Un recensement ne peut pas être répété."
 
 #: census/views.py:93 census/views.py:216
 #, fuzzy
 #| msgid "Error trying to import JSON. A census cannot be repeated."
 msgid "A census cannot be repeated."
-msgstr "Un recensement ne peut pas être répété."
-"Erreur lors de l'importation du JSON. Un recensement ne peut pas être répété."
+msgstr ""
+"Un recensement ne peut pas être répété.Erreur lors de l'importation du JSON. "
+"Un recensement ne peut pas être répété."
 
 #: census/views.py:96 census/views.py:177 census/views.py:219
 msgid "Census Created"
@@ -215,8 +217,10 @@ msgstr "Recensement créé"
 #, fuzzy
 #| msgid "Error in CSV data. There are wrong data in row {}"
 msgid "Error in excel data. There are wrong data in row"
-msgstr "Erreur dans les données Excel. Il y a des données erronées dans la ligne"
-"Erreur dans les données CSV. Il y a des données erronées dans la ligne {}"
+msgstr ""
+"Erreur dans les données Excel. Il y a des données erronées dans la "
+"ligneErreur dans les données CSV. Il y a des données erronées dans la ligne "
+"{}"
 
 #: census/views.py:127
 msgid "The input Census Group does not exist"
@@ -224,8 +228,10 @@ msgstr "Le groupe de recensement saisi n'existe pas"
 
 #: census/views.py:134
 msgid "Error trying to import JSON. A census cannot be repeated."
-msgstr "Erreur lors de la tentative d'importation de JSON. Un recensement ne peut pas être répété."
-"Erreur lors de l'importation du JSON. Un recensement ne peut pas être répété."
+msgstr ""
+"Erreur lors de la tentative d'importation de JSON. Un recensement ne peut "
+"pas être répété.Erreur lors de l'importation du JSON. Un recensement ne peut "
+"pas être répété."
 
 #: census/views.py:137
 msgid "Census created"
@@ -241,13 +247,15 @@ msgstr "Le groupe de recensement saisi n'existe pas, à la ligne {}."
 
 #: census/views.py:174
 msgid "Error trying to import CSV, in row {}. A census cannot be repeated."
-msgstr "Erreur lors de la tentative d'importation de CSV, à la ligne {}. Un recensement ne peut pas être répété."
-"Erreur lors de l'importation du CSV, dans la ligne {}. Un recensement ne "
-"peut pas être répété."
+msgstr ""
+"Erreur lors de la tentative d'importation de CSV, à la ligne {}. Un "
+"recensement ne peut pas être répété.Erreur lors de l'importation du CSV, "
+"dans la ligne {}. Un recensement ne peut pas être répété."
 
 #: census/views.py:181
 msgid "Error in CSV data. There are wrong data in row {}"
-msgstr "Erreur dans les données CSV. Il y a des données erronées dans la ligne {}"
+msgstr ""
+"Erreur dans les données CSV. Il y a des données erronées dans la ligne {}"
 "Erreur dans les données CSV. Il y a des données erronées dans la ligne {}"
 
 #: census/views.py:240
@@ -256,9 +264,10 @@ msgstr "Exporté avec succès"
 
 #: census/views.py:244
 msgid "Error in exporting data. There are null data in rows"
-msgstr "Erreur lors de l'exportation des données. Il y a des données nulles dans les lignes"
-"Erreur dans l'exportation des données. Il y a des données nulles dans les "
-"lignes"
+msgstr ""
+"Erreur lors de l'exportation des données. Il y a des données nulles dans les "
+"lignesErreur dans l'exportation des données. Il y a des données nulles dans "
+"les lignes"
 
 #: census/views.py:297
 msgid "Entries must be integers"

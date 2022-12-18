@@ -26,13 +26,11 @@
 
         <b-alert :variant="alertLvl" dismissible v-model="alertShow">
             <!-- TRADUCCION -->
-            [[ alertMsg ]]
+             [[ alertMsg ]]
         </b-alert>
 
         <div class="voting">
             
-
-
             <!-- Register -->
             <b-form @submit="onSubmitLogin" class="w-50" v-if="signup">
                 <b-form-group label="{% trans "Username" %}" label-for="username">
@@ -52,29 +50,21 @@
                         required />
                 </b-form-group>
                 <!-- TRADUCCION -->
-                <b-button type="submit" variant="primary">{% trans "Login" %}</b-button>
+                <b-button type="submit" variant="primary">{% trans 'Login' %}</b-button>
             </b-form>
 
             <!-- Voting -->
             <div v-if="!signup">
-
-
-
-
-
-
-
-                
-                
+                             
                 {% if auxBorda%}
                 <div class="alert w-35 alert-warning alert-dismissible fade show" role="alert">
                     <!-- TRADUCCION -->
-                    <span>This votation has been configured as an ordenation, so you have to vote for each one of the options.</span>
+                    <span>{% trans 'This votation has been configured as an ordenation, so you have to vote for each one of the options.' %}</span>
                 </div>
                 {% endif %}
                 
                 <!-- TRADUCCION -->
-                <h1>Votación [[voting.id]]</h1>
+                <h1>{% trans 'Votación' %} [[voting.id]]</h1>
                 <div class="container bg-gray w-35 p-4 my-4 rounded m-0">
                 <h2>[[ voting.name ]]</h2>
                 <h4>[[ voting.question.desc ]]</h4>
@@ -88,7 +78,7 @@
                     </b-form-radio>
                 </b-form-group>
                 <b-button type="button" variant="primary" class="w-100 mt-4 h4"  v-on:click="decideSend" id="send">
-                    {% trans "Vote" %}
+                    {% trans 'Vote' %}
                 </b-button>
                 </b-form>
 
@@ -102,7 +92,7 @@
         {% if auxBorda%}
             <div class="container bg-gray w-35 p-4 my-4 rounded m-0">
             <!-- TRADUCCION -->
-            <h5>Order: </h5>
+            <h5>{% trans 'Order' %}: </h5>
             <div id="answers">
             </div>
             </div>
@@ -205,7 +195,7 @@
                             this.getUser();
                         })
                         .catch(error => {
-                            this.showAlert("danger", '{% trans "Error: " %}' + error);
+                            this.showAlert("danger", '{% trans "Error: {}" %}'.format(error))
                         });
                 },
                 getUser(evt) {
@@ -215,7 +205,7 @@
                             this.user = data;
                             this.signup = false;
                         }).catch(error => {
-                            this.showAlert("danger", '{% trans "Error: " %}' + error);
+                            this.showAlert("danger", '{% trans "Error: {}" %}'.format(error))
                         });
                 },
                 decideLogout(evt) {
@@ -272,10 +262,10 @@
                                 }
                                 this.postData("{% url "gateway" "store" "/" %}", data)
                                     .then(data => {
-                                        this.showAlert("success", '{% trans "Conglatulations. Your vote has been sent" %}');
+                                        this.showAlert("success", "{% trans 'Conglatulations. Your vote has been sent' %}");
                                     })
                                     .catch(error => {
-                                        this.showAlert("danger", '{% trans "Error: " %}' + error);
+                                        this.showAlert("danger", '{% trans "Error: {}" %}'.format(error))
                                     });
                             }
                         }
@@ -290,10 +280,10 @@
                         }
                         this.postData("{% url "gateway" "store" "/" %}", data)
                             .then(data => {
-                                this.showAlert("success", '{% trans "Conglatulations. Your vote has been sent" %}');
+                                this.showAlert("success", "{% trans 'Conglatulations. Your vote has been sent' %}");
                             })
                             .catch(error => {
-                                this.showAlert("danger", '{% trans "Error: " %}' + error);
+                                this.showAlert("danger", '{% trans "Error: {}" %}'.format(error))
                             });
                     }
                 },

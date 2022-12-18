@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-18 12:30+0000\n"
+"POT-Creation-Date: 2022-12-18 05:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -237,7 +237,8 @@ msgstr "La entrada Census Group no existe en la fila {}"
 
 #: census/views.py:174
 msgid "Error trying to import CSV, in row {}. A census cannot be repeated."
-msgstr "Error al tratar de importar el CSV, en fila {}. Un censo no puede repetirse."
+msgstr ""
+"Error al tratar de importar el CSV, en fila {}. Un censo no puede repetirse."
 
 #: census/views.py:181
 msgid "Error in CSV data. There are wrong data in row {}"
