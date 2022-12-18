@@ -4,7 +4,6 @@ from .models import Census,CensusGroup
 from base.tests import BaseTestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.keys import Keys
-from django.test import TestCase, Client
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -655,18 +654,18 @@ class CensusExportTestCase(TestCase):
 class CensusPageTestCase(StaticLiveServerTestCase):
     def setUp(self):
         self.base = BaseTestCase()
-        self.base.setUp() 
+        self.base.setUp()
 
         u = User(username='Jaime', is_staff=True)
         u.set_password('qwerty')
         u.save()
 
-        id = User.objects.get(username="Jaime").pk
+        v_id = User.objects.get(username="Jaime").pk
 
-        census = Census(voting_id=1, voter_id=id)
+        census = Census(voting_id=1, voter_id=v_id)
         census.save()
 
-        census2 = Census(voting_id=2, voter_id=id)
+        census2 = Census(voting_id=2, voter_id=v_id)
         census2.save()
 
         options = webdriver.ChromeOptions()

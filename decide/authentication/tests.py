@@ -1,9 +1,7 @@
-from urllib.request import HTTPBasicAuthHandler
 from base import mods
 from base.tests import BaseTestCase
 from django.contrib.auth.models import User
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.test import TestCase
 from postproc.models import UserProfile
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient, APITestCase
@@ -221,7 +219,7 @@ class TranslationCase(StaticLiveServerTestCase):
         change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
         change_language_button.click()
         username_label = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value=".container > h1"))
-        self.assertEqual(username_label.text, "Sign In") 
+        self.assertEqual(username_label.text, "Sign In")
 
 class GenreCase(BaseTestCase):
     def setUp(self):
