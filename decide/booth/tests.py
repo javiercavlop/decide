@@ -42,7 +42,7 @@ class BoothPageTestCase(StaticLiveServerTestCase):
         c.save()
 
         options = webdriver.ChromeOptions()
-        options.headless = False
+        options.headless = True
         self.driver = webdriver.Chrome(options=options)
 
     def tearDown(self):
@@ -53,7 +53,6 @@ class BoothPageTestCase(StaticLiveServerTestCase):
         self.user = None
 
     def test_dashboard_booth(self):
-        print(Voting.objects.get(id=1).id)
         self.driver.get(f'{self.live_server_url}/admin/voting/voting')
         self.driver.find_element(By.ID, "id_username").send_keys('Enriqu')
         self.driver.find_element(By.ID, "id_password").send_keys('password',Keys.ENTER)
