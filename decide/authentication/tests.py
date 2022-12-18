@@ -154,6 +154,8 @@ class AuthTestSelenium(StaticLiveServerTestCase):
         options = webdriver.ChromeOptions()
         options.headless = True
         self.driver = webdriver.Chrome(options=options)
+        self.driver.set_window_size(1920,1080)
+
     def tearDown(self):
     
         super().tearDown()
@@ -165,46 +167,46 @@ class AuthTestSelenium(StaticLiveServerTestCase):
         self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys("leslie")
         self.driver.find_element_by_id("id_password").send_keys("contraseña1")
-        self.driver.find_element_by_id("submit").click()
-        self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/hello/")
+        self.driver.find_element_by_id("id-signin-btn").click()
+        self.assertEqual(self.driver.current_url, f"{self.live_server_url}/")
 
     def test_login_by_email(self):
         self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys("leslie@us.es")
         self.driver.find_element_by_id("id_password").send_keys("contraseña1")
-        self.driver.find_element_by_id("submit").click()
-        self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/hello/")
+        self.driver.find_element_by_id("id-signin-btn").click()
+        self.assertEqual(self.driver.current_url, f"{self.live_server_url}/")
 
     def test_fail_password_login_by_username(self):
         self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys("leslie")
         self.driver.find_element_by_id("id_password").send_keys("no es mi contraseña")
-        self.driver.find_element_by_id("submit").click()
-        error = self.driver.find_element_by_id("error")
+        self.driver.find_element_by_id("id-signin-btn").click()
+        error = self.driver.find_element(By.CSS_SELECTOR,'div.alert')
         self.assertEqual(error.text, "Username or password is incorrect")
 
     def test_fail_password_login_by_email(self):
         self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys("leslie@us.es")
         self.driver.find_element_by_id("id_password").send_keys("no es mi contraseña")
-        self.driver.find_element_by_id("submit").click()
-        error = self.driver.find_element_by_id("error")
+        self.driver.find_element_by_id("id-signin-btn").click()
+        error = self.driver.find_element(By.CSS_SELECTOR,'div.alert')
         self.assertEqual(error.text, "Username or password is incorrect")
 
     def test_fail_username_login_by_username(self):
         self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys("niidea")
         self.driver.find_element_by_id("id_password").send_keys("contraseña1")
-        self.driver.find_element_by_id("submit").click()
-        error = self.driver.find_element_by_id("error")
+        self.driver.find_element_by_id("id-signin-btn").click()
+        error = self.driver.find_element(By.CSS_SELECTOR,'div.alert')
         self.assertEqual(error.text, "Username or password is incorrect")
 
     def test_fail_email_login_by_email(self):
         self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys("nosequieneres@us.es")
         self.driver.find_element_by_id("id_password").send_keys("contraseña1")
-        self.driver.find_element_by_id("submit").click()
-        error = self.driver.find_element_by_id("error")
+        self.driver.find_element_by_id("id-signin-btn").click()
+        error = self.driver.find_element(By.CSS_SELECTOR,'div.alert')
         self.assertEqual(error.text, "Username or password is incorrect")
 
 
@@ -212,21 +214,21 @@ class AuthTestSelenium(StaticLiveServerTestCase):
         self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys("")
         self.driver.find_element_by_id("id_password").send_keys("contraseña1")
-        self.driver.find_element_by_id("submit").click()
+        self.driver.find_element_by_id("id-signin-btn").click()
         self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/signin/")
 
     def test_empty_password_login_by_username(self):
         self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys("leslie")
         self.driver.find_element_by_id("id_password").send_keys("")
-        self.driver.find_element_by_id("submit").click()
+        self.driver.find_element_by_id("id-signin-btn").click()
         self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/signin/")
 
     def test_empty_password_login_by_username(self):
         self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys("leslie@us.es")
         self.driver.find_element_by_id("id_password").send_keys("")
-        self.driver.find_element_by_id("submit").click()
+        self.driver.find_element_by_id("id-signin-btn").click()
         self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/signin/")
 
     def test_empty_username_and_password_login(self):
@@ -234,7 +236,7 @@ class AuthTestSelenium(StaticLiveServerTestCase):
         self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys("")
         self.driver.find_element_by_id("id_password").send_keys("")
-        self.driver.find_element_by_id("submit").click()
+        self.driver.find_element_by_id("id-signin-btn").click()
         self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/signin/")
 
 class RegisterTestSelenium(StaticLiveServerTestCase):
@@ -254,6 +256,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
         options = webdriver.ChromeOptions()
         options.headless = True
         self.driver = webdriver.Chrome(options=options)
+        self.driver.set_window_size(1920,1080)
         
     def tearDown(self):
         super().tearDown()
@@ -262,7 +265,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
         
     def test_fail_register_by_blank(self):
         self.driver.get(f"{self.live_server_url}/authentication/signup/")
-        self.driver.find_element_by_class_name("btn").click()
+        self.driver.find_element_by_id("id-signup-btn").click()
         self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/signup/")
 
     def test_fail_register_username(self):
@@ -273,7 +276,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
         self.driver.find_element_by_id("id_email").send_keys("leslie@acme.com")
         self.driver.find_element_by_id("id_password1").send_keys("iamleslie1")
         self.driver.find_element_by_id("id_password2").send_keys("iamleslie1")
-        self.driver.find_element_by_class_name("btn").click()
+        self.driver.find_element_by_id("id-signup-btn").click()
         error = self.driver.find_element_by_class_name("alert")
         self.assertEqual(str(error.text).strip(), "Username already exists")
 
@@ -285,7 +288,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
         self.driver.find_element_by_id("id_email").send_keys("test@test.com")
         self.driver.find_element_by_id("id_password1").send_keys("iamleslie1")
         self.driver.find_element_by_id("id_password2").send_keys("iamleslie1")
-        self.driver.find_element_by_class_name("btn").click()
+        self.driver.find_element_by_id("id-signup-btn").click()
         error = self.driver.find_element_by_class_name("alert")
         self.assertEqual(str(error.text).strip(), "Email already exists")
 
@@ -297,7 +300,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
         self.driver.find_element_by_id("id_email").send_keys("leslie@acme.com")
         self.driver.find_element_by_id("id_password1").send_keys("iamleslie1")
         self.driver.find_element_by_id("id_password2").send_keys("iamleslie2")
-        self.driver.find_element_by_class_name("btn").click()
+        self.driver.find_element_by_id("id-signup-btn").click()
         error = self.driver.find_element_by_class_name("alert")
         self.assertEqual(str(error.text).strip(), "Passwords don't match")
 
@@ -309,7 +312,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
         self.driver.find_element_by_id("id_email").send_keys("leslie@acme.com")
         self.driver.find_element_by_id("id_password1").send_keys("leslie1")
         self.driver.find_element_by_id("id_password2").send_keys("leslie1")
-        self.driver.find_element_by_class_name("btn").click()
+        self.driver.find_element_by_id("id-signup-btn").click()
         error = self.driver.find_element_by_class_name("alert")
         self.assertEqual(str(error.text).strip(), "Password must be at least 8 characters")
 
@@ -321,7 +324,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
         self.driver.find_element_by_id("id_email").send_keys("leslie@acme.com")
         self.driver.find_element_by_id("id_password1").send_keys("iamleslie")
         self.driver.find_element_by_id("id_password2").send_keys("iamleslie")
-        self.driver.find_element_by_class_name("btn").click()
+        self.driver.find_element_by_id("id-signup-btn").click()
         error = self.driver.find_element_by_class_name("alert")
         self.assertEqual(str(error.text).strip(), "Password must contain at least one number")
         
@@ -333,7 +336,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
         self.driver.find_element_by_id("id_email").send_keys("leslie@acme.com")
         self.driver.find_element_by_id("id_password1").send_keys("12345678")
         self.driver.find_element_by_id("id_password2").send_keys("12345678")
-        self.driver.find_element_by_class_name("btn").click()
+        self.driver.find_element_by_id("id-signup-btn").click()
         error = self.driver.find_element_by_class_name("alert")
         self.assertEqual(str(error.text).strip(), "Password must contain at least one letter")
     
@@ -345,7 +348,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
         self.driver.find_element_by_id("id_email").send_keys("leslie@acme.com")
         self.driver.find_element_by_id("id_password1").send_keys("iamleslie1")
         self.driver.find_element_by_id("id_password2").send_keys("iamleslie1")
-        self.driver.find_element_by_class_name("btn").click()
+        self.driver.find_element_by_id("id-signup-btn").click()
         error = self.driver.find_element_by_class_name("alert")
         self.assertEqual(str(error.text).strip(), "Name must be capitalized")
     
@@ -357,7 +360,7 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
         self.driver.find_element_by_id("id_email").send_keys("leslie@acme.com")
         self.driver.find_element_by_id("id_password1").send_keys("iamleslie1")
         self.driver.find_element_by_id("id_password2").send_keys("iamleslie1")
-        self.driver.find_element_by_class_name("btn").click()
+        self.driver.find_element_by_id("id-signup-btn").click()
         error = self.driver.find_element_by_class_name("alert")
         self.assertEqual(str(error.text).strip(), "Surname must be capitalized")
         
@@ -369,8 +372,8 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
         self.driver.find_element_by_id("id_email").send_keys("leslie@acme.com")
         self.driver.find_element_by_id("id_password1").send_keys("contraseña1")
         self.driver.find_element_by_id("id_password2").send_keys("contraseña1")
-        self.driver.find_element_by_class_name("btn").click()
-        self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/hello/")
+        self.driver.find_element_by_id("id-signup-btn").click()
+        self.assertEqual(self.driver.current_url, f"{self.live_server_url}/")
         
     def test_register_authorise(self):
         self.driver.get(f"{self.live_server_url}/authentication/signup/")
@@ -378,9 +381,9 @@ class RegisterTestSelenium(StaticLiveServerTestCase):
         self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys("test")
         self.driver.find_element_by_id("id_password").send_keys("testpass1")
-        self.driver.find_element_by_id("submit").click()
+        self.driver.find_element_by_id("id-signin-btn").click()
         self.driver.get(f"{self.live_server_url}/authentication/signup/")
-        self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/hello/")
+        self.assertEqual(self.driver.current_url, f"{self.live_server_url}/")
 
 class UpdateTestSelenium(StaticLiveServerTestCase):
 
@@ -396,6 +399,8 @@ class UpdateTestSelenium(StaticLiveServerTestCase):
         u2 = User(username='test2', email='test2@test.com')
         u2.set_password('testpass2')
         u2.save()
+        up = UserProfile.objects.get_or_create(user=u1)
+        up2 = UserProfile.objects.get_or_create(user=u2)
 
         super().setUp()
         
@@ -412,25 +417,25 @@ class UpdateTestSelenium(StaticLiveServerTestCase):
         self.driver.get(f"{self.live_server_url}/authentication/signin/")
         self.driver.find_element_by_id("id_username").send_keys(username)
         self.driver.find_element_by_id("id_password").send_keys(password)
-        self.driver.find_element_by_id("submit").click()
+        self.driver.find_element_by_id("id-signin-btn").click()
 
     def test_fail_update_by_blank(self):
         self.login('test', 'testpass1')
         self.driver.get(f"{self.live_server_url}/authentication/profile/")
-        self.driver.find_element_by_id("id_username").clear()
-        self.driver.find_element_by_id("id_first_name").clear()
-        self.driver.find_element_by_id("id_last_name").clear()
-        self.driver.find_element_by_id("id_email").clear()
-        update_btn = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > div.container.py-5 > form > button"))
+        self.driver.find_element_by_id("username").clear()
+        self.driver.find_element_by_id("first_name").clear()
+        self.driver.find_element_by_id("last_name").clear()
+        self.driver.find_element_by_id("email").clear()
+        update_btn = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id-update-btn"))
         update_btn.click()
         self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/profile/")
 
     def test_fail_update_username(self):
         self.login('test', 'testpass1')
         self.driver.get(f"{self.live_server_url}/authentication/profile/")
-        self.driver.find_element_by_id("id_username").clear()
-        self.driver.find_element_by_id("id_username").send_keys("test2")
-        update_btn = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > div.container.py-5 > form > button"))
+        self.driver.find_element_by_id("username").clear()
+        self.driver.find_element_by_id("username").send_keys("test2")
+        update_btn = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id-update-btn"))
         update_btn.click()
         error = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > div.alert.alert-danger"))
         self.assertEqual(str(error.text).strip(), "Username already exists")
@@ -438,9 +443,9 @@ class UpdateTestSelenium(StaticLiveServerTestCase):
     def test_fail_update_email(self):
         self.login('test', 'testpass1')
         self.driver.get(f"{self.live_server_url}/authentication/profile/")
-        self.driver.find_element_by_id("id_email").clear()
-        self.driver.find_element_by_id("id_email").send_keys("test2@test.com")
-        update_btn = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > div.container.py-5 > form > button"))
+        self.driver.find_element_by_id("email").clear()
+        self.driver.find_element_by_id("email").send_keys("test2@test.com")
+        update_btn = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id-update-btn"))
         update_btn.click()
         error = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > div.alert.alert-danger"))
         self.assertEqual(str(error.text).strip(), "Email already exists")
@@ -448,9 +453,9 @@ class UpdateTestSelenium(StaticLiveServerTestCase):
     def test_fail_update_first_name(self):
         self.login('test', 'testpass1')
         self.driver.get(f"{self.live_server_url}/authentication/profile/")
-        self.driver.find_element_by_id("id_first_name").clear()
-        self.driver.find_element_by_id("id_first_name").send_keys("leslie")
-        update_btn = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > div.container.py-5 > form > button"))
+        self.driver.find_element_by_id("first_name").clear()
+        self.driver.find_element_by_id("first_name").send_keys("leslie")
+        update_btn = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id-update-btn"))
         update_btn.click()
         error = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > div.alert.alert-danger"))
         self.assertEqual(str(error.text).strip(), "Name must be capitalized")
@@ -458,9 +463,9 @@ class UpdateTestSelenium(StaticLiveServerTestCase):
     def test_fail_update_last_name(self):
         self.login('test', 'testpass1')
         self.driver.get(f"{self.live_server_url}/authentication/profile/")
-        self.driver.find_element_by_id("id_last_name").clear()
-        self.driver.find_element_by_id("id_last_name").send_keys("acme")
-        update_btn = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > div.container.py-5 > form > button"))
+        self.driver.find_element_by_id("last_name").clear()
+        self.driver.find_element_by_id("last_name").send_keys("acme")
+        update_btn = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id-update-btn"))
         update_btn.click()
         error = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > div.alert.alert-danger"))
         self.assertEqual(str(error.text).strip(), "Surname must be capitalized")
@@ -468,11 +473,11 @@ class UpdateTestSelenium(StaticLiveServerTestCase):
     def test_update(self):
         self.login('test', 'testpass1')
         self.driver.get(f"{self.live_server_url}/authentication/profile/")
-        self.driver.find_element_by_id("id_username").clear()
-        self.driver.find_element_by_id("id_username").send_keys("new_test")
-        update_btn = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="body > div > div.container.py-5 > form > button"))
+        self.driver.find_element_by_id("username").clear()
+        self.driver.find_element_by_id("username").send_keys("new_test")
+        update_btn = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id-update-btn"))
         update_btn.click()
-        self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/hello/")
+        self.assertEqual(self.driver.current_url, f"{self.live_server_url}/")
         
 
 username_user = 'usuario'
