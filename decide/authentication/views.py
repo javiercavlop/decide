@@ -131,15 +131,8 @@ class SignUpView(APIView):
                     'are_errors': are_errors
                     })
             else:
-                if request.POST['select'] == 'O':
-                    genre_type = UserProfile.OTHER
-                elif request.POST['select'] == 'M':
-                    genre_type = UserProfile.MALE
-                else:
-                    genre_type = UserProfile.WOMEN
+                
                 user = form.save()
-                genre = UserProfile(genre=genre_type, user=user)
-                genre.save()
                 Token.objects.create(user=user)
                 userProfile = UserProfile(genre = request.POST['genre'],user=user)
                 userProfile.save()
