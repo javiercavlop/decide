@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %} 
-
+<div id="app-signup">
 <div class="container-md">
 	<!--Register--> 
 	{% if errors %}
@@ -55,4 +55,10 @@
 
 </div>
 
+{% endblock %}
+
+{% block extrabody %}
+<script>
+  new Vue({ el: '#app-signup' }); 
+</script>
 {% endblock %}

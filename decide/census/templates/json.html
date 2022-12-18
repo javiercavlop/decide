@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div id="app-json">
 <!--TRADUCCION--> <!--Teneis que traducir los mensaje de error que provienen de la gestion de errores  de la importación en census/views. Traducir tambien el html-->
 
 {% if messages %}
@@ -48,5 +49,12 @@
 
   </form>
 </div>
+</div>
     
+{% endblock %}
+
+{% block extrabody %}
+<script>
+  new Vue({ el: '#app-json' }); 
+</script>
 {% endblock %}

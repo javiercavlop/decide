@@ -376,7 +376,7 @@ def census_grouping(request):
     msg=''
     tipo=''
     censos = Census.objects.all().values()
-    censuses = census_list(censos)
+    censuses = sorted(census_list(censos), key=lambda i: i['voting_id'])
 
     if request.method == 'POST':
         form = CensusGroupingForm(request.POST)
@@ -405,7 +405,7 @@ def census_grouping(request):
             msg="Cambios efectuados correctamente"
             tipo="success"
             form = CensusGroupingForm()
-            censuses = census_list(Census.objects.all().values())
+            censuses = sorted(census_list(Census.objects.all().values()), key=lambda i: i['voting_id'])
             return render(request,'census/census_grouping.html',{'form':form, 'censos': censuses, 'msg': msg, 'tipo': tipo})
         else:
             msg="Se debe seleccionar un censo como mínimo"
@@ -432,7 +432,7 @@ def census_details(request):
         except:
             msg="No se pudo eliminar el censo"
             tipo="danger"
-    census = census_list(censos)
+    census = sorted(census_list(censos), key=lambda i:i['id'])
     return render(request,'census/census_details.html',{'censos':census,'msg':msg,'tipo':tipo})
 
 def census_list(censos):

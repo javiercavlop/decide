@@ -2,14 +2,10 @@
 {% load i18n %}
 
 {% block extrahead %}
-    <link type="text/css" rel="stylesheet"
-         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-    <link type="text/css" rel="stylesheet"
-         href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
 {% endblock %}
 
 {% block content %}
-
+<div id="app-hello">
 {% if user.is_authenticated %}
 
 <div class="container-md">
@@ -28,5 +24,11 @@
 </div>
 
 {% endif %}
+</div>
+{% endblock %}
 
+{% block extrabody %}
+<script>
+  new Vue({ el: '#app-hello' }); 
+</script>
 {% endblock %}

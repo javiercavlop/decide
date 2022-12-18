@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block content %}
+<div id="app-signin">
 <div class="container">
   <h1 class="my-3">{% trans "Sign In" %}</h1>
 
@@ -72,4 +73,10 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block extrabody %}
+<script>
+  new Vue({ el: '#app-signin' }); 
+</script>
 {% endblock %}
