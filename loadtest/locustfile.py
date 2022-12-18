@@ -58,11 +58,10 @@ class DefVoters(SequentialTaskSet):
             "voting": VOTING
         }), headers=headers)
 
-
     def on_quit(self):
         self.voter = None
 
-class DefInicio(SequentialTaskSet):
+class DefMainpage(SequentialTaskSet):
     
     def on_start(self):
         with open('voters.json') as f:
@@ -74,7 +73,7 @@ class DefInicio(SequentialTaskSet):
         self.client.get("/")
 
     @task
-    def inicio(self):
+    def mainpage(self):
         username,pwd = self.voter
         self.token = self.client.post("/authentication/login/", {
             "username": username,
@@ -82,6 +81,31 @@ class DefInicio(SequentialTaskSet):
         }).json()
 
         self.client.get("/")
+
+    def on_quit(self):
+        self.voter = None
+
+class DefCensos(SequentialTaskSet):
+    def on_start(self):
+        with open('voters.json') as f:
+            self.voters = json.loads(f.read())
+        self.voter = choice(list(self.voters.items()))
+
+    @task
+    def login(self):
+        username, pwd = self.voter
+        self.token = self.client.post("/authentication/login/", {
+            "username": username,
+            "password": pwd,
+        }).json()
+
+    @task
+    def create_census(self):
+        self.client.post("/census/api", json.dumps({
+            "voting_id": VOTING,
+            "voter_id": self.usr.get('id'),
+            "group":"loadtest"
+        }))
 
     def on_quit(self):
         self.voter = None
@@ -96,7 +120,8 @@ class Voters(HttpUser):
     tasks = [DefVoters]
     wait_time= between(3,5)
 
-class Inicio(HttpUser):
+class Mainpage(HttpUser):
     host = HOST
-    tasks = [DefInicio]
+    tasks = [DefMainpage]
     wait_time = between(3,5)
+
