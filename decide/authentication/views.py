@@ -20,7 +20,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 
 from .serializers import UserSerializer, RegisterSerializer
-
+from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
 from postproc.models import UserProfile
@@ -82,42 +82,42 @@ class SignUpView(APIView):
             try:
                 user = User.objects.get(email=request.POST['email'])
                 if user:
-                    email_exists = "Email already exists"
+                    email_exists = _("Email already exists")
                     errors.append(email_exists)
             except User.DoesNotExist:
                 pass
             try:
                 user = User.objects.get(username=request.POST['username'])
                 if user:
-                    username_exists = "Username already exists"
+                    username_exists = _("Username already exists")
                     errors.append(username_exists)
             except User.DoesNotExist:
                 pass
             if request.POST['password1'] != request.POST['password2']:
-                differents_passwords = "Passwords don't match"
+                differents_passwords = _("Passwords don't match")
                 errors.append(differents_passwords)
             if len(request.POST['password1']) < 8:
-                short_password = "Password must be at least 8 characters"
+                short_password = _("Password must be at least 8 characters")
                 errors.append(short_password)
             if request.POST['password1'].isdigit():
-                only_numbers = "Password must contain at least one letter"
+                only_numbers = _("Password must contain at least one letter")
                 errors.append(only_numbers)
             if request.POST['password1'].isalpha():
-                only_letters = "Password must contain at least one number"
+                only_letters = _("Password must contain at least one number")
                 errors.append(only_letters)
             if request.POST['email'] == "":
-                no_email = "You must enter an email"
+                no_email = _("You must enter an email")
                 errors.append(no_email)
             if request.POST['username'] == "":
-                no_username = "You must enter a username"
+                no_username = _("You must enter a username")
                 errors.append(no_username)
             if request.POST['first_name'] != "":
                 if request.POST['first_name'][0].isupper() == False:
-                    name_not_capitalized = "Name must be capitalized"
+                    name_not_capitalized = _("Name must be capitalized")
                     errors.append(name_not_capitalized)
             if request.POST['last_name'] != "":
                 if request.POST['last_name'][0].isupper() == False:
-                    surname_not_capitalized = "Surname must be capitalized"
+                    surname_not_capitalized = _("Surname must be capitalized")
                     errors.append(surname_not_capitalized)
             form = NewUserForm(request.POST)
 
@@ -132,9 +132,9 @@ class SignUpView(APIView):
                     'are_errors': are_errors
                     })
             else:
-                if request.POST['select'] == 'O':
+                if request.POST['genre'] == 'O':
                     genre_type = UserProfile.OTHER
-                elif request.POST['select'] == 'M':
+                elif request.POST['genre'] == 'M':
                     genre_type = UserProfile.MALE
                 else:
                     genre_type = UserProfile.WOMEN
@@ -142,8 +142,6 @@ class SignUpView(APIView):
                 genre = UserProfile(genre=genre_type, user=user)
                 genre.save()
                 Token.objects.create(user=user)
-                userProfile = UserProfile(genre = request.POST['genre'],user=user)
-                userProfile.save()
                 login(request, user)
                 return redirect("main")
 
@@ -172,7 +170,7 @@ class SignInView(APIView):
 
                 return render(request, 'signin.html', {
                     'form' : LoginUserForm,
-                    'error': 'Username or password is incorrect'
+                    'error': _('Username or password is incorrect')
                 })
             else:
                 Token.objects.update_or_create(user=user)
@@ -212,7 +210,7 @@ class EditUserView(APIView):
                 try:
                     user = User.objects.get(email=request.POST['email'])
                     if user:
-                        email_exists = "Email already exists"
+                        email_exists = _("Email already exists")
                         errors.append(email_exists)
                 except User.DoesNotExist:
                     pass
@@ -220,7 +218,7 @@ class EditUserView(APIView):
                 try:
                     user = User.objects.get(username=request.POST['username'])
                     if user:
-                        username_exists = "Username already exists"
+                        username_exists = _("Username already exists")
                         errors.append(username_exists)
                 except User.DoesNotExist:
                     pass
@@ -228,33 +226,33 @@ class EditUserView(APIView):
                 account = SocialAccount.objects.get(user=request.user)
 
                 if request.user.email == account.user.email and request.POST['email'] != request.user.email:
-                    change_email = "You can't change your email"
+                    change_email = _("You can't change your email")
                     errors.append(change_email)
             except:
                 pass
 
             if request.POST['email'] == "":
-                no_email = "You must enter an email"
+                no_email = _("You must enter an email")
                 errors.append(no_email)
             if request.POST['username'] == "":
-                no_username = "You must enter a username"
+                no_username = _("You must enter a username")
                 errors.append(no_username)
             if request.POST['first_name'] != "":
                 if request.POST['first_name'][0].isupper() == False:
-                    name_not_capitalized = "Name must be capitalized"
+                    name_not_capitalized = _("Name must be capitalized")
                     errors.append(name_not_capitalized)
             if request.POST['last_name'] != "":
                 if request.POST['last_name'][0].isupper() == False:
-                    surname_not_capitalized = "Surname must be capitalized"
+                    surname_not_capitalized = _("Surname must be capitalized")
                     errors.append(surname_not_capitalized)
 
             are_errors = False
-
+            genre = UserProfile.objects.filter(user=request.user)
             form = UserEditForm(initial={'first_name': request.user.first_name,
                                             'last_name': request.user.last_name,
                                             'email': request.user.email,
                                             'username': request.user.username,
-                                            'genero':str(up.genre)})
+                                            'genero': genre})
 
             if len(errors) > 0:
                 are_errors = True
