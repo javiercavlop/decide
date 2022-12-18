@@ -6,6 +6,13 @@
   args:
     chdir: /home/decide/decide/decide
 
+- name: Database makemigrations
+  become: yes
+  become_user: decide
+  shell: ~/venv/bin/python manage.py makemigrations
+  args:
+    chdir: /home/decide/decide/decide
+
 - name: Database migration
   become: yes
   become_user: decide
@@ -13,9 +20,23 @@
   args:
     chdir: /home/decide/decide/decide
 
-- name: Admin superuser
+- name: Loaddata
   become: yes
   become_user: decide
-  shell: ~/venv/bin/python manage.py shell -c "from django.contrib.auth.models import User; User.objects.filter(username='admin') or User.objects.create_superuser('admin', 'admin@example.com', 'admin')"
+  shell: ~/venv/bin/python manage.py loaddata initial_data.json
+  args:
+    chdir: /home/decide/decide/decide
+
+- name: Init superuser
+  become: yes
+  become_user: decide
+  shell: ~/venv/bin/python manage.py init_superuser
+  args:
+    chdir: /home/decide/decide/decide
+
+- name: Compilemessages
+  become: yes
+  become_user: decide
+  shell: ~/venv/bin/python manage.py compilemessages
   args:
     chdir: /home/decide/decide/decide
