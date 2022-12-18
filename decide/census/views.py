@@ -61,7 +61,7 @@ class CensusCreate(generics.ListCreateAPIView):
 
     def list(self, request, *args, **kwargs):
         census = Census.objects.all().values_list('voting_id','voter_id', 'group')
-        return Response({'Current Censuses': census})
+        return Response({'Current_Censuses': census})
 
 @transaction.atomic
 @login_required(login_url='/authentication/signin/?next=/census/import_json')
@@ -209,20 +209,18 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
     serializer_class = CensusSerializer
 
     def destroy(self, request, voting_id, *args, **kwargs):
-        voter_id = request.user.id
-        try:
-            census = Census.objects.get(voting_id=voting_id, voter_id=voter_id)
-            census.delete()
-        except ObjectDoesNotExist:
-            return Response('The voter does not have census in this voting', status=ST_400)
-        return Response('Census deleted', status=ST_204)
+        voters = request.GET.get('voter_id')
+        census = Census.objects.filter(voting_id=voting_id, voter_id__in=voters)
+        census.delete()
+        return Response('Voter deleted from voting', status=ST_204)
 
     def retrieve(self, request, voting_id, *args, **kwargs):
-        voter_id = request.user.id
-        census = Census.objects.filter(voting_id=voting_id, voter_id=voter_id).values_list('voting_id','voter_id', 'group')
-        if not census.values().exists():
-            return Response('The voter does not have census in this voting', status=ST_400)
-        return Response({'Census': census})
+        voter = request.GET.get('voter_id')
+        try:
+            Census.objects.get(voting_id=voting_id, voter_id=voter)
+        except ObjectDoesNotExist:
+            return Response('Invalid voter', status=ST_401)
+        return Response('Valid voter')
 
 class CensusGroupCreate(generics.ListCreateAPIView):
     serializer_class = CensusGroupSerializer
