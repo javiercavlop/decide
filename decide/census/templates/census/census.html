@@ -2,24 +2,14 @@
 {% load i18n static %}
 
 {% block extrahead %}
-    <link type="text/css" rel="stylesheet"
-    href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-    <link type="text/css" rel="stylesheet"
-    href="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.css" />
-    <link type="text/css" rel="stylesheet" href="{% static "base/style.css" %}" />
 {% endblock %}
 
 
 {% block content %}
 <div id="app-census">
-    <!-- Navbar -->
-    <b-navbar toggleable="lg" type="dark" variant="dark">
-        <!-- TRADUCCION -->
-        <b-navbar-brand href="#">Decide</b-navbar-brand>
-        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-    </b-navbar>
 <div class="container-fluid">
 <div class="row align-middle">
+
 <div class="col-lg-6">
     <div class="row justify-content-center">
             <div class="col-md-10">
@@ -32,7 +22,7 @@
                 {% endfor %}
             </datalist>
 
-            <table class="table table-bordered table-striped mt-2">
+            <table class="table table-bordered table-striped mt-2" id="tabla-votacion">
                 <thead>
                     <tr>
                         <!-- TRADUCCION -->
@@ -43,7 +33,7 @@
                 </thead>
                 <tbody>
                     {% for censo in censos %}
-                    <tr>
+                    <tr id="{{censo.voting_id}}-{{censo.voter}}">
                         <th>{{censo.voting_id}}</th>
                         <th>{{censo.voter}}</th>
                         <th>{{censo.group}}<b-icon icon="x-square" class="ms-3" variant="danger"></b-icon></th>
@@ -52,13 +42,13 @@
                 </tbody>
             </table>
             </div>
-            </div>
+    </div>
 </div>
 
 <div class="col-lg-6 text-center my-3 mt-5">
     <div class="row my-3">
         <div class="d-grid gap-2 col-11 mx-auto">
-            <b-button size="lg" block variant="outline-success" href="/census/api">
+            <b-button size="lg" block variant="outline-success" href="/census/new">
                 <div class="row">
                     <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
                     <!-- TRADUCCION -->
@@ -69,7 +59,18 @@
     </div>
     <div class="row my-4">
         <div class="d-grid gap-2 col-11 mx-auto">
-            <b-button size="lg" block variant="outline-success" href="/voting">
+            <b-button size="lg" block variant="outline-success" href="/census/census_details">
+                <div class="row">
+                    <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
+                    <!-- TRADUCCION -->
+                    <div class="col-10 text-start">Detalles de Censos</div>
+                </div>
+            </b-button>
+        </div>
+    </div>
+    <div class="row my-4">
+        <div class="d-grid gap-2 col-11 mx-auto">
+            <b-button size="lg" block variant="outline-success" href="/census/census_grouping">
                 <div class="row">
                     <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
                     <!-- TRADUCCION -->
@@ -91,7 +92,7 @@
     </div>
     <div class="row my-4">
         <div class="d-grid gap-2 col-5 mx-auto">
-            <b-button size="lg" block variant="outline-success" href="/census">
+            <b-button size="lg" block variant="outline-success" href="/census/import_csv">
                 <div class="row">
                     <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
                     <!-- TRADUCCION -->
@@ -100,7 +101,7 @@
             </b-button>
         </div>
         <div class="d-grid gap-2 col-5 mx-auto">
-            <b-button size="lg" block variant="outline-success" href="/census">
+            <b-button size="lg" block variant="outline-success" href="/census/import_json">
                 <div class="row">
                     <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
                     <!-- TRADUCCION -->
@@ -111,7 +112,7 @@
     </div>
     <div class="row my-4">
         <div class="d-grid gap-2 col-5 mx-auto">
-            <b-button size="lg" block variant="outline-success" href="/census">
+            <b-button size="lg" block variant="outline-success" href="/census/import">
                 <div class="row">
                     <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
                     <!-- TRADUCCION -->
@@ -120,7 +121,7 @@
             </b-button>
         </div>
         <div class="d-grid gap-2 col-5 mx-auto">
-            <b-button size="lg" block variant="outline-success" href="/census">
+            <b-button size="lg" block variant="outline-success" href="/census/export">
                 <div class="row">
                     <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
                     <!-- TRADUCCION -->
@@ -130,19 +131,14 @@
         </div>
     </div>
 </div>
-</div>
 
+</div>
 </div>
 </div>
 {% endblock %}
 
 {% block extrabody %}
-     <!-- Vuejs -->
-     <script src="https://unpkg.com/vue@2.6/dist/vue.min.js"></script>
-     <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.min.js"></script>
-     <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
-     <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue-icons.min.js"></script>
-     
+     <!-- Vuejs -->     
      <script>
         new Vue({ el: '#app-census' });
      </script>

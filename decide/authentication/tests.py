@@ -1,15 +1,13 @@
-from urllib import response
 from base import mods
 from base.tests import BaseTestCase
 from django.contrib.auth.models import User
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.test import TestCase
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient, APITestCase
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.keys import Keys
+from postproc.models import UserProfile
 
 
 REGISTER_URL = '/authentication/api/register/'
@@ -238,7 +236,6 @@ class AuthTestSelenium(StaticLiveServerTestCase):
         self.driver.find_element_by_id("id_password").send_keys("")
         self.driver.find_element_by_id("submit").click()
         self.assertEqual(self.driver.current_url, f"{self.live_server_url}/authentication/signin/")
-
 
 class RegisterTestSelenium(StaticLiveServerTestCase):
 
@@ -612,3 +609,80 @@ class ApiUserTestCase(APITestCase):
         response = self.client.delete(f'{DELETE_URL}usuario')
         self.assertEqual(response.status_code, 400)
 
+class GenreCase(BaseTestCase):
+    def setUp(self):
+        self.client = APIClient()
+        mods.mock_query(self.client)
+        u = User(username='voter1')
+        u.set_password('123')
+        u.save()
+
+        up = UserProfile(user=u,genre="W")
+        up.save()
+
+        u2 = User(username='admin',email="d@gmail.com", is_staff=True)
+        u2.set_password('qwerty')
+        u2.is_superuser = True
+        u2.save()
+
+        up = UserProfile(user=u2,genre="W")
+        up.save()
+
+    def tearDown(self):
+        self.client = None
+
+    def test_signup(self):
+        data = {'username': 'user2', 'password1': '1234','password2': '1234', 'first_name':'Nombre','last_name':'Apellido','email':'correo@gmail.com','genre':'M'}
+        response = self.client.post('/authentication/signup/', data=data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_edit(self):
+        self.login()
+
+        user = User.objects.get(username="admin")
+
+        data = {'user':user,'genre':'W','email':'','first_name':'','last_name':'','username':'admin'}
+        response = self.client.post('/authentication/profile/',data=data, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+class AuthenticationViewsTestCase(StaticLiveServerTestCase):
+
+    def setUp(self) -> None:
+        self.base = BaseTestCase()
+        self.base.setUp()
+        super().setUp()
+
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+
+    def tearDown(self):           
+        super().tearDown()
+        self.driver.quit()
+
+        self.base.tearDown()
+
+    def test_register(self):
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/'.format(self.live_server_url))
+
+        self.driver.find_element(By.NAME,'username').send_keys('testuser')
+        self.driver.find_element(By.NAME,'first_name').send_keys('Test')
+        self.driver.find_element(By.NAME,'last_name').send_keys('User')
+        self.driver.find_element(By.NAME,'email').send_keys('testuser@notexistsemail.com')
+        self.driver.find_element(By.NAME,'password1').send_keys('aQwAm4n2')
+        self.driver.find_element(By.NAME,'password2').send_keys('aQwAm4n2')
+
+        self.driver.find_element(By.ID,'id-signup-btn').click()
+        self.assertEqual(self.driver.current_url,'{}/'.format(self.live_server_url))
+
+
+    def test_login(self):
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/authentication/signin/'.format(self.live_server_url))
+
+        self.driver.find_element(By.NAME,'username').send_keys('admin')
+        self.driver.find_element(By.NAME,'password').send_keys('qwerty')
+
+        self.driver.find_element(By.ID,'id-signin-btn').click()
+        self.assertEqual(self.driver.current_url,'{}/'.format(self.live_server_url))

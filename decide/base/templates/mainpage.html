@@ -2,61 +2,52 @@
 {% load i18n static %}
 
 {% block extrahead %}
-    <link type="text/css" rel="stylesheet"
-         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-    <link type="text/css" rel="stylesheet"
-         href="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.css" />
     <link type="text/css" rel="stylesheet" href="{% static "base/style.css" %}" />
 {% endblock %}
 
 
 {% block content %}
 <div id="app-main">
-    <!-- Navbar -->
-    <b-navbar toggleable="lg" type="dark" variant="dark">
-        <!-- TRADUCCION -->
-        <b-navbar-brand href="#">Decide</b-navbar-brand>
-        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-    </b-navbar>
-
     <div id="header" class="container text-center my-4">
         <!-- TRADUCCION -->
         <h1>Bienvenido a Decide</h1>
+        <hr class="border-3 border-top border-dark">
     </div>
 
     <div id="content" class="container">
         <div class="row">
 
-            <div class="col-lg-6 text-center my-3 mx-auto">
+            <div class="{% if user.is_staff %}col-lg-6{% else %}col-lg-12{% endif %} text-center my-3 mx-auto">
+                <div class="row">
+                    <div id="id-voting-panel" class="{% if user.is_staff %}col-lg-12{%else%}col-lg-6{%endif%}">
+                        <!-- TRADUCCION -->
+                        <h2>Si vienes a votar...</h2>
+                        <b-card header="Busca tu votación">
+                            <b-list-group class="voting-list my-3">
+                                {% for voting in voting_votings %}
+                                    <b-list-group-item id="voting-{{voting.pk}}" href="/booth/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
+                                {% endfor %}
+                            </b-list-group>
+                        </b-card>
+                    </div>
 
-                <div id="id-voting-panel" class="row">
-                    <!-- TRADUCCION -->
-                    <h2>Si vienes a votar...</h2>
-                    <b-card header="Busca tu votación">
-                        <b-list-group class="voting-list my-3">
-                            {% for voting in voting_votings %}
-                                <b-list-group-item href="/booth/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
-                            {% endfor %}
-                        </b-list-group>
-                    </b-card>
-                </div>
-
-                <div id="id-visualizer-panel" class="row my-3">
-                    <!-- TRADUCCION -->
-                    <h2>Si vienes a ver resultados...</h2>
-                    <b-card header="Busca tu votación">
-                        <b-list-group class="voting-list my-3">
-                            {% for voting in visualize_votings %}
-                                <b-list-group-item href="/visualizer/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
-                            {% endfor %}
-                        </b-list-group>
-                    </b-card>
+                    <div id="id-visualizer-panel" class="{% if user.is_staff %}col-lg-12 my-3{%else%}col-lg-6 my-lg-0 my-3{%endif%}">
+                        <!-- TRADUCCION -->
+                        <h2>Si vienes a ver resultados...</h2>
+                        <b-card header="Busca tu votación">
+                            <b-list-group class="voting-list my-3">
+                                {% for voting in visualize_votings %}
+                                    <b-list-group-item href="/visualizer/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
+                                {% endfor %}
+                            </b-list-group>
+                        </b-card>
+                    </div>
                 </div>
             </div>
 
 
 
-            {% if is_staff %}
+            {% if user.is_staff %}
             <div id="id-admin-panel" class="col-lg-6 text-center my-3 mx-auto">
                 <!-- TRADUCCION -->
                 <h2>Si eres administrador...</h2>
@@ -112,10 +103,6 @@
 {% endblock %}
 
 {% block extrabody %}
-<script src="https://unpkg.com/vue@2.6/dist/vue.min.js"></script>
-<script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.min.js"></script>
-<script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
-<script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue-icons.min.js"></script>
 
 <script>
     new Vue({ el: '#app-main' }); 

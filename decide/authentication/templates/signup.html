@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block extrahead %}
+{% endblock %}
+
+{% block content %} 
+<div id="app-signup">
+<div class="container-md">
+	<!--Register--> 
+	{% if errors %}
+		{% for error in errors%}
+			<div class="alert alert-danger" role="alert">
+				{{error}}
+			</div>
+		{% endfor %}
+	{% endif %}
+<div class="container py-5">
+	<!--TRADUCCION-->
+	<h1>Register</h1>
+	<form method="POST" class="form row">
+		{% csrf_token %}
+		{% for field in register_form %}
+		<div class="col-lg-6 mb-2">
+			{{ field.errors }}
+			<div class="fw-bold">
+				<!--TRADUCCION-->
+				{{ field.label_tag }}
+			</div>
+			{{ field }}
+			<div class="text-secondary">
+				<!--TRADUCCION-->
+				{{ field.help_text }}
+			</div>
+		</div>
+		{% endfor %}
+		
+		<div class="col-12">
+			<div class="col-lg-4 mx-auto my-3 d-grid">
+				<!--TRADUCCION-->
+				<button id="id-signup-btn" class="btn btn-primary" type="submit">Register</button>
+			</div>
+		</div>                    
+	</form>
+	
+	<div class="row">
+		<div class="col-lg-6 mx-auto">
+			<div class="row mx-2 mx-lg-0 my-4 py-2 border border-primary rounded">
+				<!--TRADUCCION-->
+				<p class="my-0">Already have an account? <a class="link-primary" href="{% url 'signin' %}">Log in</a></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+</div>
+
+{% endblock %}
+
+{% block extrabody %}
+<script>
+  new Vue({ el: '#app-signup' }); 
+</script>
+{% endblock %}

@@ -1,8 +1,7 @@
 from django.utils import timezone
 from django.utils.datastructures import MultiValueDictKeyError
 from rest_framework.authtoken.views import ObtainAuthToken
-from authentication.form import NewUserForm, UserEditForm
-import re
+from authentication.form import NewUserForm, UserEditForm, LoginUserForm
 from allauth.socialaccount.models import SocialAccount
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -15,19 +14,14 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
+from postproc.models import UserProfile
 from django.contrib.auth import  login, logout, authenticate
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.exceptions import ObjectDoesNotExist
-from django.conf import settings
-from django.contrib.auth import get_user_model
-from django.contrib.auth.backends import ModelBackend
-from django.db.models import Q
 
 from .serializers import UserSerializer, RegisterSerializer
-
 from django.conf import settings
-
 from postproc.models import UserProfile
 
 
@@ -80,27 +74,24 @@ class SignUpView(APIView):
     def register(request):
 
         if request.user.is_authenticated:
-            return redirect('hello')
-
+            return redirect('main')
+        
         if request.method == "POST":
-
             errors = []
-            if request.user.username != request.POST['username']:
-                try:
-                    user = User.objects.get(email=request.POST['email'])
-                    if user:
-                        email_exists = "Email already exists"
-                        errors.append(email_exists)
-                except User.DoesNotExist:
-                    pass
-            if request.user.username != request.POST['username']:
-                try:
-                    user = User.objects.get(username=request.POST['username'])
-                    if user:
-                        username_exists = "Username already exists"
-                        errors.append(username_exists)
-                except User.DoesNotExist:
-                    pass
+            try:
+                user = User.objects.get(email=request.POST['email'])
+                if user:
+                    email_exists = "Email already exists"
+                    errors.append(email_exists)
+            except User.DoesNotExist:
+                pass
+            try:
+                user = User.objects.get(username=request.POST['username'])
+                if user:
+                    username_exists = "Username already exists"
+                    errors.append(username_exists)
+            except User.DoesNotExist:
+                pass
             if request.POST['password1'] != request.POST['password2']:
                 differents_passwords = "Passwords don't match"
                 errors.append(differents_passwords)
@@ -140,23 +131,17 @@ class SignUpView(APIView):
                     'are_errors': are_errors
                     })
             else:
-                if request.POST['select'] == 'O':
-                    genre_type = UserProfile.OTHER
-                elif request.POST['select'] == 'M':
-                    genre_type = UserProfile.MALE
-                else:
-                    genre_type = UserProfile.WOMEN
+                
                 user = form.save()
-                genre = UserProfile(genre=genre_type, user=user)
-                genre.save()
                 Token.objects.create(user=user)
+                userProfile = UserProfile(genre = request.POST['genre'],user=user)
+                userProfile.save()
                 login(request, user)
-                return redirect("hello")
-
+                return redirect("main")
+            
         else:
             form = NewUserForm()
             return render(request, 'signup.html', {'register_form': form})
-
 
 class SignInView(APIView):
 
@@ -165,12 +150,12 @@ class SignInView(APIView):
     def sing_in(request):
 
         if request.user.is_authenticated:
-            return redirect('hello')
+            return redirect('main')
 
         if request.method == 'GET':
             
             return render(request, 'signin.html', {
-                'form' : AuthenticationForm
+                'form' : LoginUserForm
             })
         else:
             print(request.POST)
@@ -179,13 +164,17 @@ class SignInView(APIView):
             if user is None:
 
                 return render(request, 'signin.html', {
-                    'form' : AuthenticationForm,
+                    'form' : LoginUserForm,
                     'error': 'Username or password is incorrect'
                 })
             else:
                 Token.objects.update_or_create(user=user)
                 login(request, user)
-                return redirect('hello')
+
+                if 'next' in request.GET:
+                    return redirect(request.GET['next'])
+
+                return redirect('main')
 
     @staticmethod
     def hello(request):
@@ -205,6 +194,11 @@ class EditUserView(APIView):
 
     @staticmethod
     def edit(request):
+        if(str(request.user) == "AnonymousUser"):
+            request.user = User.objects.get(username=request.POST["user"])
+            up = UserProfile.objects.get(user=request.user)
+        else:
+            up = UserProfile.objects.get(user=request.user)
 
         if request.method == "POST":
 
@@ -253,15 +247,16 @@ class EditUserView(APIView):
             are_errors = False
 
             form = UserEditForm(initial={'first_name': request.user.first_name,
-                                            'last_name': request.user.last_name,
-                                            'email': request.user.email,
-                                            'username': request.user.username})
+                                            'last_name': request.user.last_name, 
+                                            'email': request.user.email, 
+                                            'username': request.user.username,
+                                            'genero':str(up.genre)})
 
             if len(errors) > 0:
                 are_errors = True
 
                 return render(request, 'profile.html', {
-                    'register_form':form ,
+                    'form':form ,
                     'errors': errors,
                     'are_errors': are_errors
                     })
@@ -273,27 +268,22 @@ class EditUserView(APIView):
                 user.email = request.POST['email']
                 user.username = request.POST['username']
                 user.save()
-                userprofile = UserProfile.objects.filter(user_id=request.user.id)[0]
-                if request.POST['select'] == UserProfile.MALE:
-                    userprofile.genre = UserProfile.MALE
-                elif request.POST['select'] == UserProfile.WOMEN:
-                    userprofile.genre = UserProfile.WOMEN
-                else:
-                    userprofile.genre = UserProfile.OTHER
-                userprofile.save()
-                return redirect('hello')
+
+                up.genre = request.POST['genre']
+                up.save()
+                return redirect('main')
         else:
 
             form = UserEditForm(initial={'first_name': request.user.first_name,
-                                            'last_name': request.user.last_name,
-                                            'email': request.user.email,
-                                            'username': request.user.username})
+                                            'last_name': request.user.last_name, 
+                                            'email': request.user.email, 
+                                            'username': request.user.username,
+                                            })
             userProfile = UserProfile.objects.get_or_create(user_id=request.user.id)[0]
-
+                                            
             return render (request, "profile.html", {
-                "register_form":form,
-                "genre": userProfile.genre,
-            })
+                "form":form, "genero":str(up.genre)})
+
 
 class DeleteUserView(APIView):
 
