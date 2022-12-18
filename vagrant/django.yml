@@ -33,3 +33,10 @@
   shell: ~/venv/bin/python manage.py init_superuser
   args:
     chdir: /home/decide/decide/decide
+
+- name: Compilemessages
+  become: yes
+  become_user: decide
+  shell: ~/venv/bin/python manage.py compilemessages
+  args:
+    chdir: /home/decide/decide/decide

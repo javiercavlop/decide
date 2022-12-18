@@ -22,3 +22,6 @@
       - m4
       - acl
       - libpango1.0-dev
+      - chromium-browser
+      - chromium-chromedriver
+      - gettext
