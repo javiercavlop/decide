@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-18 12:30+0000\n"
+"POT-Creation-Date: 2022-12-18 05:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -197,17 +197,17 @@ msgstr "Die eingegebene Zählungsgruppe existiert nicht, in Zeile {}"
 #, fuzzy
 #| msgid "Error trying to import JSON. A census cannot be repeated."
 msgid "Error trying to import excel, in row"
-msgstr "Fehler beim Importieren von Excel in Zeile"
-"Fehler beim Versuch, JSON zu importieren. Eine Zählung kann nicht wiederholt "
-"werden."
+msgstr ""
+"Fehler beim Importieren von Excel in ZeileFehler beim Versuch, JSON zu "
+"importieren. Eine Zählung kann nicht wiederholt werden."
 
 #: census/views.py:93 census/views.py:216
 #, fuzzy
 #| msgid "Error trying to import JSON. A census cannot be repeated."
 msgid "A census cannot be repeated."
-msgstr "Eine Volkszählung kann nicht wiederholt werden."
-"Fehler beim Versuch, JSON zu importieren. Eine Zählung kann nicht wiederholt "
-"werden."
+msgstr ""
+"Eine Volkszählung kann nicht wiederholt werden.Fehler beim Versuch, JSON zu "
+"importieren. Eine Zählung kann nicht wiederholt werden."
 
 #: census/views.py:96 census/views.py:177 census/views.py:219
 msgid "Census Created"
@@ -225,9 +225,10 @@ msgstr "Die eingegebene Zählungsgruppe existiert nicht"
 
 #: census/views.py:134
 msgid "Error trying to import JSON. A census cannot be repeated."
-msgstr "Fehler beim Versuch, JSON zu importieren. Eine Volkszählung kann nicht wiederholt werden."
-"Fehler beim Versuch, JSON zu importieren. Eine Zählung kann nicht wiederholt "
-"werden."
+msgstr ""
+"Fehler beim Versuch, JSON zu importieren. Eine Volkszählung kann nicht "
+"wiederholt werden.Fehler beim Versuch, JSON zu importieren. Eine Zählung "
+"kann nicht wiederholt werden."
 
 #: census/views.py:137
 msgid "Census created"
@@ -243,9 +244,10 @@ msgstr "Die eingegebene Zählungsgruppe existiert nicht, in Zeile {}"
 
 #: census/views.py:174
 msgid "Error trying to import CSV, in row {}. A census cannot be repeated."
-msgstr "Fehler beim Versuch, CSV zu importieren, in Zeile {}. Eine Volkszählung kann nicht wiederholt werden."
-"Fehler beim Versuch, CSV zu importieren, in Zeile {}. Eine Zählung kann "
-"nicht wiederholt werden."
+msgstr ""
+"Fehler beim Versuch, CSV zu importieren, in Zeile {}. Eine Volkszählung kann "
+"nicht wiederholt werden.Fehler beim Versuch, CSV zu importieren, in Zeile "
+"{}. Eine Zählung kann nicht wiederholt werden."
 
 #: census/views.py:181
 msgid "Error in CSV data. There are wrong data in row {}"
