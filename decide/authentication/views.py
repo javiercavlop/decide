@@ -288,7 +288,7 @@ class EditUserView(APIView):
                                             'last_name': request.user.last_name,
                                             'email': request.user.email,
                                             'username': request.user.username})
-            userProfile = UserProfile.objects.filter(user_id=request.user.id)[0]
+            userProfile = UserProfile.objects.get_or_create(user_id=request.user.id)[0]
 
             return render (request, "profile.html", {
                 "register_form":form,
