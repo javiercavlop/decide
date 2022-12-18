@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-18 11:16+0000\n"
+"POT-Creation-Date: 2022-12-18 12:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,19 +56,19 @@ msgstr "Passwort"
 msgid "Password confirmation"
 msgstr "Passwort Bestätigung"
 
-#: authentication/templates/hello.html:18
+#: authentication/templates/hello.html:17
 msgid "Hello"
 msgstr "Hallo"
 
-#: authentication/templates/hello.html:20
+#: authentication/templates/hello.html:18
 msgid "Logout"
 msgstr "Abmeldung"
 
-#: authentication/templates/hello.html:21
+#: authentication/templates/hello.html:19
 msgid "Ver Perfil"
 msgstr "Profil ansehen"
 
-#: authentication/templates/hello.html:27
+#: authentication/templates/hello.html:24
 #: authentication/templates/profile.html:116
 msgid "Sign in"
 msgstr "Einloggen"

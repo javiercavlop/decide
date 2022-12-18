@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-18 11:16+0000\n"
+"POT-Creation-Date: 2022-12-18 12:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,31 +22,31 @@ msgstr ""
 msgid "Votación"
 msgstr "Abstimmung"
 
-#: visualizer/templates/visualizer/visualizer.html:21
+#: visualizer/templates/visualizer/visualizer.html:20
 msgid "Votación no comenzada"
 msgstr "Abstimmung nicht begonnen"
 
-#: visualizer/templates/visualizer/visualizer.html:23
+#: visualizer/templates/visualizer/visualizer.html:21
 msgid "Votación en curso"
 msgstr "Abstimmung im Gange"
 
-#: visualizer/templates/visualizer/visualizer.html:26
+#: visualizer/templates/visualizer/visualizer.html:23
 msgid "Resultados"
 msgstr "Ergebnisse"
 
-#: visualizer/templates/visualizer/visualizer.html:32
+#: visualizer/templates/visualizer/visualizer.html:28
 msgid "Opción"
-msgstr "Option"
+msgstr "Möglichkeit"
 
-#: visualizer/templates/visualizer/visualizer.html:33
+#: visualizer/templates/visualizer/visualizer.html:29
 #, fuzzy
 #| msgid "Votación"
 msgid "Puntuación"
 msgstr "Abstimmung"
 
-#: visualizer/templates/visualizer/visualizer.html:34
+#: visualizer/templates/visualizer/visualizer.html:30
 msgid "Votos"
-msgstr ""
+msgstr "Stimmen"
 
 #~ msgid "Sign In"
 #~ msgstr "Einloggen"
