@@ -49,10 +49,10 @@ class CensusTestCase(BaseTestCase):
         self.login()
         response = self.client.get('/census/api?voting_id={}'.format(1), format='json')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'voters': [1]})
+        self.assertEqual(response.json(), {'Current_Censuses': [[1, 1, None]]})
 
     def test_add_new_voters_conflict(self):
-        data = {'voting_id': 1, 'voters': [1]}
+        data = {'voting_id': 1, 'voter_id': 1, 'group':{'name':''}}
         response = self.client.post('/census/api', data, format='json')
         self.assertEqual(response.status_code, 401)
 
@@ -65,33 +65,36 @@ class CensusTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 409)
 
     def test_add_new_voters(self):
-        data = {'voting_id': 2, 'voters': [1,2,3,4]}
-        response = self.client.post('/census/api', data, format='json')
-        self.assertEqual(response.status_code, 401)
+        old_census = Census.objects.count()
+        voters = [2,3,4,5]
+        for v in voters:
+            data = {'voting_id': 1, 'voter_id': v, 'group':{'name':''}}
+            response = self.client.post('/census/api', data, format='json')
+            self.assertEqual(response.status_code, 401)
 
-        self.login(user='noadmin')
-        response = self.client.post('/census/api', data, format='json')
-        self.assertEqual(response.status_code, 403)
+            self.login(user='noadmin')
+            response = self.client.post('/census/api', data, format='json')
+            self.assertEqual(response.status_code, 403)
 
-        self.login()
-        response = self.client.post('/census/api', data, format='json')
-        self.assertEqual(response.status_code, 201)
-        self.assertEqual(len(data.get('voters')), Census.objects.count() - 1)
+            self.login()
+            response = self.client.post('/census/api', data, format='json')
+            self.assertEqual(response.status_code, 201)
+            self.logout()
+        self.assertEqual(Census.objects.count(), old_census + len(voters))
 
     def test_destroy_voter(self):
-        data = {'voters': [1]}
-
         self.login()
-        response = self.client.delete('/census/api/{}/'.format(1), data, format='json')
+        response = self.client.delete('/census/api/{}/?voter_id={}'.format(1,1), format='json')
         self.assertEqual(response.status_code, 204)
         self.assertEqual(0, Census.objects.count())
     
     def test_add_new_voters_with_group(self):
-        data = {'voting_id': 1,'voters':[2],'group':{'name':'Test Group 1'}}
+        old_census = Census.objects.count()
+        data = {'voting_id': 1,'voter_id':2,'group':{'name':'Test Group 1'}}
         self.login()
         response = self.client.post('/census/api', data, format='json')
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(len(data.get('voters')), Census.objects.count() - 1)
+        self.assertEqual(Census.objects.count(), old_census + 1)
 
 class CensusGroupTestCase(BaseTestCase):
     def setUp(self):
