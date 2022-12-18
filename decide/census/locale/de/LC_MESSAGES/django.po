@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-18 11:16+0000\n"
+"POT-Creation-Date: 2022-12-18 12:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,61 +18,61 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: census/templates/census/census.html:22
+#: census/templates/census/census.html:21
 msgid "Lista de censos"
 msgstr "Liste der Volkszählungen"
 
-#: census/templates/census/census.html:23
+#: census/templates/census/census.html:22
 msgid "Escribe para buscar"
 msgstr "Schreiben Sie zum Suchen"
 
-#: census/templates/census/census.html:33
+#: census/templates/census/census.html:32
 #: census/templates/census/census_grouping.html:29
 msgid "Votación"
 msgstr "Abstimmung"
 
-#: census/templates/census/census.html:34
+#: census/templates/census/census.html:33
 #: census/templates/census/census_grouping.html:30
 msgid "Votante"
 msgstr "Wähler"
 
-#: census/templates/census/census.html:35
+#: census/templates/census/census.html:34
 #: census/templates/census/census_details.html:21
 #: census/templates/census/census_grouping.html:31
 msgid "Grupo"
 msgstr "Cluster"
 
-#: census/templates/census/census.html:58
+#: census/templates/census/census.html:57
 msgid "Crear Censo"
 msgstr "Volkszählung erstellen"
 
-#: census/templates/census/census.html:68
+#: census/templates/census/census.html:67
 msgid "Detalles de Censos"
 msgstr "Einzelheiten der Volkszählung"
 
-#: census/templates/census/census.html:78
+#: census/templates/census/census.html:77
 #: census/templates/census/census_details.html:46
 msgid "Agrupar Censos"
 msgstr "Gruppenzählungen"
 
-#: census/templates/census/census.html:88
+#: census/templates/census/census.html:87
 #: census/templates/census/census_details.html:43
 msgid "Reutilizar Censos"
 msgstr "Volkszählungen wiederverwenden"
 
-#: census/templates/census/census.html:98
+#: census/templates/census/census.html:97
 msgid "Importar Csv"
 msgstr "CSV importieren"
 
-#: census/templates/census/census.html:106
+#: census/templates/census/census.html:105
 msgid "Importar JSON"
 msgstr "JSON importieren"
 
-#: census/templates/census/census.html:116
+#: census/templates/census/census.html:115
 msgid "Importar Excel"
 msgstr "EXCEL importieren"
 
-#: census/templates/census/census.html:124
+#: census/templates/census/census.html:123
 msgid "Exportar Excel"
 msgstr "EXCEL exportieren"
 
@@ -141,16 +141,16 @@ msgstr "Abstimmung ziel:"
 msgid "Id de la votación deseada"
 msgstr "ID der gewünschten abstimmung"
 
-#: census/templates/census/export.html:19
+#: census/templates/census/export.html:17
 msgid "Exportación de Censo"
 msgstr "Excel-datei exportieren"
 
-#: census/templates/census/export.html:26
+#: census/templates/census/export.html:23
 msgid "Exportar"
 msgstr "Exportieren"
 
-#: census/templates/census/export.html:30 census/templates/csv.html:43
-#: census/templates/json.html:43
+#: census/templates/census/export.html:26 census/templates/csv.html:38
+#: census/templates/json.html:37
 msgid "Volver atrás"
 msgstr "Rückkehr"
 
@@ -162,8 +162,8 @@ msgstr "Excel-datei importieren"
 msgid "Introduzca un fichero con el formato .xlsx para importarlo:"
 msgstr "Geben Sie eine Datei im .xlsx-Format ein, um sie zu importieren:"
 
-#: census/templates/census/import.html:33 census/templates/csv.html:39
-#: census/templates/json.html:39
+#: census/templates/census/import.html:33 census/templates/csv.html:35
+#: census/templates/json.html:34
 msgid "Subir"
 msgstr "Hochladen"
 
@@ -171,21 +171,53 @@ msgstr "Hochladen"
 msgid "Volver"
 msgstr "Rückkehr"
 
-#: census/templates/csv.html:20
+#: census/templates/csv.html:18
 msgid "Importación Fichero CSV"
 msgstr "CSV-datei importieren"
 
-#: census/templates/csv.html:24
+#: census/templates/csv.html:21
 msgid "Introduzca un fichero con el formato .csv para importarlo"
 msgstr "Geben Sie eine Datei im .csv-Format ein, um sie zu importieren"
 
-#: census/templates/json.html:21
+#: census/templates/json.html:18
 msgid "Importación Fichero JSON"
 msgstr "JSON-datei importieren"
 
-#: census/templates/json.html:25
+#: census/templates/json.html:21
 msgid "Introduzca un fichero con el formato .json para importarlo"
 msgstr "Geben Sie eine Datei im .json-Format ein, um sie zu importieren"
+
+#: census/views.py:84 census/views.py:207
+#, fuzzy
+#| msgid "The input Census Group does not exist, in row {}"
+msgid "The input Census Group does not exist, in row"
+msgstr "Die eingegebene Zählungsgruppe existiert nicht, in Zeile {}"
+
+#: census/views.py:93 census/views.py:216
+#, fuzzy
+#| msgid "Error trying to import JSON. A census cannot be repeated."
+msgid "Error trying to import excel, in row"
+msgstr "Fehler beim Importieren von Excel in Zeile"
+"Fehler beim Versuch, JSON zu importieren. Eine Zählung kann nicht wiederholt "
+"werden."
+
+#: census/views.py:93 census/views.py:216
+#, fuzzy
+#| msgid "Error trying to import JSON. A census cannot be repeated."
+msgid "A census cannot be repeated."
+msgstr "Eine Volkszählung kann nicht wiederholt werden."
+"Fehler beim Versuch, JSON zu importieren. Eine Zählung kann nicht wiederholt "
+"werden."
+
+#: census/views.py:96 census/views.py:177 census/views.py:219
+msgid "Census Created"
+msgstr "Volkszählung Erstellt"
+
+#: census/views.py:100 census/views.py:223
+#, fuzzy
+#| msgid "Error in CSV data. There are wrong data in row {}"
+msgid "Error in excel data. There are wrong data in row"
+msgstr "Fehler in CSV-Daten. Es gibt falsche Daten in der Zeile {}"
 
 #: census/views.py:127
 msgid "The input Census Group does not exist"
@@ -193,7 +225,7 @@ msgstr "Die eingegebene Zählungsgruppe existiert nicht"
 
 #: census/views.py:134
 msgid "Error trying to import JSON. A census cannot be repeated."
-msgstr ""
+msgstr "Fehler beim Versuch, JSON zu importieren. Eine Volkszählung kann nicht wiederholt werden."
 "Fehler beim Versuch, JSON zu importieren. Eine Zählung kann nicht wiederholt "
 "werden."
 
@@ -211,13 +243,9 @@ msgstr "Die eingegebene Zählungsgruppe existiert nicht, in Zeile {}"
 
 #: census/views.py:174
 msgid "Error trying to import CSV, in row {}. A census cannot be repeated."
-msgstr ""
+msgstr "Fehler beim Versuch, CSV zu importieren, in Zeile {}. Eine Volkszählung kann nicht wiederholt werden."
 "Fehler beim Versuch, CSV zu importieren, in Zeile {}. Eine Zählung kann "
 "nicht wiederholt werden."
-
-#: census/views.py:177
-msgid "Census Created"
-msgstr "Volkszählung Erstellt"
 
 #: census/views.py:181
 msgid "Error in CSV data. There are wrong data in row {}"
@@ -230,3 +258,23 @@ msgstr "Korrekt exportiert"
 #: census/views.py:244
 msgid "Error in exporting data. There are null data in rows"
 msgstr "Fehler beim Exportieren von Daten. Es gibt null Daten in den Zeilen"
+
+#: census/views.py:297
+msgid "Entries must be integers"
+msgstr "Einträge müssen ganze Zahlen sein"
+
+#: census/views.py:317 census/views.py:330
+msgid "Censo creado con éxito"
+msgstr "Volkszählung erfolgreich erstellt"
+
+#: census/views.py:320 census/views.py:333 census/views.py:338
+msgid "No se ha podido crear el censo"
+msgstr "Volkszählung konnte nicht erstellt werden"
+
+#: census/views.py:434
+msgid "El votante todavía no ha sido añadido"
+msgstr "Der Wähler wurde noch nicht hinzugefügt"
+
+#: census/views.py:438
+msgid "No tiene grupo asignado"
+msgstr "Keine Gruppe zugeordnet"

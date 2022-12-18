@@ -81,7 +81,7 @@ def import_excel(request):
                     census_from_excel.append(census)
                     cont+=1
                 except CensusGroup.DoesNotExist:
-                    messages.error(request,'The input Census Group does not exist, in row {}'.format(cont-1))
+                    messages.error(request,_('The input Census Group does not exist, in row') + ' {}'.format(cont-1))
                     return render(request,"census/import.html")
 
             cont=0
@@ -90,14 +90,14 @@ def import_excel(request):
                     cont+=1
                     c.save()
                 except IntegrityError:
-                    messages.error(request, 'Error trying to import excel, in row {}. A census cannot be repeated.'.format(cont))
+                    messages.error(request, _('Error trying to import excel, in row') + ' {}. '.format(cont) + _('A census cannot be repeated.'))
                     return render(request,"census/import.html")
 
-            messages.success(request, 'Census Created')
+            messages.success(request, _('Census Created'))
             return render(request,"census/import.html")
 
     except:
-        messages.error(request, 'Error in excel data. There are wrong data in row {}'.format(cont+1)) 
+        messages.error(request, _('Error in excel data. There are wrong data in row') + ' {}'.format(cont+1)) 
         return render(request,"census/import.html")
 
     return render(request,"census/import.html")
@@ -204,7 +204,7 @@ def import_excel(request):
                     census_from_excel.append(census)
                     cont+=1
                 except CensusGroup.DoesNotExist:
-                    messages.error(request,'The input Census Group does not exist, in row {}'.format(cont-1))
+                    messages.error(request,_('The input Census Group does not exist, in row') + ' {}'.format(cont-1))
                     return render(request,"census/import.html")
 
             cont=0
@@ -213,14 +213,14 @@ def import_excel(request):
                     cont+=1
                     c.save()
                 except IntegrityError:
-                    messages.error(request, 'Error trying to import excel, in row {}. A census cannot be repeated.'.format(cont))
+                    messages.error(request, _('Error trying to import excel, in row') + ' {}. '.format(cont) + _('A census cannot be repeated.'))
                     return render(request,"census/import.html")
                     
-            messages.success(request, 'Census Created')
+            messages.success(request, _('Census Created'))
             return render(request,"census/import.html")
 
     except:
-        messages.error(request, 'Error in excel data. There are wrong data in row {}'.format(cont+1)) 
+        messages.error(request, _('Error in excel data. There are wrong data in row') + ' {}'.format(cont+1)) 
         return render(request,"census/import.html")
 
     return render(request,"census/import.html")
@@ -294,8 +294,7 @@ def censusReuse(request):
                                 pass
                 return redirect('/census')
             else:
-                # TRADUCCION
-                return render(request,'census/census_reuse_form.html',{'errors':['Entries must be integers']})
+                return render(request,'census/census_reuse_form.html',{'errors':[_('Entries must be integers')]})
     else:
         form = CensusReuseForm()
     return render(request,'census/census_reuse_form.html',{'form':form})
@@ -315,10 +314,10 @@ def censusCreation(request):
                 try:
                     census=Census(voting_id=voting_id,voter_id=voter_id)
                     census.save()
-                    msg="Censo creado con éxito"
+                    msg=_("Censo creado con éxito")
                     tipo="success"
                 except:
-                    msg="No se ha podido crear el censo"
+                    msg=_("No se ha podido crear el censo")
                     tipo="danger"
                     pass
                 return render(request,'census/census_create.html',{'form':form, 'msg':msg, 'tipo':tipo})
@@ -328,15 +327,15 @@ def censusCreation(request):
                 try:
                     census=Census(voting_id=voting_id,voter_id=voter_id,group_id=group_result.id)
                     census.save()
-                    msg="Censo creado con éxito"
+                    msg=_("Censo creado con éxito")
                     tipo="success"
                 except:
-                    msg="No se ha podido crear el censo"
+                    msg=_("No se ha podido crear el censo")
                     tipo="danger"
                     pass
                 return render(request,'census/census_create.html',{'form':form, 'msg':msg, 'tipo':tipo})
         else:
-            msg="No se ha podido crear el censo"
+            msg=_("No se ha podido crear el censo")
             tipo="danger"
             return render(request,'census/census_create.html',{'form':form, 'msg':msg, 'tipo':tipo})
     else:
@@ -432,12 +431,10 @@ def census_list(censos):
         try:
             votante = User.objects.get(pk=censo['voter_id'])
         except:
-            #       TRADUCCION
-            votante = "El votante todavía no ha sido añadido"
+            votante = _("El votante todavía no ha sido añadido")
         try:
             grupo = CensusGroup.objects.get(id=censo['group_id'])
         except:
-            #       TRADUCCION
-            grupo = "No tiene grupo asignado"
+            grupo = _("No tiene grupo asignado")
         res.append({'id': censo['id'],'voting_id':censo['voting_id'],'voter':votante,'group':grupo})
     return res
