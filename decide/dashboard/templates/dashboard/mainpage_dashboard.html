@@ -2,10 +2,6 @@
 {% load i18n static %}
 
 {% block extrahead %}
-    <link type="text/css" rel="stylesheet"
-         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-    <link type="text/css" rel="stylesheet"
-         href="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.css" />
     <link type="text/css" rel="stylesheet" href="{% static "base/style.css" %}" />
 {% endblock %}
 
@@ -86,11 +82,6 @@
 {% endblock %}
 
 {% block extrabody %}
-<script src="https://unpkg.com/vue@2.6/dist/vue.min.js"></script>
-<script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.min.js"></script>
-<script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
-<script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue-icons.min.js"></script>
-
 <script>
     new Vue({ el: '#app-main' }); 
 </script>

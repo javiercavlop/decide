@@ -1,6 +1,7 @@
 
 {% extends "base.html" %}
 {% block content %}
+<div id="app-export">
 <!--TRADUCCION--> <!--Teneis que traducir los mensaje de error que provienen de la gestion de errores  de la importación en census/views. Traducir tambien el html-->
 {% if messages %}
     {% for message in messages %}
@@ -36,5 +37,13 @@
 
   </form>
 </div>
+</div>
     
+{% endblock %}
+
+{% block extrabody %}
+     <!-- Vuejs -->     
+     <script>
+        new Vue({ el: '#app-export' });
+     </script>
 {% endblock %}

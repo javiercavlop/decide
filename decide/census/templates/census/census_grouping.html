@@ -2,15 +2,16 @@
 {% load i18n static %}
 
 {% block extrahead %}
-    <link type="text/css" rel="stylesheet"
-    href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-    <link type="text/css" rel="stylesheet"
-    href="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.css" />
-    <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
 {% endblock %}
 
 {% block content %}
 <div id="app-census-grouping">
+
+    {%if msg%}
+    <b-alert variant={{tipo}} show dismissible>
+        {{msg}}
+    </b-alert>
+    {%endif%}
 
     <form action="/census/census_grouping/" method="post">
         {% csrf_token %}
@@ -21,7 +22,7 @@
         <div class="card">
             <article class="card-body">
                                                                         <!--TRADUCCION-->
-            <h4 class="card-title mb-4 mt-1 text-align-center text-center">Agrupar Censo</h4>
+            <h4 class="card-title mb-4 mt-1 text-align-center text-center">Agrupar censos</h4>
 
             <div class="mb-3 row">
                 <table class="table table-bordered table-striped mt-2">
@@ -48,16 +49,16 @@
             </div>
 
             <div class="mb-3 row">                              <!--TRADUCCION-->
-                <label for="group" class="col-sm-3 col-form-label">Grupo de censos: </label>
-                <div class="col-sm-5">                                                 <!--TRADUCCION-->
+                <label for="group" class="col-sm-3 col-form-label mt-3">Grupo de censos: </label>
+                <div class="col-sm-5 mt-3">                                                 <!--TRADUCCION-->
                     <input class="form-control" id="group" name="group" placeholder="En blanco para quitar censo del grupo">
                 </div>
 
-                <div class="form-group text-center col-sm-4">                     <!--TRADUCCION-->
-                    <button type="submit" class="btn btn-primary btn-block" value="OK"> Aceptar </button>
+                <div class="form-group text-center col-sm-4 mt-3">                     <!--TRADUCCION-->
+                    <button type="submit" class="btn btn-primary btn-block" value="OK"> Agrupar </button>
                 </div>
-            </div>                                                        
-                
+            </div>
+                  
             </article>
         </div>
         </div>
@@ -71,12 +72,7 @@
 {% endblock %}
 
 {% block extrabody %}
-    <!-- Vuejs -->
-    <script src="https://unpkg.com/vue@2.6/dist/vue.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.min.js"></script>
-    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue-icons.min.js"></script>
-    
+    <!-- Vuejs -->    
     <script>
         new Vue({ el: '#app-census-grouping' }); 
     </script>

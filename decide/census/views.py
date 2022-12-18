@@ -248,6 +248,8 @@ def censusReuse(request):
     return render(request,'census/census_reuse_form.html',{'form':form})
 
 def censusCreation(request):
+    msg=''
+    tipo=''
     if request.method == 'POST':
         form=CensusForm(request.POST)
         
@@ -260,23 +262,33 @@ def censusCreation(request):
                 try:
                     census=Census(voting_id=voting_id,voter_id=voter_id)
                     census.save()
+                    msg="Censo creado con éxito"
+                    tipo="success"
                 except:
+                    msg="No se ha podido crear el censo"
+                    tipo="danger"
                     pass
-                return HttpResponseRedirect('/census')
+                return render(request,'census/census_create.html',{'form':form, 'msg':msg, 'tipo':tipo})
             else:
                 group_search=CensusGroup.objects.get_or_create(name=str(group))
                 group_result=get_object_or_404(CensusGroup,name=str(group_search[0]))
                 try:
                     census=Census(voting_id=voting_id,voter_id=voter_id,group_id=group_result.id)
                     census.save()
+                    msg="Censo creado con éxito"
+                    tipo="success"
                 except:
+                    msg="No se ha podido crear el censo"
+                    tipo="danger"
                     pass
-                return HttpResponseRedirect('/census')
+                return render(request,'census/census_create.html',{'form':form, 'msg':msg, 'tipo':tipo})
         else:
-            return Response('Error try to create census', status=ST_400)
+            msg="No se ha podido crear el censo"
+            tipo="danger"
+            return render(request,'census/census_create.html',{'form':form, 'msg':msg, 'tipo':tipo})
     else:
         form = CensusForm()
-    return render(request,'census/census_create.html',{'form':form})
+    return render(request,'census/census_create.html',{'form':form, 'msg':msg, 'tipo':tipo})
 
 def censusList(request):
     censos = Census.objects.all().values()
@@ -319,8 +331,10 @@ class CensusGroupDetail(generics.RetrieveDestroyAPIView):
         return Response('Valid group')
 
 def census_grouping(request):
-
+    msg=''
+    tipo=''
     censos = Census.objects.all().values()
+    censuses = sorted(census_list(censos), key=lambda i: i['voting_id'])
 
     if request.method == 'POST':
         form = CensusGroupingForm(request.POST)
@@ -342,25 +356,42 @@ def census_grouping(request):
                         census = Census(id=censo['id'], voting_id=censo['voting_id'], voter_id=censo['voter_id'], group=group)
                         census.save()
                 except:
-                    return Response('The group of census does not exist', status=ST_400)
-            return HttpResponseRedirect('/census')
+                    msg="El grupo no existe o se ha escrito de forma incorrecta"
+                    tipo="danger"
+                    form = CensusGroupingForm()
+                    return render(request,'census/census_grouping.html',{'form':form, 'censos': censuses, 'msg': msg, 'tipo': tipo})
+            msg="Cambios efectuados correctamente"
+            tipo="success"
+            form = CensusGroupingForm()
+            censuses = sorted(census_list(Census.objects.all().values()), key=lambda i: i['voting_id'])
+            return render(request,'census/census_grouping.html',{'form':form, 'censos': censuses, 'msg': msg, 'tipo': tipo})
         else:
-            return Response('You must select one census at least', status=ST_400)
+            msg="Se debe seleccionar un censo como mínimo"
+            tipo="danger"
+            form = CensusGroupingForm()
+            return render(request,'census/census_grouping.html',{'form':form, 'censos': censuses, 'msg': msg, 'tipo': tipo})
     else:
+        msg=''
+        tipo=''
         form = CensusGroupingForm()
-        census = census_list(censos)
-    return render(request,'census/census_grouping.html',{'form':form, 'censos': census})
+    return render(request,'census/census_grouping.html',{'form':form, 'censos': censuses, 'msg': msg, 'tipo': tipo})
 
 def census_details(request):
-
+    msg=''
+    tipo=''
     censos = Census.objects.all().values()
 
     if request.method == 'POST':
-        censo = Census.objects.filter(id = request.data.get('delete'))
-        censo.delete()
-
-    census = census_list(censos)
-    return render(request,'census/census_details.html',{'censos': census})
+        try:
+            censo = Census.objects.filter(id = request.POST['delete'])
+            censo.delete()
+            msg="Censo eliminado correctamente"
+            tipo="success"
+        except:
+            msg="No se pudo eliminar el censo"
+            tipo="danger"
+    census = sorted(census_list(censos), key=lambda i:i['id'])
+    return render(request,'census/census_details.html',{'censos':census,'msg':msg,'tipo':tipo})
 
 def census_list(censos):
     res = []
