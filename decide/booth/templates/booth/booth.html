@@ -12,17 +12,6 @@
 
 {% block content %}
     <div id="app-booth">
-        <!-- Navbar -->
-        <nav class="navbar px-5 navbar-dark bg-dark">
-            <!-- TRADUCCION -->
-            <b-navbar-brand tag="h1">Decide</b-navbar-brand>
-                <b-navbar-nav class="ml-auto" v-if="!signup">
-                        <b-nav-item right href="#" v-on:click="decideLogout">
-                            <!-- TRADUCCION -->
-                        {% trans "logout" %}
-                        </b-nav-item>
-                </b-navbar-nav>
-            </nav>
 
         <b-alert :variant="alertLvl" dismissible v-model="alertShow">
             <!-- TRADUCCION -->

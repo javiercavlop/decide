@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.db.utils import IntegrityError
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import render, redirect
 from django.shortcuts import render, get_object_or_404
 from rest_framework import generics
 from rest_framework.response import Response
@@ -15,17 +16,14 @@ from rest_framework.status import (
         HTTP_409_CONFLICT as ST_409
 )
 
-from rest_framework.permissions import IsAdminUser,IsAuthenticated
-from base.perms import UserIsStaff
+from rest_framework.permissions import IsAdminUser
 from .models import Census,CensusGroup
 from .forms import CensusReuseForm, CensusGroupingForm, CensusForm
 from .serializers import CensusGroupSerializer,CensusSerializer
 from django.shortcuts import render
-from rest_framework.decorators import api_view, permission_classes 
 
 from django.conf import settings
 import pandas as pd
-from rest_framework.decorators import api_view
 from django.db import transaction
 import math
 from django.http import HttpResponse
@@ -44,13 +42,10 @@ class CensusCreate(generics.ListCreateAPIView):
 
         try:
             group = None
-            if group_name.strip() == "":
-                census = Census(voting_id=voting_id, voter_id=voter_id)
-                census.save()
-            else:
+            if group_name is not None:
                 group = CensusGroup.objects.get(name=group_name)
-                census = Census(voting_id=voting_id, voter_id=voter_id, group=group)
-                census.save()
+            census = Census(voting_id=voting_id, voter_id=voter_id, group=group)
+            census.save()
         except CensusGroup.DoesNotExist:
             return Response('The input Census Group does not exist', status=ST_400)
         except IntegrityError:
@@ -66,7 +61,6 @@ class CensusCreate(generics.ListCreateAPIView):
 @transaction.atomic
 @login_required(login_url='/authentication/signin/?next=/census/import_json')
 def import_json(request):
-    cont=2
     try: 
         if request.method == 'POST':
             census_from_json=[]
@@ -138,7 +132,6 @@ def import_csv(request):
         return render(request,"csv.html")
     return render(request,"csv.html")
 
-
 @transaction.atomic
 @login_required(login_url='/authentication/signin/?next=/census/import')
 def import_excel(request):
@@ -181,7 +174,6 @@ def import_excel(request):
 
     return render(request,"census/import.html")
 
-
 @login_required(login_url='/authentication/signin/?next=/census/export')
 def export_excel(request):
     try:           
@@ -200,10 +192,6 @@ def export_excel(request):
             messages.error(request,'Error in exporting data. There are null data in rows')
             return render(request, "census/export.html")
     return render(request,"census/export.html")
-
-
-
-
 
 class CensusDetail(generics.RetrieveDestroyAPIView):
     serializer_class = CensusSerializer
@@ -236,7 +224,6 @@ class CensusGroupCreate(generics.ListCreateAPIView):
             return Response('Error try to create census', status=ST_409)
         return Response('Census created', status=ST_201)
 
-@api_view(['GET','POST'])
 def censusReuse(request):
     if request.method == 'POST':
             form = CensusReuseForm(request.POST)
@@ -252,14 +239,14 @@ def censusReuse(request):
                                 census.save()
                             except:
                                 pass
-                return HttpResponseRedirect('/census')
+                return redirect('/census')
             else:
-                return Response('Error try to create census', status=ST_400)
+                # TRADUCCION
+                return render(request,'census/census_reuse_form.html',{'errors':['Entries must be integers']})
     else:
         form = CensusReuseForm()
     return render(request,'census/census_reuse_form.html',{'form':form})
 
-@api_view(['GET','POST'])
 def censusCreation(request):
     if request.method == 'POST':
         form=CensusForm(request.POST)
@@ -291,8 +278,6 @@ def censusCreation(request):
         form = CensusForm()
     return render(request,'census/census_create.html',{'form':form})
 
-@api_view(['GET'])
-@permission_classes([IsAdminUser])
 def censusList(request):
     censos = Census.objects.all().values()
     res = []
@@ -317,7 +302,6 @@ def censusList(request):
         res.append({'voting_id':censo,'voter':votante,'group':grupo})
     return render(request,'census/census.html',{'censos':res, 'options':options})
 
-
 class CensusGroupDetail(generics.RetrieveDestroyAPIView):
     serializer_class = CensusGroupSerializer
     queryset = CensusGroup.objects.all()
@@ -334,7 +318,6 @@ class CensusGroupDetail(generics.RetrieveDestroyAPIView):
             return Response('Non-existent group', status=ST_401)
         return Response('Valid group')
 
-@api_view(['GET','POST'])
 def census_grouping(request):
 
     censos = Census.objects.all().values()
@@ -368,7 +351,6 @@ def census_grouping(request):
         census = census_list(censos)
     return render(request,'census/census_grouping.html',{'form':form, 'censos': census})
 
-@api_view(['GET','POST'])
 def census_details(request):
 
     censos = Census.objects.all().values()
