@@ -34,7 +34,7 @@ class BoothPageTestCase(StaticLiveServerTestCase):
         a.save()
         v.auths.add(a)
         v.save()
-        password = 'qwerty'
+        password = 'contra2001'
 
         u=User.objects.create_superuser('Enriqu', 'myemail@test.com', password)
 
@@ -52,10 +52,10 @@ class BoothPageTestCase(StaticLiveServerTestCase):
         self.census = None
         self.user = None
 
-    def test_visualizer_detail(self):
+    def test_dashboard_booth(self):
         print(Voting.objects.get(id=1).id)
         self.driver.get(f'{self.live_server_url}/admin/voting/voting')
         self.driver.find_element(By.ID, "id_username").send_keys('Enriqu')
-        self.driver.find_element(By.ID, "id_password").send_keys('qwerty',Keys.ENTER)
+        self.driver.find_element(By.ID, "id_password").send_keys('contra2001',Keys.ENTER)
         self.driver.get(f'{self.live_server_url}/')
         self.assertTrue(len(self.driver.find_elements(By.ID,'voting-1'))==1)
