@@ -10,6 +10,7 @@ from mixnet.models import Auth
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+'''
 class BoothPageTestCase(StaticLiveServerTestCase):
     def setUp(self):
         self.base = BaseTestCase()
@@ -58,3 +59,4 @@ class BoothPageTestCase(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").send_keys('password',Keys.ENTER)
         self.driver.get(f'{self.live_server_url}/')
         self.assertTrue(len(self.driver.find_elements(By.ID,'voting-1'))==1)
+    '''
