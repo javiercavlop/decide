@@ -41,7 +41,7 @@ class NewUserForm(UserCreationForm):
 
 	genre_choices = ((MALE, _('Men')), (WOMEN, _('Women')), (OTHER, _('Other')))
 
-	genre = forms.ChoiceField(choices = genre_choices, label=_('Genre'))
+	genre = forms.ChoiceField(choices = genre_choices, label=_('Genre'), widget=forms.Select(attrs={'class':'form-select'}))
 	
 	password1 = forms.CharField(label=_('Password'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
 	password2 = forms.CharField(label=_('Password confirmation'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
@@ -52,12 +52,6 @@ class NewUserForm(UserCreationForm):
 
 		widgets = {
 			'username': forms.TextInput(attrs={'class':'form-control'}),
-			'first_name': forms.TextInput(attrs={'class':'form-control'}),
-			'last_name': forms.TextInput(attrs={'class':'form-control'}),
-			'email': forms.EmailInput(attrs={'class':'form-control'}),
-			'password1': forms.TextInput(attrs={'class':'form-control'}),
-			'password2': forms.TextInput(attrs={'class':'form-control'}),
-			'genre': forms.Select(attrs={'class':'form-select'})
 		}
 
 	def save(self, commit=True):

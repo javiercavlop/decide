@@ -183,6 +183,7 @@ class CensusPageTestCase(StaticLiveServerTestCase):
         options = webdriver.ChromeOptions()
         options.headless = True
         self.driver = webdriver.Chrome(options=options)
+        self.driver.set_window_size(1920,1080)
 
     def tearDown(self):
         super().tearDown()

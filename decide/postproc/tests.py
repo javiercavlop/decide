@@ -170,13 +170,15 @@ class PostProcTestCase(APITestCase):
         response = self.client.post('/postproc/', data, format='json')
         self.assertEqual(response.data, Response([]).data)
 
-    def test_no_data_borda(self):
-        data = {}
+    def test_more_votes_borda(self):
+        data = {
+            'type': 'IDENTITY', 
+            'options': [{'option': 'Respuesta 1', 'number': 1, 'votes': 3}, {'option': 'Respuesta 2', 'number': 2, 'votes': 3}, {'option': 'Respuesta 3', 'number': 3, 'votes': 3}], 
+            'extra': [1, 3, 2, 3, 2, 1, 1, 3, 2, 8], 
+            'questionType': 'borda'}
 
-        response = self.client.post('/postproc/', data, format='json')
-        self.assertEqual(response.data, Response([]).data)
-
-
+        with self.assertRaises(KeyError):
+            self.client.post('/postproc/', data, format='json')
 
     #DHONDT API TESTS
     def test_positive_dhondt(self):

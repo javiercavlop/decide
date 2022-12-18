@@ -100,7 +100,6 @@ class Voting(models.Model):
         votes = mods.get('store', params={'voting_id': self.id}, HTTP_AUTHORIZATION='Token ' + token)
         return [i['voter_id'] for i in votes]
         
-    
     def get_paridad(self, userid):
         
         #Iniciamos el numero de votos a 0 antes de hacer el tally a la votación
@@ -123,7 +122,6 @@ class Voting(models.Model):
 
         return [num_votes_M, num_votes_W, num_votes_O]
         
-
     def tally_votes(self, token=''):
         '''
         The tally is a shuffle and then a decrypt
