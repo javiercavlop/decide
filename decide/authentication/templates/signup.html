@@ -16,7 +16,7 @@
 		{% endfor %}
 	{% endif %}
 <div class="container py-5">
-	<h1>{% trans 'Register' %}</h1>
+	<h1 id="register_page_title">{% trans 'Register' %}</h1>
 	<form method="POST" class="form row">
 		{% csrf_token %}
 		{% for field in register_form %}

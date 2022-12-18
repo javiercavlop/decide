@@ -22,7 +22,7 @@
     {% csrf_token %}
     <div class="row mb-3">
       <div class="col-md-6 form-group">
-        <label for="{{ form.username.id_for_label }}">{% trans 'Nombre de usuario' %}:</label>
+        <label id="username_label" for="{{ form.username.id_for_label }}">{% trans 'Nombre de usuario' %}:</label>
         {{ form.username }}
       </div>
       <div class="col-md-6 form-group">

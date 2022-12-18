@@ -31,9 +31,9 @@ class LoginUserForm(AuthenticationForm):
 
 class NewUserForm(UserCreationForm):
 
-	first_name = forms.CharField(max_length=30, required=False, help_text='Optional.', label=_('First name'))
-	last_name = forms.CharField(max_length=30, required=False, help_text='Optional.', label=_('Last name'))
-	email = forms.EmailField(required=True, label=_('Email'))
+	first_name = forms.CharField(max_length=30, required=False, help_text='Optional.', label=_('First name'), widget=forms.TextInput(attrs={'class':'form-control'}))
+	last_name = forms.CharField(max_length=30, required=False, help_text='Optional.', label=_('Last name'), widget=forms.TextInput(attrs={'class':'form-control'}))
+	email = forms.EmailField(required=True, label=_('Email'), widget=forms.TextInput(attrs={'class':'form-control'}))
 
 	MALE = 'M'
 	WOMEN = 'W'
@@ -43,8 +43,8 @@ class NewUserForm(UserCreationForm):
 
 	genre = forms.ChoiceField(choices = genre_choices, label=_('Genre'))
 	
-	password1 = forms.CharField(label=_('Password'), widget=forms.PasswordInput)
-	password2 = forms.CharField(label=_('Password confirmation'), widget=forms.PasswordInput)
+	password1 = forms.CharField(label=_('Password'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
+	password2 = forms.CharField(label=_('Password confirmation'), widget=forms.PasswordInput(attrs={'class':'form-control'}))
 
 	class Meta:
 		model = User
@@ -68,9 +68,9 @@ class NewUserForm(UserCreationForm):
 		return user
 
 class UserEditForm(forms.ModelForm):
-	first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-	last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-	email = forms.EmailField(required=True)
+	first_name = forms.CharField(max_length=30, required=False, help_text='Optional.', widget=forms.TextInput(attrs={'class':'form-control'}))
+	last_name = forms.CharField(max_length=30, required=False, help_text='Optional.', widget=forms.TextInput(attrs={'class':'form-control'}))
+	email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
 	MALE = 'M'
 	WOMEN = 'W'
 	OTHER = 'O'

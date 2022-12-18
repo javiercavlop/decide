@@ -279,7 +279,7 @@ class EditUserView(APIView):
                 else:
                     userprofile.genre = UserProfile.OTHER
                 userprofile.save()
-                return redirect('hello')
+                return redirect('main')
         else:
 
             form = UserEditForm(initial={'first_name': request.user.first_name,
