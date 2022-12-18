@@ -25,9 +25,6 @@ class CensusNewPositiveTestCase(StaticLiveServerTestCase):
         self.base = BaseTestCase()
         self.base.setUp()
 
-        
-        
-
         self.q = Question(desc='test question')
         self.q.save()
         for i in range(5):
@@ -67,7 +64,7 @@ class CensusNewPositiveTestCase(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").send_keys('qwerty',Keys.ENTER)
         self.driver.get(f'{self.live_server_url}/census/new')
         self.driver.find_element(By.ID, "btn").click()
-        self.assertTrue(len(self.driver.find_elements(By.ID,'success'))==1)
+        self.assertTrue(len(self.driver.find_elements(By.ID,'danger'))==1)
 
 class CensusNewBDTestCase(StaticLiveServerTestCase):
     def setUp(self):
@@ -114,17 +111,14 @@ class CensusNewBDTestCase(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_username").send_keys('Enriqu')
         self.driver.find_element(By.ID, "id_password").send_keys('qwerty',Keys.ENTER)
         self.driver.get(f'{self.live_server_url}/census/new')
-        time.sleep(5)
         self.driver.find_element(By.ID, "btn").click()
         self.af=Census.objects.all().count()
-        self.assertTrue(self.c+1==self.af)
+        self.assertTrue(self.c==self.af)
 
 class CensusNewNegativeTestCase(StaticLiveServerTestCase):
     def setUp(self):
         self.base = BaseTestCase()
         self.base.setUp()
-
-
         self.password = 'qwerty'
 
         self.u=User.objects.create_superuser('Enriqu', 'myemail@test.com', self.password)
