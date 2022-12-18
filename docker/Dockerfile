@@ -8,6 +8,7 @@ RUN apk add --no-cache gcc g++ make libffi-dev python3-dev build-base
 RUN apk add py3-pip py3-pillow py3-cffi py3-brotli gcc musl-dev python3-dev pango
 RUN apk add chromium
 RUN apk add chromium-chromedriver
+RUN apk add gettext
 
 RUN pip install gunicorn
 RUN pip install ipdb
@@ -16,7 +17,6 @@ RUN pip install ipython
 WORKDIR /app
 
 RUN git clone https://github.com/egc-decide-trebujena/decide.git .
-RUN git checkout develop
 RUN git pull
 RUN echo "$(<requirements.txt)"s
 RUN pip install -U pip
