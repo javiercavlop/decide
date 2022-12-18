@@ -24,12 +24,12 @@
     <div class="card">
         <article class="card-body">
 
-        <h4 class="card-title mb-4 mt-1 text-align-center text-center">Crear Censo</h4>
+        <h4 class="card-title mb-4 mt-1 text-align-center text-center">{% trans 'Crear Censo' %}</h4>
             <form action="/census/new/" method="post">
                 {% csrf_token %}
                 {{form}}
             <div class="form-group mt-4 text-center">
-                <button type="submit" class="btn btn-primary btn-block" value="OK">Crear censo</button>
+                <button type="submit" class="btn btn-primary btn-block" value="OK">{% trans 'Crear Censo' %}</button>
             </div> <!-- form-group// -->                                                           
         </form>
         </article>
