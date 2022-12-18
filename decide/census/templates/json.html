@@ -2,8 +2,6 @@
 {% load i18n static %}
 
 {% block content %}
-<!--TRADUCCION--> <!--Teneis que traducir los mensaje de error que provienen de la gestion de errores  de la importación en census/views. Traducir tambien el html-->
-
 {% if messages %}
     {% for message in messages %}
     <div {% if message.tags == 'error' %} class="alert alert-danger" {% elif message.tags == 'success' %} class="alert alert-success"{% endif %}  role="alert">
@@ -17,11 +15,9 @@
  
     <div class="container">
       <div class="x_title col-12 mt-3 ml-2 mb-4">
-        <!--TRADUCCION-->
         <h1>{% trans 'Importación Fichero JSON' %}</h1>
       </div>
       <div class="col-12">
-        <!--TRADUCCION-->
         <p>{% trans 'Introduzca un fichero con el formato .json para importarlo' %}: </p>
       </div>
       
@@ -35,11 +31,9 @@
         <div class="col-lg-4">
           <div class="row">
             <div class="col-6 d-grid px-2">
-              <!--TRADUCCION--> 
               <button type="submit" class="btn btn-success" id="id-submit-import">{% trans 'Subir' %}</button>   
             </div>
             <div class="col-6 d-grid px-2">
-              <!--TRADUCCION-->
               <input type="button"  class="btn btn-outline-dark" value="{% trans 'Volver atrás' %}" onClick="history.go(-1);">
             </div>
           </div>

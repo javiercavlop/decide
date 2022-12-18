@@ -14,16 +14,13 @@
 
 <div class="container-md">
   {% csrf_token %}
-  <!--Traducir--> 
   <h1>{% trans 'Hello' %}, {{user.username}}</h1>
-  <!--Traducir--> 
   <a class="btn btn-primary" href="http://localhost:8000/authentication/signout" role="button">{% trans 'Logout' %}</a>
   <a class="btn btn-primary" href="http://localhost:8000/authentication/profile" role="button">{% trans 'Ver Perfil' %}</a>
 </div>
 {% else %}
 <div class="container-md">
   {% csrf_token %}
-  <!--Traducir--> 
   <a class="btn btn-primary" href="http://localhost:8000/authentication/signin/" role="button">{% trans 'Sign in' %}</a>
 </div>
 
