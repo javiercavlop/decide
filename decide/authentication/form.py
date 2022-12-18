@@ -29,9 +29,9 @@ class LoginUserForm(AuthenticationForm):
     )
 	
 class NewUserForm(UserCreationForm):
-	first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-	last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-	email = forms.EmailField(required=True)
+	first_name = forms.CharField(max_length=30, required=False, help_text='Optional.', widget=forms.TextInput(attrs={'class':'form-control'}))
+	last_name = forms.CharField(max_length=30, required=False, help_text='Optional.', widget=forms.TextInput(attrs={'class':'form-control'}))
+	email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
 
 	MALE = 'M'
 	WOMEN = 'W'
@@ -39,10 +39,10 @@ class NewUserForm(UserCreationForm):
 
 	genre_choices = ((MALE, 'Hombre'), (WOMEN, 'Mujer'), (OTHER, 'Otro'))
 
-	genre = forms.ChoiceField(choices = genre_choices)
+	genre = forms.ChoiceField(choices = genre_choices, widget=forms.Select(attrs={'class':'form-select'}))
 	
-	password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-	password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+	password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class':'form-control'}))
+	password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput(attrs={'class':'form-control'}))
 
 	class Meta:
 		model = User
@@ -50,12 +50,6 @@ class NewUserForm(UserCreationForm):
 
 		widgets = {
 			'username': forms.TextInput(attrs={'class':'form-control'}),
-			'first_name': forms.TextInput(attrs={'class':'form-control'}),
-			'last_name': forms.TextInput(attrs={'class':'form-control'}),
-			'email': forms.EmailInput(attrs={'class':'form-control'}),
-			'password1': forms.TextInput(attrs={'class':'form-control'}),
-			'password2': forms.TextInput(attrs={'class':'form-control'}),
-			'genre': forms.Select(attrs={'class':'form-select'})
 		}
 
 	def save(self, commit=True):

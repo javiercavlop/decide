@@ -4,6 +4,10 @@ from .models import Census,CensusGroup
 from base.tests import BaseTestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.keys import Keys
+from django.test import TestCase, Client
+from voting.models import Voting, Question, QuestionOption
+from mixnet.models import Auth
+from django.utils import timezone
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -14,6 +18,129 @@ import os
 import csv
 import json
 import xlsxwriter
+
+class CensusNewPositiveTestCase(StaticLiveServerTestCase):
+    def setUp(self):
+        super().setUp()
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        self.q = Question(desc='test question')
+        self.q.save()
+        for i in range(5):
+            self.opt = QuestionOption(question=self.q, option='option {}'.format(i+1))
+            self.opt.save()
+        self.v = Voting(name='test voting', question=self.q)
+        self.v.save()
+
+        self.v.create_pubkey()
+        self.v.start_date = timezone.now()
+        self.v.save()
+
+        self.a, self._ = Auth.objects.get_or_create(url=f'{self.live_server_url}',
+                                          defaults={'me': True, 'name': 'test auth'})
+        self.a.save()
+        self.v.auths.add(self.a)
+        self.v.save()
+
+        self.password = 'qwerty'
+
+        self.u=User.objects.create_superuser('Enriqu', 'myemail@test.com', self.password)
+
+        self.options = webdriver.ChromeOptions()
+        self.options.headless = True
+        self.driver = webdriver.Chrome(options=self.options)
+
+    def tearDown(self):
+        super().tearDown()
+        self.driver.quit()
+        self.base.tearDown()
+        self.census = None
+        self.user = None
+
+    def test_positive_census(self):
+        self.driver.get(f'{self.live_server_url}/admin/')
+        self.driver.find_element(By.ID, "id_username").send_keys('Enriqu')
+        self.driver.find_element(By.ID, "id_password").send_keys('qwerty',Keys.ENTER)
+        self.driver.get(f'{self.live_server_url}/census/new')
+        self.driver.find_element(By.ID, "btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.ID,'success'))==1)
+
+class CensusNewBDTestCase(StaticLiveServerTestCase):
+    def setUp(self):
+        super().setUp()
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        self.q = Question(desc='test question')
+        self.q.save()
+        for i in range(5):
+            self.opt = QuestionOption(question=self.q, option='option {}'.format(i+1))
+            self.opt.save()
+        self.v = Voting(name='test voting', question=self.q)
+        self.v.save()
+
+        self.v.create_pubkey()
+        self.v.start_date = timezone.now()
+        self.v.save()
+
+        self.a, self._ = Auth.objects.get_or_create(url=f'{self.live_server_url}',
+                                          defaults={'me': True, 'name': 'test auth'})
+        self.a.save()
+        self.v.auths.add(self.a)
+        self.v.save()
+
+        self.password = 'qwerty'
+
+        self.u=User.objects.create_superuser('Enriqu', 'myemail@test.com', self.password)
+
+        self.options = webdriver.ChromeOptions()
+        self.options.headless = True
+        self.driver = webdriver.Chrome(options=self.options)
+
+    def tearDown(self):
+        super().tearDown()
+        self.driver.quit()
+        self.base.tearDown()
+        self.census = None
+        self.user = None
+
+    def test_bd_census(self):
+        self.c=Census.objects.all().count()
+        self.driver.get(f'{self.live_server_url}/admin/')
+        self.driver.find_element(By.ID, "id_username").send_keys('Enriqu')
+        self.driver.find_element(By.ID, "id_password").send_keys('qwerty',Keys.ENTER)
+        self.driver.get(f'{self.live_server_url}/census/new')
+        self.driver.find_element(By.ID, "btn").click()
+        self.af=Census.objects.all().count()
+        self.assertTrue(self.c+1==self.af)
+
+class CensusNewNegativeTestCase(StaticLiveServerTestCase):
+    def setUp(self):
+        self.base = BaseTestCase()
+        self.base.setUp()
+        self.password = 'qwerty'
+
+        self.u=User.objects.create_superuser('Enriqu', 'myemail@test.com', self.password)
+
+        self.options = webdriver.ChromeOptions()
+        self.options.headless = True
+        self.driver = webdriver.Chrome(options=self.options)
+
+    def tearDown(self):
+        super().tearDown()
+        self.driver.quit()
+        self.base.tearDown()
+        self.census = None
+        self.user = None
+
+    def test_error_census_creation(self):
+        self.driver.get(f'{self.live_server_url}/admin/')
+        self.driver.find_element(By.ID, "id_username").send_keys('Enriqu')
+        self.driver.find_element(By.ID, "id_password").send_keys('qwerty',Keys.ENTER)
+        self.driver.get(f'{self.live_server_url}/census/new')
+        self.driver.find_element(By.ID, "btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.ID,'danger'))>0)
 
 class CensusTestCase(BaseTestCase):
 
