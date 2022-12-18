@@ -6,29 +6,22 @@ from selenium.webdriver.common.by import By
 from django.utils import timezone
 from voting.models import Voting, Question, QuestionOption
 from census.models import Census
-
 from postproc.models import UserProfile
 from django.contrib.auth.models import User
 from mixnet.models import Auth
 from django.contrib.auth import get_user_model
-from selenium.webdriver.common.action_chains import ActionChains
 from pathlib import Path
 from django.conf import settings
 import time
 import datetime
-from rest_framework.authtoken.models import Token
 import random
 from mixnet.mixcrypt import ElGamal
 from mixnet.mixcrypt import MixCrypt
 import itertools
 from base import mods
-
 from selenium.webdriver.common.action_chains import ActionChains
-
 from selenium.webdriver.support.wait import WebDriverWait
-
-
-
+from selenium.webdriver.support.ui import Select
 import logging
 from selenium.webdriver.remote.remote_connection import LOGGER
 from urllib3.connectionpool import log as urllibLogger
@@ -63,7 +56,6 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         self.driver.set_window_size(1920,1080)
 
         super().setUp()
-
     def tearDown(self):
         super().tearDown()
         self.driver.quit()
@@ -80,7 +72,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         v.create_pubkey()
         v.start_date = timezone.now()
         v.save()
-        response = self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
         percentages_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.ID, value="noadmin"))
         self.assertEqual(percentages_selector.text,"noadmin")
@@ -95,7 +87,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         v.create_pubkey()
         v.start_date = timezone.now()
         v.save()
-        response = self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
         percentages_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.ID, value="noadmin"))
         self.assertNotEqual(percentages_selector.text,"adminadmin")
@@ -138,7 +130,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
 
 
         #crear votación
-        self.driver.find_element(By.LINK_TEXT, "Inicio").click()
+        self.driver.get(f'{self.live_server_url}/admin/')
         self.driver.find_element(By.LINK_TEXT, "Votings").click()
         self.driver.find_element(By.CSS_SELECTOR, ".addlink").click()
         self.driver.find_element(By.ID, "id_name").send_keys("voting test")
@@ -189,7 +181,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         v.create_pubkey()
         v.start_date = timezone.now()
         v.save()
-        response = self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
         percentages_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.ID, value="noadmin"))
         self.assertEqual(percentages_selector.text, "noadmin")
@@ -202,7 +194,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         v.create_pubkey()
         v.start_date = timezone.now()
         v.save()
-        response = self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
+        self.driver.get(f'{self.live_server_url}/dashboard/dashboard')
         percentages_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element(by=By.ID, value="noadmin"))
         self.assertNotEqual(percentages_selector.text, "adminadmin")
@@ -210,6 +202,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
     def test_vote_dashboard_census_negative_2(self):
         q = Question(desc='test questionnn')
         q.save()
+
 
         self.driver.get(f'{self.live_server_url}/admin/')
         user_selector = WebDriverWait(self.driver, timeout=10).until(
@@ -223,6 +216,13 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         submit_selector = WebDriverWait(self.driver, timeout=10).until(
             lambda d: d.find_element_by_xpath('//*[@id="login-form"]/div[3]/input'))
         submit_selector.click()
+        self.driver.get(f'{self.live_server_url}')
+        self.driver.set_window_size(1450, 873)
+        dropdown = Select(self.driver.find_element(By.NAME, "language"))
+        dropdown.select_by_visible_text("español (es)")
+        self.driver.find_element(By.ID, "change-language-button").click()
+        self.driver.get(f'{self.live_server_url}/admin/')
+
         self.driver.find_element(By.LINK_TEXT, "Auths").click()
         self.driver.find_element(By.CSS_SELECTOR, ".addlink").click()
         self.driver.find_element(By.ID, "id_name").click()
@@ -241,7 +241,7 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         self.driver.find_element(By.NAME, "_save").click()
 
         # crear votación
-        self.driver.find_element(By.LINK_TEXT, "Inicio").click()
+        self.driver.get(f'{self.live_server_url}/admin/')
         self.driver.find_element(By.LINK_TEXT, "Votings").click()
         self.driver.find_element(By.CSS_SELECTOR, ".addlink").click()
         self.driver.find_element(By.ID, "id_name").send_keys("voting test")
@@ -265,9 +265,11 @@ class DashBoard_test_case(StaticLiveServerTestCase):
         v=Voting.objects.get(name='voting test')
 
 
+
         self.driver.find_element(By.NAME, "_selected_action").click()
-        dropdown = self.driver.find_element(By.NAME, "action")
-        dropdown.find_element(By.XPATH, "//option[. = 'Eliminar votings seleccionado/s']").click()
+        dropdown = Select(self.driver.find_element(By.NAME, "action"))
+        dropdown.select_by_visible_text("Eliminar votings seleccionado/s")
+
         element = self.driver.find_element(By.NAME, "action")
         actions = ActionChains(self.driver)
         actions.move_to_element(element).click_and_hold().perform()

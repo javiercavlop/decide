@@ -1,5 +1,5 @@
 from django import forms
-from .models import Census,CensusGroup
+from .models import Census
 from django.contrib.auth.models import User
 from voting.models import Voting
 
@@ -13,6 +13,7 @@ class CensusGroupingForm(forms.Form):
     queryset= Census.objects.all(),
     widget  = forms.CheckboxSelectMultiple,
     )
+
 
 class CensusForm(forms.Form):
     voting_id=forms.ChoiceField(

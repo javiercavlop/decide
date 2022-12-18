@@ -4,7 +4,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.shortcuts import render, get_object_or_404
 from rest_framework import generics
@@ -38,72 +37,30 @@ class CensusCreate(generics.ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         voting_id = request.data.get('voting_id')
-        voters = request.data.get('voters')
-        group_name = request.data.get('group')
-        if group_name:
-            group_name = group_name.get('name')
+        voter_id = request.data.get('voter_id')
+        group_name = request.data.get('group.name')
+
         try:
             group = None
-            if group_name and len(group_name) > 0:
+            if group_name is not None:
                 group = CensusGroup.objects.get(name=group_name)
-            for voter in voters:
-                census = Census(voting_id=voting_id, voter_id=voter, group=group)
-                census.save()
+            census = Census(voting_id=voting_id, voter_id=voter_id, group=group)
+            census.save()
         except CensusGroup.DoesNotExist:
             return Response('The input Census Group does not exist', status=ST_400)
         except IntegrityError:
             return Response('Error trying to create census', status=ST_409)
+        except:
+            return Response('Census must have voting_id and voter_id', status=ST_400)
         return Response('Census created', status=ST_201)
 
     def list(self, request, *args, **kwargs):
-        voting_id = request.GET.get('voting_id')
-        voters = Census.objects.filter(voting_id=voting_id).values_list('voter_id', flat=True)
-        return Response({'voters': voters})
+        census = Census.objects.all().values_list('voting_id','voter_id', 'group')
+        return Response({'Current_Censuses': census})
 
 @transaction.atomic
-def import_excel(request):
-    cont=2
-    try: 
-        if request.method == 'POST':
-            census_from_excel=[]
-        
-            myfile = request.FILES['myfile'] 
-            df=pd.read_excel(myfile)
-
-            for d in df.values:
-                try:
-                    group = None
-                    if not math.isnan(d[2]):
-                        group = CensusGroup.objects.get(id=d[2])
-
-                    census = Census(voting_id=d[0], voter_id=d[1],group=group)
-                    census_from_excel.append(census)
-                    cont+=1
-                except CensusGroup.DoesNotExist:
-                    messages.error(request,'The input Census Group does not exist, in row {}'.format(cont-1))
-                    return render(request,"census/import.html")
-
-            cont=0
-            for c in census_from_excel:
-                try:
-                    cont+=1
-                    c.save()
-                except IntegrityError:
-                    messages.error(request, 'Error trying to import excel, in row {}. A census cannot be repeated.'.format(cont))
-                    return render(request,"census/import.html")
-
-            messages.success(request, 'Census Created')
-            return render(request,"census/import.html")
-
-    except:
-        messages.error(request, 'Error in excel data. There are wrong data in row {}'.format(cont+1)) 
-        return render(request,"census/import.html")
-
-    return render(request,"census/import.html")
-
-@transaction.atomic
+@login_required(login_url='/authentication/signin/?next=/census/import_json')
 def import_json(request):
-    cont=2
     try: 
         if request.method == 'POST':
             census_from_json=[]
@@ -138,6 +95,7 @@ def import_json(request):
     return render(request,"json.html")
 
 @transaction.atomic
+@login_required(login_url='/authentication/signin/?next=/census/import_csv')
 def import_csv(request):
     cont=2
     try: 
@@ -239,10 +197,10 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
     serializer_class = CensusSerializer
 
     def destroy(self, request, voting_id, *args, **kwargs):
-        voters = request.data.get('voters')
+        voters = request.GET.get('voter_id')
         census = Census.objects.filter(voting_id=voting_id, voter_id__in=voters)
         census.delete()
-        return Response('Voters deleted from census', status=ST_204)
+        return Response('Voter deleted from voting', status=ST_204)
 
     def retrieve(self, request, voting_id, *args, **kwargs):
         voter = request.GET.get('voter_id')

@@ -82,11 +82,12 @@
                                         <select class="form-select" id="genre" name="genre" aria-label="Default select example">
                                             <option value="M" {% if genero == "M"%} selected {% endif %}>Male</option>
                                             <option value="W" {% if genero == "W"%} selected {% endif %}>Female</option>
+                                            <option value="O" {% if genero == "O"%} selected {% endif %}>Other</option>
                                           </select>
                                     </b-col>
                                 </b-row>
                                 <!--TRADUCCION-->                   
-                                <button class="btn btn-primary mt-4" type="submit" value="OK">Update</button>
+                                <button class="btn btn-primary mt-4" type="submit" id="id-update-btn" value="OK">Update</button>
                             </form>    
                         </b-card-body>
                         <b-progress height="2px" value="100" variant="dark"></b-progress>
