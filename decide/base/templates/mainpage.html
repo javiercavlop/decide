@@ -8,7 +8,6 @@
 
 {% block content %}
 <div id="app-main">
-
     <div id="header" class="container text-center my-4">
         <!-- TRADUCCION -->
         <h1>Bienvenido a Decide</h1>
@@ -18,9 +17,9 @@
     <div id="content" class="container">
         <div class="row">
 
-            <div class="{% if is_staff %}col-lg-6{% else %}col-lg-12{% endif %} text-center my-3 mx-auto">
+            <div class="{% if user.is_staff %}col-lg-6{% else %}col-lg-12{% endif %} text-center my-3 mx-auto">
                 <div class="row">
-                    <div id="id-voting-panel" class="{% if is_staff %}col-lg-12{%else%}col-lg-6{%endif%}">
+                    <div id="id-voting-panel" class="{% if user.is_staff %}col-lg-12{%else%}col-lg-6{%endif%}">
                         <!-- TRADUCCION -->
                         <h2>Si vienes a votar...</h2>
                         <b-card header="Busca tu votación">
@@ -32,7 +31,7 @@
                         </b-card>
                     </div>
 
-                    <div id="id-visualizer-panel" class="{% if is_staff %}col-lg-12 my-3{%else%}col-lg-6 my-lg-0 my-3{%endif%}">
+                    <div id="id-visualizer-panel" class="{% if user.is_staff %}col-lg-12 my-3{%else%}col-lg-6 my-lg-0 my-3{%endif%}">
                         <!-- TRADUCCION -->
                         <h2>Si vienes a ver resultados...</h2>
                         <b-card header="Busca tu votación">
@@ -48,7 +47,7 @@
 
 
 
-            {% if is_staff %}
+            {% if user.is_staff %}
             <div id="id-admin-panel" class="col-lg-6 text-center my-3 mx-auto">
                 <!-- TRADUCCION -->
                 <h2>Si eres administrador...</h2>

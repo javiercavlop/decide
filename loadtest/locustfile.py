@@ -1,6 +1,6 @@
 import json
 
-from random import choice
+from random import choice,randint
 
 from locust import (
     HttpUser,
@@ -13,6 +13,8 @@ from locust import (
 
 HOST = "http://localhost:8000"
 VOTING = 1
+ADMIN = "gonzalo"
+PWD = "gonzalo1234"
 
 
 class DefVisualizer(TaskSet):
@@ -32,7 +34,7 @@ class DefVoters(SequentialTaskSet):
     @task
     def login(self):
         username, pwd = self.voter
-        self.token = self.client.post("/authentication/login/", {
+        self.token = self.client.post("/authentication/api/login/", {
             "username": username,
             "password": pwd,
         }).json()
@@ -40,7 +42,7 @@ class DefVoters(SequentialTaskSet):
     @task
     def getuser(self):
         self.usr= self.client.post("/authentication/getuser/", self.token).json()
-        print( str(self.user))
+        print(str(self.usr))
 
     @task
     def voting(self):
@@ -58,6 +60,63 @@ class DefVoters(SequentialTaskSet):
             "voting": VOTING
         }), headers=headers)
 
+    def on_quit(self):
+        self.voter = None
+
+class DefMainpage(SequentialTaskSet):
+
+    def on_start(self):
+        with open('voters.json') as f:
+            self.voters = json.loads(f.read())
+        self.voter = choice(list(self.voters.items()))
+
+    @task
+    def nouser(self):
+        self.client.get("/")
+
+    @task
+    def mainpage(self):
+        username,pwd = self.voter
+        self.token = self.client.post("/authentication/login/", {
+            "username": username,
+            "password": pwd,
+        }).json()
+
+        self.client.get("/")
+
+    def on_quit(self):
+        self.voter = None
+
+class DefCensus(SequentialTaskSet):
+    def on_start(self):
+        with open('voters.json') as f:
+            self.voters = json.loads(f.read())
+        self.voter = choice(list(self.voters.items()))
+
+    @task
+    def login(self):
+        self.token = self.client.post("/authentication/api/login/", {
+            "username": ADMIN,
+            "password": PWD,
+        }).json()
+
+    @task
+    def getuser(self):
+        self.usr= self.client.post("/authentication/getuser/", self.token).json()
+        
+    @task
+    def create_census(self):
+        headers = {
+            'Authorization': 'Token ' + self.token.get('token'),
+            'content-type': 'application/json'
+        }
+        voter_id = randint(100000,1000000)
+        self.client.post("/census/api", json.dumps({
+            "voting_id": VOTING,
+            "voter_id": str(voter_id),
+            "group":{"name":""}
+        }),auth=None,headers=headers)
+
 
     def on_quit(self):
         self.voter = None
@@ -67,9 +126,17 @@ class Visualizer(HttpUser):
     tasks = [DefVisualizer]
     wait_time = between(3,5)
 
-
-
 class Voters(HttpUser):
     host = HOST
     tasks = [DefVoters]
     wait_time= between(3,5)
+
+class Mainpage(HttpUser):
+    host = HOST
+    tasks = [DefMainpage]
+    wait_time = between(3,5)
+
+class Census(HttpUser):
+    host = HOST
+    tasks = [DefCensus]
+    wait_time = between(3,5)

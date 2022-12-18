@@ -20,11 +20,11 @@ class BaseTestCase(APITestCase):
         self.token = None
         mods.mock_query(self.client)
 
-        user_noadmin = User(username='noadmin')
+        user_noadmin = User(username='noadmin', is_staff=False)
         user_noadmin.set_password('qwerty')
         user_noadmin.save()
 
-        user_admin = User(username='admin', is_staff=True)
+        user_admin = User(username='admin', is_staff=True, is_superuser = True)
         user_admin.set_password('qwerty')
         user_admin.save()
 
