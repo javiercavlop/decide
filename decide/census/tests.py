@@ -68,6 +68,38 @@ class CensusNewPageTestCase(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "btn").click()
         self.assertTrue(len(self.driver.find_elements(By.ID,'success'))==1)
 
+class CensusNewNegativeTestCase(StaticLiveServerTestCase):
+    def setUp(self):
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        Voting.objects.all().delete()
+        Census.objects.all().delete()
+
+        password = 'qwerty'
+
+        u=User.objects.create_superuser('Enriqu', 'myemail@test.com', password)
+
+        options = webdriver.ChromeOptions()
+        options.headless = False
+        self.driver = webdriver.Chrome(options=options)
+
+    def tearDown(self):
+        super().tearDown()
+        self.driver.quit()
+        self.base.tearDown()
+        self.census = None
+        self.user = None
+
+    def test_error_census_creation(self):
+        self.driver.get(f'{self.live_server_url}/admin/')
+        self.driver.find_element(By.ID, "id_username").send_keys('Enriqu')
+        self.driver.find_element(By.ID, "id_password").send_keys('qwerty',Keys.ENTER)
+        self.driver.get(f'{self.live_server_url}/census/new')
+        time.sleep(15)
+        self.driver.find_element(By.ID, "btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.ID,'danger'))==1)
+
 class CensusTestCase(BaseTestCase):
 
     def setUp(self):
