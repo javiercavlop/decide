@@ -1,18 +1,19 @@
-{% load i18n %}
+{% load i18n static%}
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Decide!{% endblock %}</title>
-        <link type="text/css" rel="stylesheet"
-         href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-        <link type="text/css" rel="stylesheet"
-         href="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.css" />
+        <link type="text/css" rel="stylesheet" 
+            href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+        <link type="text/css" rel="stylesheet" 
+            href="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.css" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         {% block extrahead %}{% endblock %}
     </head>
     <body>
+        <div id="app-base">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">Decide</a>
@@ -42,9 +43,9 @@
                                 {{ user.get_username }}
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="id-dropdownMenuButton">
-                                <a class="dropdown-item" href="http://localhost:8000/authentication/profile" role="button">Ver Perfil</a>
+                                <a class="dropdown-item" href="/authentication/profile" role="button">Ver Perfil</a>
                                 <li><hr class="dropdown-divider"></li>
-                                <a class="dropdown-item" href="http://localhost:8000/authentication/signout" role="button">Cerrar sesión</a>
+                                <a class="dropdown-item" href="/authentication/signout" role="button">Cerrar sesión</a>
                             </ul>
                         </li>
                     </ul>
@@ -69,10 +70,21 @@
                 </div>
             </div>
         </nav>
+        </div>
 
         {% block content %}
         {% endblock %}
 
+
+            <!-- Vuejs -->
+        <script src="https://unpkg.com/vue@2.6/dist/vue.min.js"></script>
+        <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.min.js"></script>
+        <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+        <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue-icons.min.js"></script>
+        
+        <script>
+            new Vue({ el: '#app-base' }); 
+        </script>
         {% block extrabody %}{% endblock %}
     </body>
 </html>
