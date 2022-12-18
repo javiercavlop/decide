@@ -60,9 +60,8 @@ class CensusCreate(generics.ListCreateAPIView):
         return Response('Census created', status=ST_201)
 
     def list(self, request, *args, **kwargs):
-        voting_id = request.GET.get('voting_id')
-        voters = Census.objects.filter(voting_id=voting_id).values_list('voter_id', flat=True)
-        return Response({'voters': voters})
+        census = Census.objects.all().values_list('voting_id','voter_id', 'group')
+        return Response({'Current Censuses': census})
 
 @transaction.atomic
 @login_required(login_url='/authentication/signin/?next=/census/import_json')
@@ -210,18 +209,20 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
     serializer_class = CensusSerializer
 
     def destroy(self, request, voting_id, *args, **kwargs):
-        voters = request.data.get('voters')
-        census = Census.objects.filter(voting_id=voting_id, voter_id__in=voters)
-        census.delete()
-        return Response('Voters deleted from census', status=ST_204)
+        voter_id = request.user.id
+        try:
+            census = Census.objects.get(voting_id=voting_id, voter_id=voter_id)
+            census.delete()
+        except ObjectDoesNotExist:
+            return Response('The voter does not have census in this voting', status=ST_400)  
+        return Response('Census deleted', status=ST_204)
 
     def retrieve(self, request, voting_id, *args, **kwargs):
-        voter = request.GET.get('voter_id')
-        try:
-            Census.objects.get(voting_id=voting_id, voter_id=voter)
-        except ObjectDoesNotExist:
-            return Response('Invalid voter', status=ST_401)
-        return Response('Valid voter')
+        voter_id = request.user.id
+        census = Census.objects.filter(voting_id=voting_id, voter_id=voter_id).values_list('voting_id','voter_id', 'group')
+        if not census.values().exists():
+            return Response('The voter does not have census in this voting', status=ST_400)
+        return Response({'Census': census})
 
 class CensusGroupCreate(generics.ListCreateAPIView):
     serializer_class = CensusGroupSerializer
