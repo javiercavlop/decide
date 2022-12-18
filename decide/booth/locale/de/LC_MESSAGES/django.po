@@ -39,12 +39,8 @@ msgid "logout"
 msgstr "Abmeldung"
 
 #: booth/templates/booth/booth.html:62
-msgid ""
-"This votation has been configured as an ordenation, so you have to vote for "
-"each one of the options."
-msgstr ""
-"Diese Abstimmung wurde als Ordenation konfiguriert, d.h. Sie müssen für jede "
-"der Optionen stimmen."
+msgid "This votation has been configured as an ordenation, so you have to vote for each one of the options."
+msgstr "Diese Abstimmung wurde als Ordenation konfiguriert, d.h. Sie müssen für jede der Optionen stimmen."
 
 #: booth/templates/booth/booth.html:67
 msgid "Votación"
