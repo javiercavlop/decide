@@ -5,6 +5,9 @@ from base.tests import BaseTestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.keys import Keys
 from django.test import TestCase, Client
+from voting.models import Voting, Question, QuestionOption
+from mixnet.models import Auth
+from django.utils import timezone
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -15,6 +18,55 @@ import os
 import csv
 import json
 import xlsxwriter
+
+class CensusNewPageTestCase(StaticLiveServerTestCase):
+    def setUp(self):
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        Voting.objects.all().delete()
+        Census.objects.all().delete()
+        q = Question(desc='test question')
+        q.save()
+        for i in range(5):
+            opt = QuestionOption(question=q, option='option {}'.format(i+1))
+            opt.save()
+        v = Voting(name='test voting', question=q)
+        v.save()
+
+        v.create_pubkey()
+        v.start_date = timezone.now()
+        v.save()
+
+        a, _ = Auth.objects.get_or_create(url=f'{self.live_server_url}',
+                                          defaults={'me': True, 'name': 'test auth'})
+        a.save()
+        v.auths.add(a)
+        v.save()
+        password = 'qwerty'
+
+        u=User.objects.create_superuser('Enriqu', 'myemail@test.com', password)
+
+        options = webdriver.ChromeOptions()
+        options.headless = False
+        self.driver = webdriver.Chrome(options=options)
+
+    def tearDown(self):
+        super().tearDown()
+        self.driver.quit()
+        self.base.tearDown()
+        self.census = None
+        self.user = None
+
+    def test_visualizer_detail(self):
+        print(Voting.objects.get(id=1).id)
+        self.driver.get(f'{self.live_server_url}/admin/')
+        self.driver.find_element(By.ID, "id_username").send_keys('Enriqu')
+        self.driver.find_element(By.ID, "id_password").send_keys('qwerty',Keys.ENTER)
+        self.driver.get(f'{self.live_server_url}/census/new')
+        time.sleep(15)
+        self.driver.find_element(By.ID, "btn").click()
+        self.assertTrue(len(self.driver.find_elements(By.ID,'success'))==1)
 
 class CensusTestCase(BaseTestCase):
 

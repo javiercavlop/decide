@@ -13,7 +13,7 @@
 <div id="app-census-create">
 
     {%if msg%}
-    <b-alert variant={{tipo}} show dismissible>
+    <b-alert id={{tipo}} variant={{tipo}} show dismissible>
         {{msg}}
     </b-alert>
     {%endif%}
@@ -29,7 +29,7 @@
                 {% csrf_token %}
                 {{form}}
             <div class="form-group mt-4 text-center">
-                <button type="submit" class="btn btn-primary btn-block" value="OK">Crear censo</button>
+                <button id="btn" type="submit" class="btn btn-primary btn-block" value="OK">Crear censo</button>
             </div> <!-- form-group// -->                                                           
         </form>
         </article>
