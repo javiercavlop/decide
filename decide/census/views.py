@@ -41,20 +41,22 @@ class CensusCreate(generics.ListCreateAPIView):
         voting_id = request.data.get('voting_id')
         voter_id = request.data.get('voter_id')
         group_name = request.data.get('group.name')
-        print(voting_id)
-        print(voter_id)
-        print(group_name)
+
         try:
             group = None
-            if group_name and len(group_name) > 0:
+            if group_name.strip() == "":
+                census = Census(voting_id=voting_id, voter_id=voter_id)
+                census.save()
+            else:
                 group = CensusGroup.objects.get(name=group_name)
-
                 census = Census(voting_id=voting_id, voter_id=voter_id, group=group)
                 census.save()
         except CensusGroup.DoesNotExist:
             return Response('The input Census Group does not exist', status=ST_400)
         except IntegrityError:
             return Response('Error trying to create census', status=ST_409)
+        except:
+            return Response('Census must have voting_id and voter_id', status=ST_400)
         return Response('Census created', status=ST_201)
 
     def list(self, request, *args, **kwargs):
