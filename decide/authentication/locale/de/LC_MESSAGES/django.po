@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-17 17:31+0000\n"
+"POT-Creation-Date: 2022-12-18 11:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -138,7 +138,50 @@ msgstr "Haben Sie bereits ein Konto?"
 msgid "Log in"
 msgstr "Einloggen"
 
-#, fuzzy
-#~| msgid "Password"
-#~ msgid "password2"
-#~ msgstr "Passwort"
+#: authentication/views.py:85 authentication/views.py:213
+msgid "Email already exists"
+msgstr "E-Mail ist bereits vorhanden"
+
+#: authentication/views.py:92 authentication/views.py:221
+msgid "Username already exists"
+msgstr "Benutzername existiert bereits"
+
+#: authentication/views.py:97
+msgid "Passwords don't match"
+msgstr "Passwort Bestätigung"
+
+#: authentication/views.py:100
+msgid "Password must be at least 8 characters"
+msgstr "Passwort muss mindestens 8 Zeichen lang sein"
+
+#: authentication/views.py:103
+msgid "Password must contain at least one letter"
+msgstr "Das Passwort muss mindestens einen Buchstaben enthalten"
+
+#: authentication/views.py:106
+msgid "Password must contain at least one number"
+msgstr "Das Passwort muss mindestens eine Ziffer enthalten"
+
+#: authentication/views.py:109 authentication/views.py:235
+msgid "You must enter an email"
+msgstr "Sie müssen eine E-Mail eingeben"
+
+#: authentication/views.py:112 authentication/views.py:238
+msgid "You must enter a username"
+msgstr "Sie müssen einen Benutzernamen eingeben"
+
+#: authentication/views.py:116 authentication/views.py:242
+msgid "Name must be capitalized"
+msgstr "Name muss groß geschrieben werden"
+
+#: authentication/views.py:120 authentication/views.py:246
+msgid "Surname must be capitalized"
+msgstr "Der Nachname muss groß geschrieben werden"
+
+#: authentication/views.py:173
+msgid "Username or password is incorrect"
+msgstr "Benutzername oder Passwort ist falsch"
+
+#: authentication/views.py:229
+msgid "You can't change your email"
+msgstr "Du kannst deine E-Mail nicht ändern"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-17 17:31+0000\n"
+"POT-Creation-Date: 2022-12-18 11:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -150,3 +150,21 @@ msgstr "more votes for"
 #: dashboard/templates/dashboard_with_pv.html:140
 msgid "Resultados de la Votación"
 msgstr "Voting Results"
+
+#: dashboard/views.py:32
+#, fuzzy
+#| msgid "No comenzada"
+msgid "Aún no ha comenzado"
+msgstr "Not started"
+
+#: dashboard/views.py:34
+msgid "Aún no ha terminado"
+msgstr "It is not over yet"
+
+#: dashboard/views.py:46
+msgid "No hay una descripción asociada a esta votación ni a esta pregunta"
+msgstr "There is no description associated with this vote or this question."
+
+#: postproc/views.py:29
+msgid "Invalid number of seats was given. Must be above 0"
+msgstr "Invalid number of seats was given. Must be above 0"

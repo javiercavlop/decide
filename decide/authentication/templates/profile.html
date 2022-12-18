@@ -99,7 +99,7 @@
                                     <b-button href="#" variant="warning">{% trans 'Log out' %}</b-button>
                                 </b-col>
                                 <b-col class="text-center">
-                                    <b-button href="#" variant="danger">{% trans 'Delete account' %}</b-button>
+                                    <b-button variant="danger" onclick="delete_user()">{% trans 'Delete account' %}</b-button>
                                 </b-col>
                             </b-row>  
                         </b-card-body>
@@ -120,7 +120,7 @@
 
 <script>
   function delete_user() {
-    if (confirm("Are you sure you want to delete your user account?")) {
+    if (confirm('Are you sure you want to delete your user account?')) {
       window.location.href = "http://localhost:8000/authentication/deleteUser/";
     }
 
