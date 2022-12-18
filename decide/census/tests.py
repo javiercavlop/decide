@@ -58,7 +58,7 @@ class CensusNewPositiveTestCase(StaticLiveServerTestCase):
         self.census = None
         self.user = None
 
-    def test_visualizer_detail(self):
+    def test_positive_census(self):
         print(Voting.objects.get(id=1).id)
         self.driver.get(f'{self.live_server_url}/admin/')
         self.driver.find_element(By.ID, "id_username").send_keys('Enriqu')
@@ -107,7 +107,7 @@ class CensusNewBDTestCase(StaticLiveServerTestCase):
         self.census = None
         self.user = None
 
-    def test_visualizer_detail(self):
+    def test_bd_census(self):
         c=Census.objects.all().count()
         self.driver.get(f'{self.live_server_url}/admin/')
         self.driver.find_element(By.ID, "id_username").send_keys('Enriqu')
