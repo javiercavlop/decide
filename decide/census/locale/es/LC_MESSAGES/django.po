@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-18 05:24+0000\n"
+"POT-Creation-Date: 2022-12-18 20:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: census/forms.py:22
+#, fuzzy
+#| msgid "Votación"
+msgid "Elige votación"
+msgstr "Votación"
+
+#: census/forms.py:26
+#, fuzzy
+#| msgid "Votante"
+msgid "Elige votante"
+msgstr "Votante"
+
+#: census/forms.py:29
+msgid "Escribe el nombre del grupo"
+msgstr "Escrube el nombre del grupo"
 
 #: census/templates/census/census.html:21
 msgid "Lista de censos"
@@ -43,6 +59,8 @@ msgid "Grupo"
 msgstr "Grupo"
 
 #: census/templates/census/census.html:57
+#: census/templates/census/census_create.html:27
+#: census/templates/census/census_create.html:32
 msgid "Crear Censo"
 msgstr "Crear Censo"
 

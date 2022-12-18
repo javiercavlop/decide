@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-18 05:24+0000\n"
+"POT-Creation-Date: 2022-12-18 20:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,8 +39,12 @@ msgid "logout"
 msgstr "cerrar sesión"
 
 #: booth/templates/booth/booth.html:62
-msgid "This votation has been configured as an ordenation, so you have to vote for each one of the options."
-msgstr "Esta votación se ha configurado como una ordenación, por lo que hay que votar por cada una de las opciones."
+msgid ""
+"This votation has been configured as an ordenation, so you have to vote for "
+"each one of the options."
+msgstr ""
+"Esta votación se ha configurado como una ordenación, por lo que hay que "
+"votar por cada una de las opciones."
 
 #: booth/templates/booth/booth.html:67
 msgid "Votación"
