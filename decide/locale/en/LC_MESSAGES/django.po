@@ -1,0 +1,178 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-18 20:20+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: dashboard/templates/dashboard/dashboard.html:21
+msgid "Usuarios"
+msgstr "Users"
+
+#: dashboard/templates/dashboard/dashboard.html:23
+msgid "Número de encuestas votadas en tiempo real"
+msgstr "Number of surveys voted in real time"
+
+#: dashboard/templates/dashboard/dashboard.html:30
+msgid "Perfiles"
+msgstr "Profiles"
+
+#: dashboard/templates/dashboard/dashboard.html:45
+msgid "Votante"
+msgstr "Voter"
+
+#: dashboard/templates/dashboard/dashboard.html:46
+msgid "Encuestas"
+msgstr "Surveys"
+
+#: dashboard/templates/dashboard/dashboard.html:59
+msgid "Porcentajes de votaciones según censo"
+msgstr "Voting percentages according to census"
+
+#: dashboard/templates/dashboard/dashboard.html:64
+msgid "Id de votacion"
+msgstr "Voting id"
+
+#: dashboard/templates/dashboard/dashboard.html:65
+msgid "Porcentaje del censo"
+msgstr "Census percentage"
+
+#: dashboard/templates/dashboard/dashboard.html:92
+#: dashboard/templates/dashboard/mainpage_dashboard.html:60
+msgid "Descargar Estadísticas"
+msgstr "Download Statistics"
+
+#: dashboard/templates/dashboard/dashboard.html:94
+msgid "Descargar"
+msgstr "Download"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:17
+msgid "Panel de Control"
+msgstr "Dashboard"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:27
+msgid "Paneles Individuales"
+msgstr "Individual Dashboards"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:28
+msgid "Busca tu votación"
+msgstr "Search your voting"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:42
+msgid "Si eres administrador"
+msgstr "If you are an administrator"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:49
+msgid "Panel de Control Global"
+msgstr "Global Dashboard"
+
+#: dashboard/templates/dashboard/mainpage_dashboard.html:70
+msgid "Acceso al Bot de Telegram"
+msgstr "Access to the Telegram Bot"
+
+#: dashboard/templates/dashboard_with_pv.html:36
+msgid "Sin Recuento"
+msgstr "No Count"
+
+#: dashboard/templates/dashboard_with_pv.html:44
+#, fuzzy
+#| msgid "Porcentaje del censo"
+msgid "Porcentaje de personas que votaron"
+msgstr "percentage of people who voted"
+
+#: dashboard/templates/dashboard_with_pv.html:56
+msgid "Gráfica de paridad"
+msgstr "Parity graph"
+
+#: dashboard/templates/dashboard_with_pv.html:71
+msgid "Tipo de Pregunta"
+msgstr "Question type"
+
+#: dashboard/templates/dashboard_with_pv.html:81
+msgid "Duración"
+msgstr "Duration"
+
+#: dashboard/templates/dashboard_with_pv.html:84
+msgid "No comenzada"
+msgstr "Not started"
+
+#: dashboard/templates/dashboard_with_pv.html:86
+msgid "No finalizada"
+msgstr "Not finished"
+
+#: dashboard/templates/dashboard_with_pv.html:97
+msgid "Nº Censo"
+msgstr "Census Nº"
+
+#: dashboard/templates/dashboard_with_pv.html:107
+msgid "Nº Votos"
+msgstr "Votes Nº"
+
+#: dashboard/templates/dashboard_with_pv.html:119
+msgid "Paridad"
+msgstr "Parity"
+
+#: dashboard/templates/dashboard_with_pv.html:122
+msgid "Se ha cumplido la paridad para esta votación"
+msgstr "Parity has been met for this vote"
+
+#: dashboard/templates/dashboard_with_pv.html:124
+#: dashboard/templates/dashboard_with_pv.html:126
+msgid "No se ha cumplido la paridad para esta votación, hay"
+msgstr "Parity has not been met for this vote, there is"
+
+#: dashboard/templates/dashboard_with_pv.html:124
+msgid "voto más de"
+msgstr "more vote for"
+
+#: dashboard/templates/dashboard_with_pv.html:124
+#: dashboard/templates/dashboard_with_pv.html:126
+msgid "que de"
+msgstr "than for"
+
+#: dashboard/templates/dashboard_with_pv.html:126
+msgid "votos más de"
+msgstr "more votes for"
+
+#: dashboard/templates/dashboard_with_pv.html:138
+msgid "Resultados de la Votación"
+msgstr "Voting Results"
+
+#: dashboard/views.py:32
+#, fuzzy
+#| msgid "No comenzada"
+msgid "Aún no ha comenzado"
+msgstr "Not started"
+
+#: dashboard/views.py:34
+msgid "Aún no ha terminado"
+msgstr "It is not over yet"
+
+#: dashboard/views.py:46
+msgid "No hay una descripción asociada a esta votación ni a esta pregunta"
+msgstr "There is no description associated with this vote or this question."
+
+#: postproc/views.py:29
+msgid "Invalid number of seats was given. Must be above 0"
+msgstr "Invalid number of seats was given. Must be above 0"
+
+#: voting/models.py:22
+msgid "Quantity"
+msgstr "Quantity"
+
+#: voting/models.py:22
+msgid "is not allowed"
+msgstr "is not allowed"

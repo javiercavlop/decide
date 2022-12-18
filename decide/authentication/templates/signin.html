@@ -22,13 +22,11 @@
     {% csrf_token %}
     <div class="row mb-3">
       <div class="col-md-6 form-group">
-        <!--TRADUCCION-->
-        <label for="{{ form.username.id_for_label }}">Nombre de usuario:</label>
+        <label id="username_label" for="{{ form.username.id_for_label }}">{% trans 'Nombre de usuario' %}:</label>
         {{ form.username }}
       </div>
       <div class="col-md-6 form-group">
-        <!--TRADUCCION-->
-        <label for="{{ form.password.id_for_label }}">Contraseña:</label>
+        <label for="{{ form.password.id_for_label }}">{% trans 'Contraseña' %}:</label>
         {{ form.password }}
       </div>
     </div>
@@ -42,11 +40,9 @@
   <div class="col-md-6 mx-auto">
     <div class="row mx-2 mx-lg-0 my-4 py-2 border border-primary rounded">
       <div class="col-12">
-        <!--TRADUCCION-->
-        <p>¿No tienes cuenta?&nbsp;<a class="link-primary" href="{% url 'signup' %}">Regístrate ahora</a></div></p>
+        <p>{% trans '¿No tienes cuenta?' %}&nbsp;<a class="link-primary" href="{% url 'signup' %}">{% trans 'Regístrate ahora' %}</a></div></p>
       <div class="col-12">
-        <!--TRADUCCION-->
-        <p>También puedes iniciar sesión con:
+        <p>{% trans 'También puedes iniciar sesión con' %}:
           <ul class="list-group">
             <li class="list-group-item text-primary">
               <a class="stretched-link link-primary" href="{% provider_login_url 'google' %}"><em class="bi bi-google"></em>&nbsp;Google</a>

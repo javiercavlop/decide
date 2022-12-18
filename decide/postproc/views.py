@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 import numpy
+from django.utils.translation import ugettext_lazy as _
 
 #GIVEN_SEATS = 4
 
@@ -25,7 +26,7 @@ def d_hondt(tally, given_seats, options):
     #Comprobación para evitar bucles infinitos
     if(given_seats <= 0):
         raise ValueError(
-            "Invalid number of seats was given. Must be above 0"
+            _("Invalid number of seats was given. Must be above 0")
         )
 
     #Diccionario con una clave por opción, con el número de escaños asignados en los valores

@@ -1,0 +1,308 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-18 20:21+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: census/forms.py:22
+#, fuzzy
+#| msgid "Votación"
+msgid "Elige votación"
+msgstr "Votement"
+
+#: census/forms.py:26
+#, fuzzy
+#| msgid "Votante"
+msgid "Elige votante"
+msgstr "Électeur"
+
+#: census/forms.py:29
+msgid "Escribe el nombre del grupo"
+msgstr "Écrivez le nom du groupe"
+
+#: census/templates/census/census.html:21
+msgid "Lista de censos"
+msgstr "Liste de recensements"
+
+#: census/templates/census/census.html:22
+msgid "Escribe para buscar"
+msgstr "Écrivez pour chercher"
+
+#: census/templates/census/census.html:32
+#: census/templates/census/census_grouping.html:29
+msgid "Votación"
+msgstr "Votement"
+
+#: census/templates/census/census.html:33
+#: census/templates/census/census_grouping.html:30
+msgid "Votante"
+msgstr "Électeur"
+
+#: census/templates/census/census.html:34
+#: census/templates/census/census_details.html:21
+#: census/templates/census/census_grouping.html:31
+msgid "Grupo"
+msgstr "Groupe"
+
+#: census/templates/census/census.html:57
+#: census/templates/census/census_create.html:27
+#: census/templates/census/census_create.html:32
+msgid "Crear Censo"
+msgstr "Créer un recensement"
+
+#: census/templates/census/census.html:67
+msgid "Detalles de Censos"
+msgstr "Détails des recensements"
+
+#: census/templates/census/census.html:77
+#: census/templates/census/census_details.html:46
+msgid "Agrupar Censos"
+msgstr "Recensements de groupe"
+
+#: census/templates/census/census.html:87
+#: census/templates/census/census_details.html:43
+msgid "Reutilizar Censos"
+msgstr "Réutiliser les recensements"
+
+#: census/templates/census/census.html:97
+msgid "Importar Csv"
+msgstr "Importer CSV"
+
+#: census/templates/census/census.html:105
+msgid "Importar JSON"
+msgstr "Importer JSON"
+
+#: census/templates/census/census.html:115
+msgid "Importar Excel"
+msgstr "Importer EXCEL"
+
+#: census/templates/census/census.html:123
+msgid "Exportar Excel"
+msgstr "Exporter EXCEL"
+
+#: census/templates/census/census_details.html:9
+msgid "Detalles de censos"
+msgstr "Détails du recensement"
+
+#: census/templates/census/census_details.html:18
+msgid "Censo Id"
+msgstr "ID de recensement"
+
+#: census/templates/census/census_details.html:19
+msgid "Votación Id"
+msgstr "ID de vote"
+
+#: census/templates/census/census_details.html:20
+msgid "Votante (Id)"
+msgstr "ID d'électeur"
+
+#: census/templates/census/census_details.html:22
+msgid "Eliminar censo"
+msgstr "Supprimer le recensement"
+
+#: census/templates/census/census_details.html:32
+msgid "Eliminar"
+msgstr "Retirer"
+
+#: census/templates/census/census_grouping.html:23
+msgid "Agrupar Censo"
+msgstr "Recensement de groupe"
+
+#: census/templates/census/census_grouping.html:32
+msgid "Selección"
+msgstr "Sélection"
+
+#: census/templates/census/census_grouping.html:49
+msgid "Grupo de censos:"
+msgstr "Groupe de recensement"
+
+#: census/templates/census/census_grouping.html:51
+msgid "En blanco para quitar censo del grupo"
+msgstr "Vide pour supprimer le recensement du groupe"
+
+#: census/templates/census/census_grouping.html:55
+#: census/templates/census/census_reuse_form.html:37
+msgid "Aceptar"
+msgstr "Accepter"
+
+#: census/templates/census/census_reuse_form.html:19
+msgid "Reutilizar Censo"
+msgstr "Réutiliser le Recesement"
+
+#: census/templates/census/census_reuse_form.html:24
+msgid "Votación origen:"
+msgstr "Vote d'origine:"
+
+#: census/templates/census/census_reuse_form.html:26
+msgid "Id de la votación a copiar"
+msgstr "ID du vote à copier"
+
+#: census/templates/census/census_reuse_form.html:30
+msgid "Votación destino:"
+msgstr "Vote de destination:"
+
+#: census/templates/census/census_reuse_form.html:32
+msgid "Id de la votación deseada"
+msgstr "ID du vote désiré"
+
+#: census/templates/census/export.html:17
+msgid "Exportación de Censo"
+msgstr "Exporter un fichier excel"
+
+#: census/templates/census/export.html:23
+msgid "Exportar"
+msgstr "Exporter"
+
+#: census/templates/census/export.html:26 census/templates/csv.html:38
+#: census/templates/json.html:37
+msgid "Volver atrás"
+msgstr "Revenir"
+
+#: census/templates/census/import.html:17
+msgid "Importación Fichero Excel"
+msgstr "Importer un fichier excel"
+
+#: census/templates/census/import.html:20
+msgid "Introduzca un fichero con el formato .xlsx para importarlo:"
+msgstr "Entrez un fichier au format .xlsx pour l'importer:"
+
+#: census/templates/census/import.html:33 census/templates/csv.html:35
+#: census/templates/json.html:34
+msgid "Subir"
+msgstr "Télécharger"
+
+#: census/templates/census/import.html:36
+msgid "Volver"
+msgstr "Revenir"
+
+#: census/templates/csv.html:18
+msgid "Importación Fichero CSV"
+msgstr "Importer un fichier CSV"
+
+#: census/templates/csv.html:21
+msgid "Introduzca un fichero con el formato .csv para importarlo"
+msgstr "Entrez un fichier au format .csv pour l'importer"
+
+#: census/templates/json.html:18
+msgid "Importación Fichero JSON"
+msgstr "Importer un fichier JSON"
+
+#: census/templates/json.html:21
+msgid "Introduzca un fichero con el formato .json para importarlo"
+msgstr "Entrez un fichier au format .json pour l'importer"
+
+#: census/views.py:84 census/views.py:207
+#, fuzzy
+#| msgid "The input Census Group does not exist, in row {}"
+msgid "The input Census Group does not exist, in row"
+msgstr "Le groupe de recensement saisi n'existe pas, à la ligne {}."
+
+#: census/views.py:93 census/views.py:216
+#, fuzzy
+#| msgid "Error trying to import JSON. A census cannot be repeated."
+msgid "Error trying to import excel, in row"
+msgstr ""
+"Erreur lors de la tentative d'importation d'Excel, en ligneErreur lors de "
+"l'importation du JSON. Un recensement ne peut pas être répété."
+
+#: census/views.py:93 census/views.py:216
+#, fuzzy
+#| msgid "Error trying to import JSON. A census cannot be repeated."
+msgid "A census cannot be repeated."
+msgstr ""
+"Un recensement ne peut pas être répété.Erreur lors de l'importation du JSON. "
+"Un recensement ne peut pas être répété."
+
+#: census/views.py:96 census/views.py:177 census/views.py:219
+msgid "Census Created"
+msgstr "Recensement créé"
+
+#: census/views.py:100 census/views.py:223
+#, fuzzy
+#| msgid "Error in CSV data. There are wrong data in row {}"
+msgid "Error in excel data. There are wrong data in row"
+msgstr ""
+"Erreur dans les données Excel. Il y a des données erronées dans la "
+"ligneErreur dans les données CSV. Il y a des données erronées dans la ligne "
+"{}"
+
+#: census/views.py:127
+msgid "The input Census Group does not exist"
+msgstr "Le groupe de recensement saisi n'existe pas"
+
+#: census/views.py:134
+msgid "Error trying to import JSON. A census cannot be repeated."
+msgstr ""
+"Erreur lors de la tentative d'importation de JSON. Un recensement ne peut "
+"pas être répété.Erreur lors de l'importation du JSON. Un recensement ne peut "
+"pas être répété."
+
+#: census/views.py:137
+msgid "Census created"
+msgstr "Recensement créé"
+
+#: census/views.py:140
+msgid "Error in JSON data."
+msgstr "Erreur dans les données JSON."
+
+#: census/views.py:165
+msgid "The input Census Group does not exist, in row {}"
+msgstr "Le groupe de recensement saisi n'existe pas, à la ligne {}."
+
+#: census/views.py:174
+msgid "Error trying to import CSV, in row {}. A census cannot be repeated."
+msgstr ""
+"Erreur lors de la tentative d'importation de CSV, à la ligne {}. Un "
+"recensement ne peut pas être répété.Erreur lors de l'importation du CSV, "
+"dans la ligne {}. Un recensement ne peut pas être répété."
+
+#: census/views.py:181
+msgid "Error in CSV data. There are wrong data in row {}"
+msgstr ""
+"Erreur dans les données CSV. Il y a des données erronées dans la ligne {}"
+"Erreur dans les données CSV. Il y a des données erronées dans la ligne {}"
+
+#: census/views.py:240
+msgid "Exportado correctamente"
+msgstr "Exporté avec succès"
+
+#: census/views.py:244
+msgid "Error in exporting data. There are null data in rows"
+msgstr ""
+"Erreur lors de l'exportation des données. Il y a des données nulles dans les "
+"lignesErreur dans l'exportation des données. Il y a des données nulles dans "
+"les lignes"
+
+#: census/views.py:297
+msgid "Entries must be integers"
+msgstr "Les entrées doivent être des nombres entiers"
+
+#: census/views.py:317 census/views.py:330
+msgid "Censo creado con éxito"
+msgstr "Recensement créé avec succès"
+
+#: census/views.py:320 census/views.py:333 census/views.py:338
+msgid "No se ha podido crear el censo"
+msgstr "Impossible de créer le recensement"
+
+#: census/views.py:434
+msgid "El votante todavía no ha sido añadido"
+msgstr "L'électeur n'a pas encore été ajouté"
+
+#: census/views.py:438
+msgid "No tiene grupo asignado"
+msgstr "Aucun groupe attribué"

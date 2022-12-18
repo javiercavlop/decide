@@ -13,9 +13,8 @@
 <div class="col-lg-6">
     <div class="row justify-content-center">
             <div class="col-md-10">
-            <!-- TRADUCCION -->
-            <h3 class="mt-5 text-center">Lista de censos</h3>
-            <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Escribe para buscar">
+            <h3 class="mt-5 text-center">{% trans "Lista de censos"%}</h3>
+            <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="{% trans 'Escribe para buscar'%}">
             <datalist id="datalistOptions">
                 {% for o in options %}
                 <option value="{{o}}">
@@ -25,10 +24,9 @@
             <table class="table table-bordered table-striped mt-2" id="tabla-votacion">
                 <thead>
                     <tr>
-                        <!-- TRADUCCION -->
-                        <th>Votación</th>
-                        <th>Votante</th>
-                        <th>Grupo</th>
+                        <th>{% trans 'Votación'%}</th>
+                        <th id="voter">{% trans 'Votante'%}</th>
+                        <th>{% trans 'Grupo'%}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,8 +49,7 @@
             <b-button size="lg" block variant="outline-success" href="/census/new">
                 <div class="row">
                     <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                    <!-- TRADUCCION -->
-                    <div class="col-10 text-start">Crear Censo</div>
+                    <div class="col-10 text-start">{% trans 'Crear Censo'%}</div>
                 </div>
             </b-button>
         </div>
@@ -62,8 +59,7 @@
             <b-button size="lg" block variant="outline-success" href="/census/census_details">
                 <div class="row">
                     <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                    <!-- TRADUCCION -->
-                    <div class="col-10 text-start">Detalles de Censos</div>
+                    <div class="col-10 text-start">{% trans 'Detalles de Censos'%}</div>
                 </div>
             </b-button>
         </div>
@@ -73,8 +69,7 @@
             <b-button size="lg" block variant="outline-success" href="/census/census_grouping">
                 <div class="row">
                     <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                    <!-- TRADUCCION -->
-                    <div class="col-10 text-start">Agrupar Censos</div>
+                    <div class="col-10 text-start">{% trans 'Agrupar Censos'%}</div>
                 </div>
             </b-button>
         </div>
@@ -84,8 +79,7 @@
             <b-button size="lg" block variant="outline-success" href="/census/reuse">
                 <div class="row">
                     <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                    <!-- TRADUCCION -->
-                    <div class="col-10 text-start">Reutilizar Censos</div>
+                    <div class="col-10 text-start">{% trans 'Reutilizar Censos'%}</div>
                 </div>
             </b-button>
         </div>
@@ -95,8 +89,7 @@
             <b-button size="lg" block variant="outline-success" href="/census/import_csv">
                 <div class="row">
                     <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                    <!-- TRADUCCION -->
-                    <div class="col-10 text-start">Importar Csv</div>
+                    <div class="col-10 text-start">{% trans 'Importar Csv'%}</div>
                 </div>
             </b-button>
         </div>
@@ -104,8 +97,7 @@
             <b-button size="lg" block variant="outline-success" href="/census/import_json">
                 <div class="row">
                     <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                    <!-- TRADUCCION -->
-                    <div class="col-10 text-start">Importar JSON</div>
+                    <div class="col-10 text-start">{% trans 'Importar JSON'%}</div>
                 </div>
             </b-button>
         </div>
@@ -115,8 +107,7 @@
             <b-button size="lg" block variant="outline-success" href="/census/import">
                 <div class="row">
                     <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                    <!-- TRADUCCION -->
-                    <div class="col-10 text-start">Importar Excel</div>
+                    <div class="col-10 text-start">{% trans 'Importar Excel'%}</div>
                 </div>
             </b-button>
         </div>
@@ -124,8 +115,7 @@
             <b-button size="lg" block variant="outline-success" href="/census/export">
                 <div class="row">
                     <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                    <!-- TRADUCCION -->
-                    <div class="col-10 text-start">Exportar Excel</div>
+                    <div class="col-10 text-start">{% trans 'Exportar Excel'%}</div>
                 </div>
             </b-button>
         </div>

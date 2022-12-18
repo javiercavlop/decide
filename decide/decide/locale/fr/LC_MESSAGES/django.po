@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-10 23:34+0100\n"
+"POT-Creation-Date: 2022-12-18 20:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,18 +17,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-#: decide/settings.py:149
-msgid "English"
-msgstr ""
 
-#: decide/settings.py:150
+#: decide/settings.py:199
 msgid "Spanish"
-msgstr ""
+msgstr "Espagnol"
 
-#: decide/settings.py:151
+#: decide/settings.py:200
+msgid "English"
+msgstr "Anglais"
+
+#: decide/settings.py:201
 msgid "German"
-msgstr ""
+msgstr "Allemand"
 
-#: decide/settings.py:152
+#: decide/settings.py:202
 msgid "French"
-msgstr ""
+msgstr "Français"

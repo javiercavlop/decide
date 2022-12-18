@@ -2,6 +2,7 @@ from django import forms
 from .models import Census
 from django.contrib.auth.models import User
 from voting.models import Voting
+from django.utils.translation import ugettext_lazy as _
 
 class CensusReuseForm(forms.Form):
     voting_id = forms.IntegerField(label="voting_id")
@@ -20,14 +21,14 @@ class CensusForm(forms.Form):
         widget=forms.Select(
             attrs={'class': "form-control"}),
         choices=list(),
-        label="Elige votación")
+        label=_("Elige votación"))
     voter_name=forms.ChoiceField(
         widget=forms.Select(attrs={'class': "form-control"}),
         choices=list(),
-        label="Elige votante")
+        label=_("Elige votante"))
     group_name=forms.CharField(
         widget=forms.TextInput(attrs={'class': "form-control"}),
-        label='Escribe el nombre del grupo',
+        label=_('Escribe el nombre del grupo'),
         required=False)
 
     def __init__(self, *args, **kwargs):

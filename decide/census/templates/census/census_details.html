@@ -15,8 +15,7 @@
     <div class="col-md-8">
     <div class="card">
         <article class="card-body">
-                                                                    <!--TRADUCCION-->
-        <h4 class="card-title mb-4 mt-1 text-align-center text-center">Detalles de censos</h4> 
+        <h4 class="mb-4 mt-1 text-align-center text-center">{% trans 'Detalles de censos' %}</h4>  
         <form action="/census/census_details/" method="post">
                 {% csrf_token %}
             <div class="mb-3 row">
@@ -24,12 +23,12 @@
                 <table class="table table-bordered table-striped mt-2">
                     <thead  class="text-center">
                         <tr>
-                            <!-- TRADUCCION -->
-                            <th>Censo Id</th>
-                            <th>Votación Id</th>
-                            <th>Votante (Id)</th>
-                            <th>Grupo</th>
-                            <th>Eliminar censo</th>
+                            
+                            <th>{% trans 'Censo Id' %}</th>
+                            <th>{% trans 'Votación Id' %}</th>
+                            <th>{% trans 'Votante (Id)' %}</th>
+                            <th>{% trans 'Grupo' %}</th>
+                            <th>{% trans 'Eliminar censo' %}</th>
                         </tr>
                     </thead>
                     <tbody class="text-center">
@@ -39,7 +38,7 @@
                             <td>{{censo.voting_id}}</td>
                             <td>{{censo.voter}} ({{censo.voter.id}})</td>
                             <td>{{censo.group}}</td>
-                            <td><button type="submit" name="delete" class="btn btn-danger btn-block" value="{{censo.id}}">Eliminar</button></td>
+                            <td><button type="submit" name="delete" class="btn btn-danger btn-block" value="{{censo.id}}">{% trans 'Eliminar' %}</button></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -50,10 +49,10 @@
         
         <div class="mb-3 row">
             <div class="d-grid gap-2 col-5 mx-auto">
-                <a class="btn btn-outline-success" href="/census/reuse" role="button">Reutilizar Censos</a>
+                <a class="btn btn-outline-primary" href="/census/reuse" role="button" id="reuse_census">{% trans 'Reutilizar Censos' %}</a>
             </div>
             <div class="d-grid gap-2 col-5 mx-auto">
-                <a class="btn btn-outline-success" href="/census/census_grouping" role="button">Agrupar Censos</a>
+                <a class="btn btn-outline-primary" href="/census/census_grouping" role="button">{% trans 'Agrupar Censos' %}</a>
             </div>
         </div>
         

@@ -29,6 +29,7 @@ import math
 from django.http import HttpResponse
 import csv
 from django.contrib import messages
+from django.utils.translation import ugettext_lazy as _
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -80,17 +81,21 @@ def import_json(request):
                     census = Census(voting_id=d[0], voter_id=d[1],group=group)
                     census_from_json.append(census)
                 except CensusGroup.DoesNotExist:
-                    messages.error(request,'The input Census Group does not exist')
+                    message = _('The input Census Group does not exist')
+                    messages.error(request, message)
                     return render(request,"json.html")
             for c in census_from_json:
                 try:
                     c.save()
                 except IntegrityError:
-                    messages.error(request, 'Error trying to import JSON. A census cannot be repeated.')
+                    message = _('Error trying to import JSON. A census cannot be repeated.')
+                    messages.error(request, message)
                     return render(request,"json.html")
-            messages.success(request, 'Census created')
+            message = _('Census created')
+            messages.success(request, message)
     except:
-        messages.error(request, 'Error in JSON data.') 
+        message = _('Error in JSON data.')
+        messages.error(request, message) 
         return render(request,"json.html")
     return render(request,"json.html")
 
@@ -115,7 +120,8 @@ def import_csv(request):
                     census_from_csv.append(census)
                     cont+=1
                 except CensusGroup.DoesNotExist:
-                    messages.error(request, 'The input Census Group does not exist, in row {}'.format(cont-1))
+                    message = _("The input Census Group does not exist, in row {}").format(cont-1)
+                    messages.error(request, message)
                     return render(request, "csv.html")
             cont=0
             for c in census_from_csv:
@@ -123,12 +129,15 @@ def import_csv(request):
                     cont+=1
                     c.save()
                 except IntegrityError:
-                    messages.error(request, 'Error trying to import CSV, in row {}. A census cannot be repeated.'.format(cont))
+                    message = _("Error trying to import CSV, in row {}. A census cannot be repeated.").format(cont)
+                    messages.error(request, message)
                     return render(request,"csv.html")
-            messages.success(request, 'Census Created')
+            message=_("Census Created")
+            messages.success(request, message)
             return render(request,"csv.html")
     except:
-        messages.error(request, 'Error in CSV data. There are wrong data in row {}'.format(cont+1)) 
+        message=_('Error in CSV data. There are wrong data in row {}').format(cont+1)
+        messages.error(request, message) 
         return render(request,"csv.html")
     return render(request,"csv.html")
 
@@ -153,7 +162,7 @@ def import_excel(request):
                     census_from_excel.append(census)
                     cont+=1
                 except CensusGroup.DoesNotExist:
-                    messages.error(request,'The input Census Group does not exist, in row {}'.format(cont-1))
+                    messages.error(request,_('The input Census Group does not exist, in row') + ' {}'.format(cont-1))
                     return render(request,"census/import.html")
 
             cont=0
@@ -162,14 +171,14 @@ def import_excel(request):
                     cont+=1
                     c.save()
                 except IntegrityError:
-                    messages.error(request, 'Error trying to import excel, in row {}. A census cannot be repeated.'.format(cont))
+                    messages.error(request, _('Error trying to import excel, in row') + ' {}. '.format(cont) + _('A census cannot be repeated.'))
                     return render(request,"census/import.html")
                     
-            messages.success(request, 'Census Created')
+            messages.success(request, _('Census Created'))
             return render(request,"census/import.html")
 
     except:
-        messages.error(request, 'Error in excel data. There are wrong data in row {}'.format(cont+1)) 
+        messages.error(request, _('Error in excel data. There are wrong data in row') + ' {}'.format(cont+1)) 
         return render(request,"census/import.html")
 
     return render(request,"census/import.html")
@@ -186,10 +195,12 @@ def export_excel(request):
             census_fields=census.values_list('voting_id','voter_id','group')
             for c in census_fields:
                 writer.writerow(c)
-            messages.success(request,"Exportado correctamente")
+            message = _("Exportado correctamente")
+            messages.success(request, message)
             return response
     except:
-            messages.error(request,'Error in exporting data. There are null data in rows')
+            message = _("Error in exporting data. There are null data in rows")
+            messages.error(request, message)
             return render(request, "census/export.html")
     return render(request,"census/export.html")
 
@@ -241,8 +252,7 @@ def censusReuse(request):
                                 pass
                 return redirect('/census')
             else:
-                # TRADUCCION
-                return render(request,'census/census_reuse_form.html',{'errors':['Entries must be integers']})
+                return render(request,'census/census_reuse_form.html',{'errors':[_('Entries must be integers')]})
     else:
         form = CensusReuseForm()
     return render(request,'census/census_reuse_form.html',{'form':form})
@@ -262,10 +272,10 @@ def censusCreation(request):
                 try:
                     census=Census(voting_id=voting_id,voter_id=voter_id)
                     census.save()
-                    msg="Censo creado con éxito"
+                    msg=_("Censo creado con éxito")
                     tipo="success"
                 except:
-                    msg="No se ha podido crear el censo"
+                    msg=_("No se ha podido crear el censo")
                     tipo="danger"
                     pass
                 return render(request,'census/census_create.html',{'form':form, 'msg':msg, 'tipo':tipo})
@@ -275,15 +285,15 @@ def censusCreation(request):
                 try:
                     census=Census(voting_id=voting_id,voter_id=voter_id,group_id=group_result.id)
                     census.save()
-                    msg="Censo creado con éxito"
+                    msg=_("Censo creado con éxito")
                     tipo="success"
                 except:
-                    msg="No se ha podido crear el censo"
+                    msg=_("No se ha podido crear el censo")
                     tipo="danger"
                     pass
                 return render(request,'census/census_create.html',{'form':form, 'msg':msg, 'tipo':tipo})
         else:
-            msg="No se ha podido crear el censo"
+            msg=_("No se ha podido crear el censo")
             tipo="danger"
             return render(request,'census/census_create.html',{'form':form, 'msg':msg, 'tipo':tipo})
     else:
@@ -307,7 +317,6 @@ def censusList(request):
             if(grupo not in options):
                 options.append(grupo.name)
         except:
-            ###    <!-- TRADUCCIÓN -->
             grupo = "No tiene grupo asignado"
             if(grupo not in options):
                 options.append(grupo)
@@ -399,12 +408,10 @@ def census_list(censos):
         try:
             votante = User.objects.get(pk=censo['voter_id'])
         except:
-            #       TRADUCCION
-            votante = "El votante todavía no ha sido añadido"
+            votante = _("El votante todavía no ha sido añadido")
         try:
             grupo = CensusGroup.objects.get(id=censo['group_id'])
         except:
-            #       TRADUCCION
-            grupo = "No tiene grupo asignado"
+            grupo = _("No tiene grupo asignado")
         res.append({'id': censo['id'],'voting_id':censo['voting_id'],'voter':votante,'group':grupo})
     return res

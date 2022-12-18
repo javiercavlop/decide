@@ -10,8 +10,7 @@
 <div id="app-main">
 
     <div id="header" class="container text-center my-4">
-        <!-- TRADUCCION -->
-        <h1>Panel de Control</h1>
+        <h1>{% trans 'Panel de Control' %}</h1>
     </div>
 
     <div id="content" class="container">
@@ -21,9 +20,8 @@
 
 
                 <div id="id-visualizer-panel" class="row my-3">
-                    <!-- TRADUCCION -->
-                    <h2>Paneles Individuales</h2>
-                    <b-card header="Busca tu votación">
+                    <h2 id="individual_panels">{% trans 'Paneles Individuales' %}</h2>
+                    <b-card header="{% trans 'Busca tu votación' %}">
                         <b-list-group class="voting-list my-3">
                             {% for voting in visualize_votings %}
                                 <b-list-group-item href="/dashboard/dashboard/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
@@ -37,16 +35,14 @@
 
             {% if is_staff %}
             <div id="id-admin-panel" class="col-lg-6 text-center my-3 mx-auto">
-                <!-- TRADUCCION -->
-                <h2>Si eres administrador...</h2>
+                <h2>{% trans 'Si eres administrador' %}...</h2>
 
                 <div class="row my-4">
                     <div class="d-grid gap-2 col-8 mx-auto">
                         <b-button block variant="outline-danger" size="lg"  href="/dashboard/dashboard">
                             <div class="row">
                                 <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                                <!-- TRADUCCION -->
-                                <div class="col-10 text-start">Panel de Control Global</div>
+                                <div class="col-10 text-start">{% trans 'Panel de Control Global' %}</div>
                             </div>
                         </b-button>
                     </div>
@@ -57,8 +53,7 @@
                         <b-button size="lg" block variant="outline-danger" href="/dashboard/download">
                             <div class="row">
                                 <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                                <!-- TRADUCCION -->
-                                <div class="col-10 text-start">Descargar Estadísticas</div>
+                                <div class="col-10 text-start">{% trans 'Descargar Estadísticas' %}</div>
                             </div>
                         </b-button>
                     </div>
@@ -68,8 +63,7 @@
                         <b-button size="lg" block variant="outline-danger" href="https://t.me/decide_stadistics_bot">
                             <div class="row">
                                 <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                                <!-- TRADUCCION -->
-                                <div class="col-10 text-start">Acceso al Bot de Telegram</div>
+                                <div class="col-10 text-start">{% trans 'Acceso al Bot de Telegram' %}</div>
                             </div>
                         </b-button>
                     </div>

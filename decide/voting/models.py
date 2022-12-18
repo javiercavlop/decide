@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from base import mods
 from base.models import Auth, Key
 from postproc.admin import *
+from django.utils.translation import ugettext_lazy as _
 
 
 QUESTION_TYPES = (
@@ -15,11 +16,10 @@ QUESTION_TYPES = (
     #('dhondt', "Votación con sistema D'Hondt")
 )
 
-# TRADUCCION
 def validate_nonzero(value):
     if value == 0:
         raise ValidationError(
-            ('Quantity %(value) is not allowed'),
+            (_('Quantity')+' %(value) ' + _('is not allowed')),
             params={'value': value},
         )
 

@@ -9,8 +9,7 @@
 {% block content %}
 <div id="app-main">
     <div id="header" class="container text-center my-4">
-        <!-- TRADUCCION -->
-        <h1>Bienvenido a Decide</h1>
+        <h1>{% trans "Bienvenido a" %} Decide</h1>
         <hr class="border-3 border-top border-dark">
     </div>
 
@@ -19,10 +18,9 @@
 
             <div class="{% if user.is_staff %}col-lg-6{% else %}col-lg-12{% endif %} text-center my-3 mx-auto">
                 <div class="row">
-                    <div id="id-voting-panel" class="{% if user.is_staff %}col-lg-12{%else%}col-lg-6{%endif%}">
-                        <!-- TRADUCCION -->
-                        <h2>Si vienes a votar...</h2>
-                        <b-card header="Busca tu votación">
+                    <div id="id-voting-panel" class="{% if is_staff %}col-lg-12{%else%}col-lg-6{%endif%}">
+                        <h2>{% trans "Si vienes a votar..." %}</h2>
+                        <b-card header="{% trans 'Busca tu votación' %}">
                             <b-list-group class="voting-list my-3">
                                 {% for voting in voting_votings %}
                                     <b-list-group-item id="voting-{{voting.pk}}" href="/booth/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
@@ -31,10 +29,9 @@
                         </b-card>
                     </div>
 
-                    <div id="id-visualizer-panel" class="{% if user.is_staff %}col-lg-12 my-3{%else%}col-lg-6 my-lg-0 my-3{%endif%}">
-                        <!-- TRADUCCION -->
-                        <h2>Si vienes a ver resultados...</h2>
-                        <b-card header="Busca tu votación">
+                    <div id="id-visualizer-panel" class="{% if is_staff %}col-lg-12 my-3{%else%}col-lg-6 my-lg-0 my-3{%endif%}">
+                        <h2>{% trans "Si vienes a ver resultados..." %}</h2>
+                        <b-card header="{% trans 'Busca tu votación' %}">
                             <b-list-group class="voting-list my-3">
                                 {% for voting in visualize_votings %}
                                     <b-list-group-item href="/visualizer/{{ voting.pk }}">{{ voting.name }}</b-list-group-item>
@@ -49,15 +46,13 @@
 
             {% if user.is_staff %}
             <div id="id-admin-panel" class="col-lg-6 text-center my-3 mx-auto">
-                <!-- TRADUCCION -->
-                <h2>Si eres administrador...</h2>
+                <h2>{% trans "Si eres administrador..." %}</h2>
                 <div class="row my-3">
                     <div class="d-grid gap-2 col-8 mx-auto">
                         <b-button size="lg" block variant="outline-primary" href="/admin">
                             <div class="row">
                                 <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                                <!-- TRADUCCION -->
-                                <div class="col-10 text-start">Administra Decide</div>
+                                <div class="col-10 text-start">{% trans "Administra Decide" %}</div>
                             </div>
                         </b-button>
                     </div>
@@ -67,8 +62,7 @@
                         <b-button size="lg" block variant="outline-primary" href="/voting">
                             <div class="row">
                                 <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                                <!-- TRADUCCION -->
-                                <div class="col-10 text-start">Administra Votaciones</div>
+                                <div class="col-10 text-start">{% trans "Administra Votaciones" %}</div>
                             </div>
                         </b-button>
                     </div>
@@ -78,8 +72,7 @@
                         <b-button size="lg" block variant="outline-primary" href="/census">
                             <div class="row">
                                 <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                                <!-- TRADUCCION -->
-                                <div class="col-10 text-start">Administra Censos</div>
+                                <div class="col-10 text-start">{% trans "Administra Censos" %}</div>
                             </div>
                         </b-button>
                     </div>
@@ -89,8 +82,7 @@
                         <b-button size="lg" block variant="outline-primary" href="/dashboard">
                             <div class="row">
                                 <div class="col-2"><b-icon icon="three-dots" animation="cylon"></b-icon></div>
-                                <!-- TRADUCCION -->
-                                <div class="col-10 text-start">Panel de Control</div>
+                                <div class="col-10 text-start">{% trans  'Panel de Control' %}</div>
                             </div>
                         </b-button>
                     </div>

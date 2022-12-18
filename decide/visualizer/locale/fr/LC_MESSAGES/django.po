@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-10 23:34+0100\n"
+"POT-Creation-Date: 2022-12-18 20:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,42 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-#: visualizer/templates/signin.html:13
-msgid "Sign In"
-msgstr "S'identifier"
 
-#: visualizer/templates/signin.html:21
-msgid "Submit"
-msgstr "Soumettre"
+#: visualizer/templates/visualizer/visualizer.html:16
+msgid "Votación"
+msgstr "Voter"
 
-#: visualizer/templates/signin.html:25
-msgid "Register"
-msgstr "S'inscrire"
+#: visualizer/templates/visualizer/visualizer.html:20
+msgid "Votación no comenzada"
+msgstr "Le vote n'a pas commencé"
+
+#: visualizer/templates/visualizer/visualizer.html:21
+msgid "Votación en curso"
+msgstr "Vote en cours"
+
+#: visualizer/templates/visualizer/visualizer.html:23
+msgid "Resultados"
+msgstr "Résultats"
+
+#: visualizer/templates/visualizer/visualizer.html:28
+msgid "Opción"
+msgstr "Option"
+
+#: visualizer/templates/visualizer/visualizer.html:29
+#, fuzzy
+#| msgid "Votación"
+msgid "Puntuación"
+msgstr "Voter"
+
+#: visualizer/templates/visualizer/visualizer.html:30
+msgid "Votos"
+msgstr "Votes"
+
+#~ msgid "Sign In"
+#~ msgstr "S'identifier"
+
+#~ msgid "Submit"
+#~ msgstr "Soumettre"
+
+#~ msgid "Register"
+#~ msgstr "S'inscrire"

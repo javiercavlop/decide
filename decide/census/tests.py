@@ -11,6 +11,7 @@ from django.utils import timezone
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 
 from base.tests import BaseTestCase
 import time
@@ -797,7 +798,6 @@ class CensusExportTestCase(TestCase):
                 self.assertEqual(int(values[i]), census_values[0][i])
             else:
                 self.assertEqual(None, census_values[0][i])
-
 class CensusPageTestCase(StaticLiveServerTestCase):
     def setUp(self):
         self.base = BaseTestCase()
@@ -814,11 +814,7 @@ class CensusPageTestCase(StaticLiveServerTestCase):
 
         census2 = Census(voting_id=2, voter_id=v_id)
         census2.save()
-
-        options = webdriver.ChromeOptions()
-        options.headless = True
-        self.driver = webdriver.Chrome(options=options)
-
+        
     def tearDown(self):
         super().tearDown()
         self.driver.quit()
@@ -846,4 +842,687 @@ class CensusPageTestCase(StaticLiveServerTestCase):
         time.sleep(5)
         self.assertTrue(len(self.driver.find_elements(By.ID,'tabla-votacion'))==1)
         self.assertTrue(len(self.driver.find_elements(By.ID,'1-Jaime')) == 1)
+class CensusDetailsTranslationCase(StaticLiveServerTestCase):
 
+    def setUp(self):
+        #Load base test functionality for decide
+        self.base = BaseTestCase()
+        self.base.setUp()
+        
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+        super().setUp()
+        
+        self.test_user = User.objects.create_user(username='test_user', password='test_user_password')
+        
+        self.driver.get('{}/authentication/signin'.format(self.live_server_url))
+        username_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_username"))
+        username_field.send_keys('test_user')
+        password_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_password"))
+        password_field.send_keys('test_user_password')
+        
+        submit_login_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id-signin-btn"))
+        submit_login_button.click()
+        
+    def tearDown(self):           
+        super().tearDown()
+        self.driver.quit()
+
+        self.base.tearDown()
+        
+    def test_french_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/census_details/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(4)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="reuse_census"))
+        self.assertEqual(header_text.text, "Réutiliser les recensements")
+        
+    def test_german_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/census_details/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(3)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="reuse_census"))
+        self.assertEqual(header_text.text, "Volkszählungen wiederverwenden")
+
+    def test_spanish_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/census_details/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(1)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="reuse_census"))
+        self.assertEqual(header_text.text, "Reutilizar Censos")
+        
+        
+    def test_english_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/census_details/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(2)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="reuse_census"))
+        self.assertEqual(header_text.text, "Reuse census")
+
+class CensusReuseTranslationCase(StaticLiveServerTestCase):
+
+    def setUp(self):
+        #Load base test functionality for decide
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+        super().setUp()
+        
+        self.test_user = User.objects.create_user(username='test_user', password='test_user_password')
+        
+        self.driver.get('{}/authentication/signin'.format(self.live_server_url))
+        username_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_username"))
+        username_field.send_keys('test_user')
+        password_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_password"))
+        password_field.send_keys('test_user_password')
+        
+        submit_login_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id-signin-btn"))
+        submit_login_button.click()
+        
+    def tearDown(self):           
+        super().tearDown()
+        self.driver.quit()
+
+        self.base.tearDown()
+    
+    def test_french_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/reuse'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(4)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="origin_voting"))
+        self.assertEqual(header_text.text.strip(), "Vote d'origine:")
+        
+    def test_german_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/reuse'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(3)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="origin_voting"))
+        self.assertEqual(header_text.text.strip(), "Herkunftsabstimmung:")
+        
+    def test_spanish_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/reuse'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(1)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="origin_voting"))
+        self.assertEqual(header_text.text.strip(), "Votación origen:")
+
+    def test_english_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/reuse'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(2)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="origin_voting"))
+        self.assertEqual(header_text.text.strip(), "Origin voting:")
+class ImportExcelPageTranslationCase(StaticLiveServerTestCase):
+    
+    def setUp(self):
+        #Load base test functionality for decide
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+        super().setUp()
+        
+        self.test_user = User.objects.create_user(username='test_user', password='test_user_password')
+        
+        self.driver.get('{}/authentication/signin'.format(self.live_server_url))
+        username_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_username"))
+        username_field.send_keys('test_user')
+        password_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_password"))
+        password_field.send_keys('test_user_password')
+        
+        submit_login_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id-signin-btn"))
+        submit_login_button.click()
+        
+    def tearDown(self):           
+        super().tearDown()
+        self.driver.quit()
+
+        self.base.tearDown()
+        
+    def test_french_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/import/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(4)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text, "Importer un fichier excel")
+        
+    def test_german_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/import/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(3)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text, "Excel-datei importieren")
+    
+    def test_spanish_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/import/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(1)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text, "Importación Fichero Excel")
+
+    def test_english_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/import/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(2)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text, "Import excel file")
+
+class CensusGroupingTranslationCase(StaticLiveServerTestCase):
+    
+    def setUp(self):
+        #Load base test functionality for decide
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+        super().setUp()
+        
+        self.test_user = User.objects.create_user(username='test_user', password='test_user_password')
+        
+        self.driver.get('{}/authentication/signin'.format(self.live_server_url))
+        username_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_username"))
+        username_field.send_keys('test_user')
+        password_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_password"))
+        password_field.send_keys('test_user_password')
+        
+        submit_login_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id-signin-btn"))
+        submit_login_button.click()
+        
+    def tearDown(self):           
+        super().tearDown()
+        self.driver.quit()
+
+        self.base.tearDown()
+        
+    def test_french_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/census_grouping/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(4)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text.strip(), "Recensement de groupe")
+        
+    def test_german_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/census_grouping/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(3)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text.strip(), "Gruppenzählung")
+        
+    def test_spanish_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/census_grouping/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(1)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text.strip(), "Agrupar Censo")
+
+    def test_english_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/census_grouping/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(2)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text.strip(), "Group Census")
+        
+    
+class CensusPageTranslationCase(StaticLiveServerTestCase):
+    
+    def setUp(self):
+        #Load base test functionality for decide
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+        super().setUp()
+        
+        self.test_user = User.objects.create_user(username='test_user', password='test_user_password')
+        
+        self.driver.get('{}/authentication/signin'.format(self.live_server_url))
+        username_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_username"))
+        username_field.send_keys('test_user')
+        password_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_password"))
+        password_field.send_keys('test_user_password')
+        
+        submit_login_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id-signin-btn"))
+        submit_login_button.click()
+        
+    def tearDown(self):           
+        super().tearDown()
+        self.driver.quit()
+
+        self.base.tearDown()
+        
+    
+    def test_french_translation(self):
+        
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(4)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="voter"))
+        self.assertEqual(header_text.text.strip(), "Électeur")
+        
+    def test_german_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(3)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="voter"))
+        self.assertEqual(header_text.text.strip(), "Wähler")
+        
+    def test_spanish_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(1)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="voter"))
+        self.assertEqual(header_text.text.strip(), "Votante")
+
+    def test_english_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(2)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="voter"))
+        self.assertEqual(header_text.text.strip(), "Voter")
+
+class ExportExcelPageTranslationCase(StaticLiveServerTestCase):
+    
+    def setUp(self):
+        #Load base test functionality for decide
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+        super().setUp()
+        
+        self.test_user = User.objects.create_user(username='test_user', password='test_user_password')
+        
+        self.driver.get('{}/authentication/signin'.format(self.live_server_url))
+        username_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_username"))
+        username_field.send_keys('test_user')
+        password_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_password"))
+        password_field.send_keys('test_user_password')
+        
+        submit_login_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id-signin-btn"))
+        submit_login_button.click()
+        
+    def tearDown(self):           
+        super().tearDown()
+        self.driver.quit()
+
+        self.base.tearDown()
+        
+    def test_french_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/export/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(4)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text, "Exporter un fichier excel")
+        
+    def test_german_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/export/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(3)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text, "Excel-datei exportieren")
+    
+    def test_spanish_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/export/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(1)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text, "Exportación de Fichero Excel")
+
+    def test_english_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/export/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(2)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text, "Export excel file")
+
+class ImportJSONExcelPageTranslationCase(StaticLiveServerTestCase):
+    
+    def setUp(self):
+        #Load base test functionality for decide
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+        super().setUp()
+        
+        self.test_user = User.objects.create_user(username='test_user', password='test_user_password')
+        
+        self.driver.get('{}/authentication/signin'.format(self.live_server_url))
+        username_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_username"))
+        username_field.send_keys('test_user')
+        password_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_password"))
+        password_field.send_keys('test_user_password')
+        
+        submit_login_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id-signin-btn"))
+        submit_login_button.click()
+        
+    def tearDown(self):           
+        super().tearDown()
+        self.driver.quit()
+
+        self.base.tearDown()
+        
+    def test_french_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/import_json/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(4)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text, "Importer un fichier JSON")
+        
+    def test_german_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/import_json/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(3)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text, "JSON-datei importieren")
+    
+    def test_spanish_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/import_json/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(1)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text, "Importación Fichero JSON")
+
+    def test_english_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/import_json/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(2)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text, "Import JSON file")
+
+class ImportCSVExcelPageTranslationCase(StaticLiveServerTestCase):
+    
+    def setUp(self):
+        #Load base test functionality for decide
+        self.base = BaseTestCase()
+        self.base.setUp()
+
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+        super().setUp()
+        
+        self.test_user = User.objects.create_user(username='test_user', password='test_user_password')
+        
+        self.driver.get('{}/authentication/signin'.format(self.live_server_url))
+        username_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_username"))
+        username_field.send_keys('test_user')
+        password_field = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id_password"))
+        password_field.send_keys('test_user_password')
+        
+        submit_login_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="id-signin-btn"))
+        submit_login_button.click()
+        
+    def tearDown(self):           
+        super().tearDown()
+        self.driver.quit()
+
+        self.base.tearDown()
+        
+    def test_french_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/import_csv/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(4)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text, "Importer un fichier CSV")
+        
+    def test_german_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/import_csv/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(3)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text, "CSV-datei importieren")
+    
+    def test_spanish_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/import_csv/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(1)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text, "Importación Fichero Excel")
+
+    def test_english_translation(self):
+
+        self.driver.set_window_size(1920,1080)
+        self.driver.get('{}/census/import_csv/'.format(self.live_server_url))
+        
+        language_selector = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.NAME, value="language"))
+        language_selector.click()
+        selected_language = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.CSS_SELECTOR, value="select > option:nth-child(2)"))
+        selected_language.click()
+        change_language_button = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="change-language-button"))
+        change_language_button.click()
+        header_text = WebDriverWait(self.driver, timeout=10).until(lambda d: d.find_element(by=By.ID, value="page_title"))
+        self.assertEqual(header_text.text, "Import CSV file")

@@ -4,7 +4,7 @@
 {% block extrahead %}
     <link rel="stylesheet" 
          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
-    <link type="text/css" rel="stylesheet" href="{% static "dashboard/style.css" %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'dashboard/style.css' %}" />
    
 {% endblock %}
 
@@ -16,24 +16,20 @@
             <div class="col-md-11">
                 <div class="card border-danger card-texto">
                     <article class="card-body">
-        <!-- TRADUCCION -->
-                    <h4 class="card-title mb-4 mt-1 text-align-center text-center">{{voting.name}}</h4>
-                    <div class="row">
-                        <!-- TRADUCCION -->
-                        <div class="text-center description">{{description}}</div>
-                    </div>
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center">{{voting.name}}</h4>
+                        <div class="row">
+                            <div class="text-center description">{{description}}</div>
+                        </div>
                     </article>
                 </div>
             </div>
         </div>
-        <!-- TRADUCCION -->
         <div class="row mt-5">
             {% if not voting.tally %}
             <div class="col-md-11">
                 <div class="card border-danger card-texto">
                     <article class="card-body">
-        <!-- TRADUCCION -->
-                    <h4 class="card-title mb-4 mt-1 text-align-center text-center">Sin Recuento</h4>
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center" id="no_talling">{% trans 'Sin Recuento' %}</h4>
                     </article>
                 </div>
             </div>
@@ -41,11 +37,10 @@
             <div class="col-md-11">
                 <div class="card border-danger">
                     <article class="card-body row d-flex">
-        <!-- TRADUCCION -->
-                    <h4 class="card-title mb-4 mt-1 text-align-center text-center">Porcentaje de personas que votaron</h4>
-                    <div class="col-6 mx-auto">
-                        <canvas class="" id = "my2Chart" width = "100" height = "100 " ></canvas>
-                    </div>
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center">{% trans 'Porcentaje de personas que votaron' %}</h4>
+                        <div class="col-6 mx-auto">
+                            <canvas id = "my2Chart" width = "100" height = "100 " ></canvas>
+                        </div>
                     </article>
                 </div>
             </div>
@@ -54,11 +49,10 @@
             <div class="col-md-11">
                 <div class="card border-danger">
                     <article class="card-body row d-flex">
-        <!-- TRADUCCION -->
-                    <h4 class="card-title mb-4 mt-1 text-align-center text-center">Gŕafica de paridad</h4>
-                    <div class="col-6 mx-auto">
-                        <canvas id = "my3Chart" width = "100" height = "100 " ></canvas>
-                    </div>
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center">{% trans 'Gráfica de paridad' %}</h4>
+                        <div class="col-6 mx-auto">
+                            <canvas id = "my3Chart" width = "100" height = "100 " ></canvas>
+                        </div>
                     </article>
                 </div>
             </div>
@@ -70,50 +64,46 @@
             <div class="col-md-3 ">
                 <div class="card border-danger card-texto">
                     <article class="card-body">
-        <!-- TRADUCCION -->
-                    <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-patch-question"></i> Tipo de Pregunta</h4>
-                    <div class="row">
-                        <div class="text-center questionType">{{questionType}}</div>
-                    </div>
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-patch-question"></i>{% trans 'Tipo de Pregunta' %}</h4>
+                        <div class="row">
+                            <div class="text-center questionType">{{questionType}}</div>
+                        </div>
                     </article>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card border-danger card-texto">
                     <article class="card-body">
-        <!-- TRADUCCION -->
-                    <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-clock"></i> Duración</h4>
-                    <div class="row ">
-                        {% if not voting.start_date  %}
-                        <div class="text-center time">No comenzada</div>
-                        {% elif not voting.end_date %}
-                        <div class="text-center time">No finalizada</div>
-                        {% else %}
-                        <div class="text-center time">{{time}}</div>
-                        {% endif %}
-                    </div>
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-clock"></i>{% trans 'Duración' %}</h4>
+                        <div class="row ">
+                            {% if not voting.start_date  %}
+                            <div class="text-center time">{% trans 'No comenzada' %}</div>
+                            {% elif not voting.end_date %}
+                            <div class="text-center time">{% trans 'No finalizada' %}</div>
+                            {% else %}
+                            <div class="text-center time">{{time}}</div>
+                            {% endif %}
+                        </div>
                     </article>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card border-danger card-texto">
                     <article class="card-body">
-        <!-- TRADUCCION -->
-                    <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-person"></i> Nº Censo</h4>
-                    <div class="row">
-                        <div class="text-center people">{{people}}</div>
-                    </div>
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-person"></i>{% trans 'Nº Censo' %}</h4>
+                        <div class="row">
+                            <div class="text-center people">{{people}}</div>
+                        </div>
                     </article>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card border-danger card-texto">
                     <article class="card-body">
-        <!-- TRADUCCION -->
-                    <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-envelope"></i> Nº Votos</h4>
-                    <div class="row">
-                        <div class="text-center numervotes">{{numberOfVotes}}</div>
-                    </div>
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-envelope"></i>{% trans 'Nº Votos' %}</h4>
+                        <div class="row">
+                            <div class="text-center numervotes">{{numberOfVotes}}</div>
+                        </div>
                     </article>
                 </div>
             </div>
@@ -122,32 +112,29 @@
             <div class="col-md-12">
                 <div class="card border-danger card-texto">
                     <article class="card-body">
-        <!-- TRADUCCION -->
-                    <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-bezier2"></i> Paridad</h4>
-                    <div class="row">
-                        {% if parity == True %}
-                            <div class="text-center parity">Se ha cumplido la paridad para esta votación</div>
-                        {% elif numDif == 1 %}
-                            <div class="text-center parity">No se ha cumplido la paridad para esta votación, hay {{numDif}} voto más de {{mayor}} que de {{menor}}</div>
-                        {% else %}
-                            <div class="text-center parity">No se ha cumplido la paridad para esta votación, hay {{numDif}} votos más de {{mayor}} que de {{menor}}</div>
-                        {% endif %}
-                    </div>
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-bezier2"></i>{% trans 'Paridad' %}</h4>
+                        <div class="row">
+                            {% if parity == True %}
+                                <div class="text-center parity">{% trans 'Se ha cumplido la paridad para esta votación' %}</div>
+                            {% elif numDif == 1 %}
+                                <div class="text-center parity">{% trans 'No se ha cumplido la paridad para esta votación, hay' %} {{numDif}} {% trans 'voto más de' %} {{mayor}} {% trans 'que de' %} {{menor}}</div>
+                            {% else %}
+                                <div class="text-center parity">{% trans 'No se ha cumplido la paridad para esta votación, hay' %} {{numDif}} {% trans 'votos más de' %} {{mayor}} {% trans 'que de' %} {{menor}}</div>
+                            {% endif %}
+                        </div>
                     </article>
                 </div>
             </div>
         </div>
-        <!-- TRADUCCION -->
         {% if voting.tally %}
         <div class="row mt-5">
             <div class="col-md-12">
                 <div class="card border-danger">
                     <article class="card-body row d-flex">
-        
-                    <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-clipboard-data"></i> Resultados de la Votación</h4>
-                    <div class="col-10 mx-auto">
-                        <canvas id="myChart" width="800" height="500"></canvas>
-                    </div>
+                        <h4 class="card-title mb-4 mt-1 text-align-center text-center"><i class="bi bi-clipboard-data"></i>{% trans 'Resultados de la Votación' %}</h4>
+                        <div class="col-10 mx-auto">
+                            <canvas id="myChart" width="800" height="500"></canvas>
+                        </div>
                     </article>
                 </div>
             </div>
@@ -164,7 +151,6 @@
     <script src ="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
 
-    <!-- TRADUCCION -->
     <script>
         const ctx = document.getElementById('myChart').getContext('2d');
         ctx.canvas.parentNode.style.width = "800px";

@@ -20,7 +20,7 @@ from census.models import Census
 
 from voting import models as voting_models
 from census import models as census_models
-
+from django.utils.translation import ugettext_lazy as _
 
 def vista(request,voting_id):
     data = get_object_or_404(Voting,id=voting_id)
@@ -29,9 +29,9 @@ def vista(request,voting_id):
     numberOfPeople = len(Census.objects.filter(voting_id = voting_id))
     duracion = ""
     if not data[0].start_date:
-        duracion = "Aún no ha comenzado"
+        duracion = _("Aún no ha comenzado")
     elif not data[0].end_date:
-        duracion = "Aún no ha terminado"
+        duracion = _("Aún no ha terminado")
     else:
         time = data[0].end_date-data[0].start_date
         duracion = str(time - datetime.timedelta(microseconds=time.microseconds))
@@ -43,7 +43,7 @@ def vista(request,voting_id):
     elif data[0].question.desc != "" and data[0].question.desc is not None:
         description = data[0].question.desc
     else:
-        description = "No hay una descripción asociada a esta votación ni a esta pregunta"
+        description = _("No hay una descripción asociada a esta votación ni a esta pregunta")
 
 
     postpro = data[0].postproc
