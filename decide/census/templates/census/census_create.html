@@ -2,18 +2,13 @@
 {% load i18n static %}
 
 {% block extrahead %}
-    <link type="text/css" rel="stylesheet"
-    href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
-    <link type="text/css" rel="stylesheet"
-    href="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.css" />
-    <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
 {% endblock %}
 
 {% block content %}
 <div id="app-census-create">
 
     {%if msg%}
-    <b-alert variant={{tipo}} show dismissible>
+    <b-alert id={{typo}} variant={{tipo}} show dismissible>
         {{msg}}
     </b-alert>
     {%endif%}
@@ -29,7 +24,7 @@
                 {% csrf_token %}
                 {{form}}
             <div class="form-group mt-4 text-center">
-                <button type="submit" class="btn btn-primary btn-block" value="OK">{% trans 'Crear Censo' %}</button>
+                <button id="btn" type="submit" class="btn btn-primary btn-block" value="OK">{% trans 'Crear Censo' %}</button>
             </div> <!-- form-group// -->                                                           
         </form>
         </article>
@@ -44,11 +39,6 @@
 
 {% block extrabody %}
     <!-- Vuejs -->
-    <script src="https://unpkg.com/vue@2.6/dist/vue.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.min.js"></script>
-    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue-icons.min.js"></script>
-    
     <script>
         new Vue({ el: '#app-census-create' }); 
     </script>

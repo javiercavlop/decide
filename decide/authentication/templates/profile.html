@@ -96,7 +96,7 @@
                         <b-card-body>
                             <b-row>
                                 <b-col class="text-center">
-                                    <b-button href="#" variant="warning">{% trans 'Log out' %}</b-button>
+                                    <b-button href="/authentication/signout" variant="warning">{% trans 'Log out' %}</b-button>
                                 </b-col>
                                 <b-col class="text-center">
                                     <b-button variant="danger" onclick="delete_user()">{% trans 'Delete account' %}</b-button>
@@ -120,8 +120,8 @@
 
 <script>
   function delete_user() {
-    if (confirm('Are you sure you want to delete your user account?')) {
-      window.location.href = "http://localhost:8000/authentication/deleteUser/";
+    if (confirm("Are you sure you want to delete your user account?")) {
+      window.location.href = "/authentication/deleteUser/";
     }
 
   }
@@ -133,12 +133,6 @@
 
 
 {% block extrabody %}
-    <!-- Vuejs -->
-    <script src="https://unpkg.com/vue@2.6/dist/vue.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.min.js"></script>
-    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue-icons.min.js"></script>
-    
     <script>
         new Vue({ el: '#app-profile' }); 
     </script>

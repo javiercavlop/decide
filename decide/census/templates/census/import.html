@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n static %}
 {% block content %}
+<div id="app-import">
 {% if messages %}
     {% for message in messages %}
     <div {% if message.tags == 'error' %} class="alert alert-danger" {% elif message.tags == 'success' %} class="alert alert-success"{% endif %}  role="alert">
@@ -43,5 +44,13 @@
 
   </form>
 </div>
+</div>
     
+{% endblock %}
+
+{% block extrabody %}
+     <!-- Vuejs -->     
+     <script>
+        new Vue({ el: '#app-import' });
+     </script>
 {% endblock %}

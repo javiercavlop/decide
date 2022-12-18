@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from postproc.models import UserProfile
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
@@ -39,7 +38,7 @@ class BaseTestCase(APITestCase):
 
     def login(self, user='admin', password='qwerty'):
         data = {'username': user, 'password': password}
-        response = mods.post('authentication/login', json=data, response=True)
+        response = mods.post('authentication/api/login', json=data, response=True)
         self.assertEqual(response.status_code, 200)
         self.token = response.json().get('token')
         self.assertTrue(self.token)

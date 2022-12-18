@@ -3,10 +3,19 @@
 
 {% block content %}
 <div id="app-census-details">
+    
+    {%if msg%}
+    <b-alert variant={{tipo}} show dismissible>
+        {{msg}}
+    </b-alert>
+    {%endif%}
+
     <div class="container-fluid">
     <div class="row justify-content-center mt-5">
     <div class="col-md-8">
-        <h4 class="mb-4 mt-1 text-align-center text-center">{% trans 'Detalles de censos' %}</h4> 
+    <div class="card">
+        <article class="card-body">
+        <h4 class="mb-4 mt-1 text-align-center text-center">{% trans 'Detalles de censos' %}</h4>  
         <form action="/census/census_details/" method="post">
                 {% csrf_token %}
             <div class="mb-3 row">
@@ -29,7 +38,7 @@
                             <td>{{censo.voting_id}}</td>
                             <td>{{censo.voter}} ({{censo.voter.id}})</td>
                             <td>{{censo.group}}</td>
-                            <td><button type="submit" name="delete" class="btn btn-outline-danger btn-block" value="{{censo.id}}">{% trans 'Eliminar' %}</button></td>
+                            <td><button type="submit" name="delete" class="btn btn-danger btn-block" value="{{censo.id}}">{% trans 'Eliminar' %}</button></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -46,7 +55,9 @@
                 <a class="btn btn-outline-primary" href="/census/census_grouping" role="button">{% trans 'Agrupar Censos' %}</a>
             </div>
         </div>
-
+        
+        </article>
+    </div>
     </div>
     </div>
     </div>
@@ -57,11 +68,6 @@
 
 {% block extrabody %}
     <!-- Vuejs -->
-    <script src="https://unpkg.com/vue@2.6/dist/vue.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue.min.js"></script>
-    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-vue@2.23.1/dist/bootstrap-vue-icons.min.js"></script>
-    
     <script>
         new Vue({ el: '#app-census-details' }); 
     </script>

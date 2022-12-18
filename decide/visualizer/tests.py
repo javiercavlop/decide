@@ -2,17 +2,19 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from pathlib import Path
-from selenium import webdriver
-from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.keys import Keys
-from base.tests import BaseTestCase
-from voting.models import Question, Voting, QuestionOption
-import time
 from django.contrib.auth.models import User
+from base.tests import BaseTestCase
+from django.utils import timezone
+from selenium.webdriver.common.keys import Keys
+from voting.models import Voting, Question, QuestionOption
 
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+import time
 
 
 class VisualizerTestCase(StaticLiveServerTestCase):

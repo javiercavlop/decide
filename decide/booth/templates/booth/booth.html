@@ -7,25 +7,25 @@
          href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
     <link type="text/css" rel="stylesheet"
          href="https://unpkg.com/bootstrap-vue@0.15.18/dist/bootstrap-vue.css" />
-    <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'booth/style.css' %}" />
 {% endblock %}
 
 {% block content %}
     <div id="app-booth">
 
         <b-navbar type="dark" variant="secondary" style="display: none;">
-            <!-- TRADUCCION -->
+            
             <b-navbar-brand tag="h1">Decide</b-navbar-brand>
                 <b-navbar-nav class="ml-auto" v-if="!signup">
                     <b-nav-item href="#" v-on:click="decideLogout">
-                        <!-- TRADUCCION -->
+                        
                         {% trans "logout" %}
                     </b-nav-item>
                 </b-navbar-nav>
         </b-navbar>
 
         <b-alert :variant="alertLvl" dismissible v-model="alertShow">
-            <!-- TRADUCCION -->
+            
              [[ alertMsg ]]
         </b-alert>
 
@@ -49,8 +49,8 @@
                         v-model="form.password"
                         required />
                 </b-form-group>
-                <!-- TRADUCCION -->
-                <b-button type="submit" variant="primary">{% trans 'Login' %}</b-button>
+                
+                <b-button id="btn" type="submit" variant="primary">{% trans "Login" %}</b-button>
             </b-form>
 
             <!-- Voting -->
@@ -58,12 +58,12 @@
                              
                 {% if auxBorda%}
                 <div class="alert w-35 alert-warning alert-dismissible fade show" role="alert">
-                    <!-- TRADUCCION -->
+                    
                     <span>{% trans 'This votation has been configured as an ordenation, so you have to vote for each one of the options.' %}</span>
                 </div>
                 {% endif %}
                 
-                <!-- TRADUCCION -->
+                
                 <h1>{% trans 'Votación' %} [[voting.id]]</h1>
                 <div class="container bg-gray w-35 p-4 my-4 rounded m-0">
                 <h2>[[ voting.name ]]</h2>
@@ -91,7 +91,7 @@
         <div v-if="!signup">
         {% if auxBorda%}
             <div class="container bg-gray w-35 p-4 my-4 rounded m-0">
-            <!-- TRADUCCION -->
+            
             <h5>{% trans 'Order' %}: </h5>
             <div id="answers">
             </div>
@@ -104,15 +104,15 @@
 
 {% block extrabody %}
     <!-- needed to generate big random -->
-    <script src="{% static "crypto/sjcl.js" %}"></script>
+    <script src="{% static 'crypto/sjcl.js' %}"></script>
 
     <!-- Big integer -->
-    <script src="{% static "crypto/jsbn.js" %}"></script>
-    <script src="{% static "crypto/jsbn2.js" %}"></script>
-    <script src="{% static "crypto/bigint.js" %}"></script>
+    <script src="{% static 'crypto/jsbn.js' %}"></script>
+    <script src="{% static 'crypto/jsbn2.js' %}"></script>
+    <script src="{% static 'crypto/bigint.js' %}"></script>
 
     <!-- ElGamal encrypt -->
-    <script src="{% static "crypto/elgamal.js" %}"></script>
+    <script src="{% static 'crypto/elgamal.js' %}"></script>
 
     <!-- Vuejs -->
     <script src="https://unpkg.com/vue@2.7"></script>

@@ -4,7 +4,6 @@ from .models import Census,CensusGroup
 from base.tests import BaseTestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.keys import Keys
-from django.test import TestCase, Client
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -51,10 +50,10 @@ class CensusTestCase(BaseTestCase):
         self.login()
         response = self.client.get('/census/api?voting_id={}'.format(1), format='json')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'voters': [1]})
+        self.assertEqual(response.json(), {'Current_Censuses': [[1, 1, None]]})
 
     def test_add_new_voters_conflict(self):
-        data = {'voting_id': 1, 'voters': [1]}
+        data = {'voting_id': 1, 'voter_id': 1, 'group':{'name':''}}
         response = self.client.post('/census/api', data, format='json')
         self.assertEqual(response.status_code, 401)
 
@@ -67,33 +66,36 @@ class CensusTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 409)
 
     def test_add_new_voters(self):
-        data = {'voting_id': 2, 'voters': [1,2,3,4]}
-        response = self.client.post('/census/api', data, format='json')
-        self.assertEqual(response.status_code, 401)
+        old_census = Census.objects.count()
+        voters = [2,3,4,5]
+        for v in voters:
+            data = {'voting_id': 1, 'voter_id': v, 'group':{'name':''}}
+            response = self.client.post('/census/api', data, format='json')
+            self.assertEqual(response.status_code, 401)
 
-        self.login(user='noadmin')
-        response = self.client.post('/census/api', data, format='json')
-        self.assertEqual(response.status_code, 403)
+            self.login(user='noadmin')
+            response = self.client.post('/census/api', data, format='json')
+            self.assertEqual(response.status_code, 403)
 
-        self.login()
-        response = self.client.post('/census/api', data, format='json')
-        self.assertEqual(response.status_code, 201)
-        self.assertEqual(len(data.get('voters')), Census.objects.count() - 1)
+            self.login()
+            response = self.client.post('/census/api', data, format='json')
+            self.assertEqual(response.status_code, 201)
+            self.logout()
+        self.assertEqual(Census.objects.count(), old_census + len(voters))
 
     def test_destroy_voter(self):
-        data = {'voters': [1]}
-
         self.login()
-        response = self.client.delete('/census/api/{}/'.format(1), data, format='json')
+        response = self.client.delete('/census/api/{}/?voter_id={}'.format(1,1), format='json')
         self.assertEqual(response.status_code, 204)
         self.assertEqual(0, Census.objects.count())
     
     def test_add_new_voters_with_group(self):
-        data = {'voting_id': 1,'voters':[2],'group':{'name':'Test Group 1'}}
+        old_census = Census.objects.count()
+        data = {'voting_id': 1,'voter_id':2,'group':{'name':'Test Group 1'}}
         self.login()
         response = self.client.post('/census/api', data, format='json')
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(len(data.get('voters')), Census.objects.count() - 1)
+        self.assertEqual(Census.objects.count(), old_census + 1)
 
 class CensusGroupTestCase(BaseTestCase):
     def setUp(self):
@@ -276,7 +278,13 @@ class SeleniumImportJSONTestCase(StaticLiveServerTestCase):
         self.census_group = CensusGroup(name='Test Group 1')
         self.census_group.save() 
 
-        super().setUp()      
+        self.driver.get(f'{self.live_server_url}/authentication/signin')
+        self.driver.find_element(By.ID, "id_username").send_keys('superadmin')
+        self.driver.find_element(By.ID, "id_password").send_keys('qwerty')
+        self.driver.find_element(By.ID, "id-signin-btn").click()
+        
+        super().setUp()
+          
             
     def tearDown(self):           
         super().tearDown()
@@ -399,14 +407,15 @@ class SeleniumImportCSVTestCase(StaticLiveServerTestCase):
         superuser_admin = User(username='superadmin', is_staff=True, is_superuser=True)
         superuser_admin.set_password('qwerty')
         superuser_admin.save()
-
-        # self.driver.get(f'{self.live_server_url}/authentication/signin')
-        # self.driver.find_element(By.ID, "id_username").send_keys('superadmin')
-        # self.driver.find_element(By.ID, "id_password").send_keys('qwerty')
-        # self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
         
         self.census_group = CensusGroup(name='Test Group 1')
         self.census_group.save() 
+
+        self.driver.get(f'{self.live_server_url}/authentication/signin')
+        self.driver.find_element(By.ID, "id_username").send_keys('superadmin')
+        self.driver.find_element(By.ID, "id_password").send_keys('qwerty')
+        self.driver.find_element(By.ID, "id-signin-btn").click()
+        
         super().setUp()
           
             
@@ -566,6 +575,23 @@ class CensusReuseTestCase(BaseTestCase):
         response = self.client.post('/census/reuse',data=data)
         self.assertRedirects(response,'/census', status_code=302, target_status_code=301)
 
+class CensusNewTestCase(StaticLiveServerTestCase):
+    def setUp(self):
+        options = webdriver.ChromeOptions()
+        options.headless = True
+        self.driver = webdriver.Chrome(options=options)
+    
+    def tearDown(self):
+        super().tearDown()
+        self.driver.quit()
+    
+    def test_viewcreatecensus(self):
+        self.driver.get(f'{self.live_server_url}/census/new')
+        self.assertTrue(len(self.driver.find_elements(By.ID, "id_voting_id"))==1)
+        self.assertTrue(len(self.driver.find_elements(By.ID, "id_voter_name"))==1)
+        self.assertTrue(len(self.driver.find_elements(By.ID, "id_group_name"))==1)
+        self.assertTrue(len(self.driver.find_elements(By.ID, "btn"))==1)
+
 class CensusExportTestCase(TestCase):
     def setUp(self):
         super().setUp()
@@ -648,18 +674,18 @@ class CensusExportTestCase(TestCase):
 class CensusPageTestCase(StaticLiveServerTestCase):
     def setUp(self):
         self.base = BaseTestCase()
-        self.base.setUp() 
+        self.base.setUp()
 
         u = User(username='Jaime', is_staff=True)
         u.set_password('qwerty')
         u.save()
 
-        id = User.objects.get(username="Jaime").pk
+        v_id = User.objects.get(username="Jaime").pk
 
-        census = Census(voting_id=1, voter_id=id)
+        census = Census(voting_id=1, voter_id=v_id)
         census.save()
 
-        census2 = Census(voting_id=2, voter_id=id)
+        census2 = Census(voting_id=2, voter_id=v_id)
         census2.save()
         
     def tearDown(self):
