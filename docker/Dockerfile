@@ -16,7 +16,7 @@ RUN pip install ipython
 
 WORKDIR /app
 
-RUN git clone https://github.com/egc-decide-trebujena/decide.git .
+RUN git clone https://github.com/javiercavlop/decide.git .
 RUN git pull
 RUN echo "$(<requirements.txt)"s
 RUN pip install -U pip

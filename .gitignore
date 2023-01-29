@@ -129,3 +129,6 @@ ENV/
 #report files
 **/files/*.pdf
 
+#Terraform
+.terraform
+.terraform.lock.hcl

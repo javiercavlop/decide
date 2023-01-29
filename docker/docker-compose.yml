@@ -1,4 +1,4 @@
-version: '3.8.13'
+version: '3'
 
 services:
   db:
@@ -16,7 +16,7 @@ services:
     restart: always
     container_name: decide_web
     image: decide_web:latest
-    build: .
+    build: ./docker
     command: ash -c "python manage.py makemigrations && python manage.py migrate && python manage.py init_superuser && python manage.py loaddata initial_data.json && python manage.py compilemessages && gunicorn -w 5 decide.wsgi --timeout=500 -b 0.0.0.0:5000"
     expose:
       - "5000"
@@ -32,12 +32,12 @@ services:
     container_name: decide_nginx
     image: decide_nginx:latest
     build:
-        context: .
+        context: ./docker
         dockerfile: Dockerfile-nginx
     volumes:
       - static:/app/static
     ports:
-      - "8000:80"
+      - "80:80"
     depends_on:
       - web
     networks:
@@ -45,13 +45,10 @@ services:
 
 volumes:
   static:
-    name: decide_static
   db:
-    name: decide_db
 
 networks:
   decide:
-    name: decide
     driver: bridge
     ipam:
       driver: default
